@@ -5,10 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  nix.settings.experimental-features = [ "flakes" "nix-command" ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -85,7 +82,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-    #  thunderbird
+      git
     ];
   };
 
