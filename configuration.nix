@@ -9,6 +9,11 @@
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.extraInstallCommands = ''
+    patch_slim7_ssdt=$(
+      cp -fq ./slim7-ssdt /boot/EFI/nixos/slim7-ssdt
+    )
+  '';
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "dlaptop"; # Define your hostname.

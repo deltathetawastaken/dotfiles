@@ -10,10 +10,11 @@
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
+  boot.initrd.extraFiles."slim7-ssdt".source = "./slim7-ssdt";
   boot.kernelModules = [ "kvm-amd" ];
   boot.kernelPackages = unstable.linuxPackages_zen;
   boot.extraModulePackages = [ ];
-
+ 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/6b2d5c46-92de-42d0-a272-16b7ef7f30af";
       fsType = "ext4";
@@ -26,8 +27,11 @@
       fsType = "vfat";
     };
 
-  swapDevices = [ ];
-
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 32*1024;
+  } ];
+ 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
