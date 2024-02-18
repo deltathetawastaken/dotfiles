@@ -2,19 +2,70 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, unstable, config, pkgs, ... }:
 
 {
   nix.settings.experimental-features = [ "flakes" "nix-command" ];
+  nix.settings.auto-optimise-store = true;
+
+  environment.sessionVariables = { 
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; 
+	  NIXOS_OZONE_WL = "1"; 
+  };
+
+  environment.etc."wireplumber/main.lua.d/99-enable-soft-mixer.lua".text = ''
+    -- alsa_monitor.rules[1].apply_properties["api.alsa.use-acp"] = true;
+  '';
+
+  programs.hyprland.enable = true;
+
+  boot.kernel.sysctl."kernel.sysrq" = 1;
+
+  users.users.socks = {
+    group = "socks";
+    isSystemUser = true;
+  };  
+  users.groups.socks = {};
+
+  systemd.services.singboxaus = {
+    enable = true;
+    description = "avoid censorship";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = { Restart = "on-failure"; RestartSec = "15"; User = "socks"; Group = "socks"; };
+    script = "sing-box run -c /etc/sing-box/config.json";
+    path = with unstable; [ shadowsocks-libev shadowsocks-v2ray-plugin sing-box];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.extraInstallCommands = ''
     patch_slim7_ssdt=$(
-      cp -fq ./slim7-ssdt /boot/EFI/nixos/slim7-ssdt
+      
+      ${pkgs.coreutils}/bin/cp -f ${./slim7-ssdt} /boot/EFI/nixos/slim7-ssdt
+      for file in /boot/loader/entries/nixos-generation-*.conf; do
+        ${pkgs.gnused}/bin/sed -i '0,/^initrd\s/{s/^initrd\s/initrd \/efi\/nixos\/slim7-ssdt\n&/}' "$file"
+      done
     )
   '';
+  boot.kernelParams = [ "rtc_cmos.use_acpi_alarm=1" "ideapad_laptop.allow_v4_dytc=1" ];
   boot.loader.efi.canTouchEfiVariables = true;
+
+  programs.firejail.enable = true;
+
+  security.wrappers = {
+    firejail = {
+      source = "${pkgs.firejail.out}/bin/firejail";
+    };
+  };
+   
+  programs.command-not-found.enable = false;
+  programs.fish.enable = true;
+  programs.fish.promptInit = ''
+    set TERM "xterm-256color"
+    set fish_greeting
+    any-nix-shell fish --info-right | source
+  '';
+  users.defaultUserShell = pkgs.fish;
 
   networking.hostName = "dlaptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -57,7 +108,19 @@
     xkbVariant = "";
   };
 
-  # Enable CUPS to print documents.
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
+    spiceUSBRedirection.enable = true;
+    libvirtd.enable = true;
+  };
+
+  programs.steam.enable = true;
+  programs.gamemode.enable = true;
+  services.flatpak.enable = true;
+ # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
@@ -66,6 +129,7 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    wireplumber.enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
@@ -77,6 +141,10 @@
     #media-session.enable = true;
   };
 
+  sound.extraConfig = ''
+
+  '';
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -84,11 +152,10 @@
   users.users.delta = {
     isNormalUser = true;
     description = "delta";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      firefox
-      git
-    ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    #packages = with pkgs; [
+    #   inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
+    #];
   };
 
   # Allow unfree packages
@@ -97,9 +164,23 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    gnomeExtensions.appindicator
+    gnomeExtensions.activate-window-by-title
+    gnomeExtensions.unite
+    gnomeExtensions.tailscale-qs
+    gnomeExtensions.gsconnect
+    gnomeExtensions.clipboard-indicator
+    gnome.gnome-tweaks
+    mojave-gtk-theme
+    adw-gtk3
+    any-nix-shell
+    openconnect
+    micro
+    oath-toolkit
+    expect
   ];
+
+  systemd.services.NetworkManager-wait-online.enable = false; # Sometimes it stops the PC from shutdown :/ 
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -118,7 +199,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
