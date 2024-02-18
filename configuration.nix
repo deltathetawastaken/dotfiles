@@ -10,7 +10,7 @@
 
   environment.sessionVariables = { 
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; 
-	  NIXOS_OZONE_WL = "1"; 
+	NIXOS_OZONE_WL = "1"; 
   };
 
   environment.etc."wireplumber/main.lua.d/99-enable-soft-mixer.lua".text = ''
@@ -164,6 +164,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    linuxKernel.packages.linux_zen.acpi_call
     gnomeExtensions.appindicator
     gnomeExtensions.activate-window-by-title
     gnomeExtensions.unite

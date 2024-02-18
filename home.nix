@@ -12,92 +12,27 @@
     size = 16;
   };
 
-  nixpkgs.overlays = [
-
-	(final: prev: {
-	   discordtmp = prev.discord.override {
-	   withOpenASAR = true;
-	   withVencord = true;
-	   };
-	})
-  
-    (final: prev: let
-      commandLineArgs = toString [
-        "--enable-accelerated-mjpeg-decode"
-        "--enable-accelerated-video"
-        "--enable-accelerated-video-decode"
-        "--enable-zero-copy"
-        "--use-gl=desktop"
-        #"--enable-features=UseOzonePlatform,WaylandWindowDecorations,VaapiVideoDecodeLinuxGL"
-        "--enable-features=UseOzonePlatform,WaylandWindowDecorations,VaapiVideoDecodeLinuxGL,VaapiVideoEncoder"
-        "--ozone-platform=wayland"
-        "--no-sandbox"
-        "\"$@\""
-      ];
-
-      gpuCommandLineArgs = " " + toString [
-        "--ignore-gpu-blacklist"
-        "--enable-native-gpu-memory-buffers"
-        "--enable-gpu-rasterization"
-        "--enable-native-gpu-memory-buffers"
-        "--enable-gpu-compositing"
-        "--enable-raw-draw"
-        "--use-vulkan"
-        "--enable-oop-rasterization"
-        "--canvas-oop-rasterization"
-      ] + " " + commandLineArgs;
-
-      #mkDiscord = args: pkgs.symlinkJoin {
-      #  name = "discord";
-      #  paths = [
-      #    #prev.discord
-      #    (pkgs.writeShellScriptBin "discord" "exec ${prev.discordtmp}/bin/discord ${args}")
-      #    (pkgs.writeShellScriptBin "Discord" "exec ${prev.discordtmp}/bin/Discord ${args}")
-      #  ];
-      #};
-      mkDiscord = args: pkgs.symlinkJoin {
-	  name = "discord";
-	  paths = let
-	    aliases = ["discord" "Discord" "disc" "dis"];
-	  in
-	    map (alias: pkgs.writeShellScriptBin alias "exec ${prev.discordtmp}/bin/discord ${args}") aliases;
-	};
-      
-    in {
-      discord = mkDiscord commandLineArgs;
-      discord-gpu = mkDiscord gpuCommandLineArgs;
-    })
-
-   # VSCODIUM ###############
-        (final: prev: let
-      commandLineArgs = toString [
-        "--enable-features=UseOzonePlatform"
-        "--ozone-platform=wayland"
-        "--no-sandbox"
-        "\"$@\""
-      ];
-      
-	mkVscode = args: pkgs.symlinkJoin {
-	  name = "vscode";
-	  paths = let
-	    aliases = ["code" "codium" "vscodium" "vscode"];
-	  in
-	    map (alias: pkgs.writeShellScriptBin alias "exec ${prev.vscodium}/bin/codium ${args}") aliases;
-	};
-
-    in {
-      vscodium = mkVscode commandLineArgs;
-    })
+  imports = [
+    #hyprland.homeManagerModules.default
+    #./environment
+    ./programs
+    #./scripts
+    #./themes
   ];
 	
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    package = unstable.vscodium;
   };
 
   home.packages = with pkgs; [
-	firefox
     git
+	firefox
+	rustdesk
+	#unstable.firefox
+	#unstable.curl
+	#unstable.egl-wayland
+	unstable.chromium
     unstable.foot
     wl-clipboard
     wl-clipboard-x11
@@ -189,11 +124,11 @@
     '';
   };
 
-  wayland.windowManager.hyprland = { 
-  	enable = true;
-  	#plugins = 
-
-  };
+#  wayland.windowManager.hyprland = { 
+#  	enable = true;
+#  	#plugins = 
+#
+#  };
   
 
   xdg.dataFile."run" = {
