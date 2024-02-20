@@ -18,6 +18,7 @@
     ./programs
     #./scripts
     #./themes
+    ./theme.nix
   ];
 	
   programs.vscode = {
@@ -26,14 +27,9 @@
   };
 
   home.packages = (with pkgs; [
-  git
+ 	git
 	firefox
 	rustdesk
-	#unstable.firefox
-	#unstable.curl
-	#unstable.egl-wayland
-	unstable.chromium
-    unstable.foot
     wl-clipboard
     wl-clipboard-x11
     (callPackage ./audiorelay.nix {})
@@ -61,13 +57,24 @@
     }))
 
     #discord
+
+  ]) ++ (with unstable; [
+	xfce.thunar
+  btop
+  htop
+  chromium
+  foot
+  kitty
+  alacritty
+#  ]);
     
-  ]) ++ (with pkgs.gnome; [
-    nautilus
-    zenity
-    gnome-tweaks
-    eog
-    gedit
+#  ]) ++ (with pkgs.gnome; [
+#	gnome-terminal
+#    nautilus
+#    zenity
+#    gnome-tweaks
+#    eog
+#    gedit
   ]);
 
   dconf.settings = {

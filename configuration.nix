@@ -47,8 +47,50 @@
       done
     )
   '';
-  boot.kernelParams = [ "rtc_cmos.use_acpi_alarm=1" "ideapad_laptop.allow_v4_dytc=1" ];
+  boot.kernelParams = [
+    "rtc_cmos.use_acpi_alarm=1"
+    "ideapad_laptop.allow_v4_dytc=1"
+    "amd_pstate=active"
+    "initcall_blacklist=acpi_cpufreq_init"
+    "nowatchdog"
+    "amd_pstate.shared_mem=1"
+  ];
+  boot.kernelModules = [ "amd-pstate" "acpi_call" ];
   boot.loader.efi.canTouchEfiVariables = true;
+
+  powerManagement.enable = true;
+  services.power-profiles-daemon.enable = false;
+  #powerManagement.powertop.enable = true;
+  services.tlp = {
+      enable = true;
+      settings = {
+        CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+        CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+
+        CPU_MIN_PERF_ON_AC = 0;
+        CPU_MAX_PERF_ON_AC = 100;
+        CPU_MIN_PERF_ON_BAT = 0;
+        CPU_MAX_PERF_ON_BAT = 20;
+        CPU_SCALING_MAX_FREQ_ON_BAT = 1600000;
+
+        PLATFORM_PROFILE_ON_AC="balanced";
+        PLATFORM_PROFILE_ON_BAT="low-power";
+
+        #Trubo boost disable
+        CPU_BOOST_ON_AC=1;
+        CPU_BOOST_ON_BAT=0;
+        CPU_HWP_DYN_BOOST_ON_AC=1;
+        CPU_HWP_DYN_BOOST_ON_BAT=0;
+
+       #Optional helps save long term battery health
+       #START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
+       #STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
+
+      };
+};
 
   programs.firejail.enable = true;
 
@@ -84,14 +126,14 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "ru_RU.UTF-8";
-    LC_IDENTIFICATION = "ru_RU.UTF-8";
-    LC_MEASUREMENT = "ru_RU.UTF-8";
-    LC_MONETARY = "ru_RU.UTF-8";
-    LC_NAME = "ru_RU.UTF-8";
-    LC_NUMERIC = "ru_RU.UTF-8";
-    LC_PAPER = "ru_RU.UTF-8";
-    LC_TELEPHONE = "ru_RU.UTF-8";
+    #LC_ADDRESS = "ru_RU.UTF-8";
+    #LC_IDENTIFICATION = "ru_RU.UTF-8";
+    #LC_MEASUREMENT = "ru_RU.UTF-8";
+    #LC_MONETARY = "ru_RU.UTF-8";
+    #LC_NAME = "ru_RU.UTF-8";
+    #LC_NUMERIC = "ru_RU.UTF-8";
+    #LC_PAPER = "ru_RU.UTF-8";
+    #LC_TELEPHONE = "ru_RU.UTF-8";
     LC_TIME = "ru_RU.UTF-8";
   };
 
@@ -100,12 +142,62 @@
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome.enable = true; 
+  #services.xserver.displayManager.sessionPackages = [ pkgs.gnome.gnome-session.sessions ]; #gnome without deps, remove gnome.enable
+
+
 
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
     xkbVariant = "";
+    excludePackages = [ pkgs.xterm ];
+  };
+
+  services.gnome = {
+      gnome-browser-connector.enable = false;
+      gnome-initial-setup.enable = false;
+      gnome-online-accounts.enable = false;
+  };
+
+  services.udev.packages = [ pkgs.gnome.gnome-settings-daemon ];
+
+  programs.dconf.enable = true;
+
+  environment = {
+    #systemPackages = [ pkgs.gnome.dconf-editor pkgs.gnome.networkmanager-openconnect ] ++ [
+    #  pkgs.alacritty # pkgs.gnome-console
+    #  #pkgs.firefox # pkgs.gnome.epiphany
+    #];
+
+   gnome.excludePackages = [
+      #pkgs.gnome-connections
+      #pkgs.gnome-console
+      pkgs.gnome-text-editor
+      pkgs.gnome-tour
+      #pkgs.gnome.adwaita-icon-theme
+      pkgs.gnome.epiphany # browser
+      #pkgs.gnome.evince # pdf + office files
+      #pkgs.gnome.file-roller #archive explorer
+      pkgs.gnome.geary
+      pkgs.gnome.gnome-backgrounds
+      pkgs.gnome.gnome-calendar
+      pkgs.gnome.gnome-characters
+      pkgs.gnome.gnome-clocks
+      pkgs.gnome.gnome-contacts
+      pkgs.gnome.gnome-font-viewer
+      pkgs.gnome.gnome-logs
+      pkgs.gnome.gnome-maps
+      pkgs.gnome.gnome-music
+      #pkgs.gnome.gnome-themes-extra
+      pkgs.gnome.gnome-weather
+      #pkgs.gnome.nautilus
+      pkgs.gnome.simple-scan
+      pkgs.gnome.sushi
+      pkgs.gnome.totem
+      pkgs.gnome.yelp
+      pkgs.orca
+    ];
   };
 
   virtualisation = {
@@ -165,6 +257,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     linuxKernel.packages.linux_zen.acpi_call
+    linuxKernel.packages.linux_zen.cpupower
     gnomeExtensions.appindicator
     gnomeExtensions.activate-window-by-title
     gnomeExtensions.unite
