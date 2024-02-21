@@ -21,21 +21,25 @@
     ./theme.nix
   ];
 	
+  services.blueman-applet.enable = true;
+
+  programs.tmux.enable = true;
+
   programs.vscode = {
     enable = true;
     package = unstable.vscodium;
   };
 
   home.packages = (with pkgs; [
- 	git
-	firefox
-	rustdesk
+ 	  git
+	  firefox
+	  rustdesk
     wl-clipboard
     wl-clipboard-x11
     (callPackage ./audiorelay.nix {})
     (callPackage ./spotify.nix {})    
 
-    (unstable.telegram-desktop.overrideAttrs (oldAttrs: {
+    (telegram-desktop.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or []) ++ [
         (fetchpatch {
           url = "https://raw.githubusercontent.com/Layerex/telegram-desktop-patches/master/0001-Disable-sponsored-messages.patch";
@@ -59,13 +63,22 @@
     #discord
 
   ]) ++ (with unstable; [
-	xfce.thunar
-  btop
-  htop
-  chromium
-  foot
-  kitty
-  alacritty
+    xfce.thunar
+    btop
+    htop
+    chromium
+    foot
+    kitty
+    alacritty
+    dig
+    nwg-displays
+    nwg-drawer
+    imagemagick
+    fastfetch
+    hyfetch
+    pavucontrol
+    wget
+    wlogout
 #  ]);
     
 #  ]) ++ (with pkgs.gnome; [

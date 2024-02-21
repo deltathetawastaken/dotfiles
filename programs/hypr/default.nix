@@ -22,7 +22,7 @@
         # See https://wiki.hyprland.org/Configuring/Monitors/
         #monitor=,preferred,auto,1.066667
         #monitor=,preferred,90,1.066667
-        monitor=eDP-1,preferred,auto,1
+        monitor=eDP-1,preferred,auto,1.5
         #monitor=eDP-1,preferred,auto,1.066667
         #source = ~/.config/hypr/monitors.conf
         #source = ~/.config/hypr/workspaces.conf

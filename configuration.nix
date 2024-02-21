@@ -74,6 +74,7 @@
         CPU_MAX_PERF_ON_AC = 100;
         CPU_MIN_PERF_ON_BAT = 0;
         CPU_MAX_PERF_ON_BAT = 20;
+        CPU_SCALING_MAX_FREQ_ON_AC = 5500000;
         CPU_SCALING_MAX_FREQ_ON_BAT = 1600000;
 
         PLATFORM_PROFILE_ON_AC="balanced";
@@ -139,9 +140,18 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  
+  #imports = [
+  #  ./system/greetd.nix
+  #];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.defaultSession = "gnome";
+  services.xserver.displayManager.autoLogin = {
+              enable = true;
+              user = "delta";
+            };
   services.xserver.desktopManager.gnome.enable = true; 
   #services.xserver.displayManager.sessionPackages = [ pkgs.gnome.gnome-session.sessions ]; #gnome without deps, remove gnome.enable
 
@@ -159,6 +169,23 @@
       gnome-initial-setup.enable = false;
       gnome-online-accounts.enable = false;
   };
+
+  #bluetooth
+  services.blueman.enable = true;
+  
+  #thunar file manager
+  services.tumbler.enable = true;
+  services.gvfs.enable = true;
+  programs.thunar.enable = true;
+  programs.xfconf.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+    #thunar-dropbox-plugin
+    #thunar-media-tags-plugin
+  ];
+
+
 
   services.udev.packages = [ pkgs.gnome.gnome-settings-daemon ];
 
@@ -245,9 +272,10 @@
     isNormalUser = true;
     description = "delta";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
-    #packages = with pkgs; [
-    #   inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
-    #];
+    packages = with pkgs; [
+       #inputs.firefox.packages.${pkgs.system}.firefox-nightly-
+       inputs.anyrun.packages.${pkgs.system}.anyrun
+    ];
   };
 
   # Allow unfree packages
@@ -272,6 +300,14 @@
     micro
     oath-toolkit
     expect
+    ffmpegthumbnailer
+    webp-pixbuf-loader
+    freetype
+    poppler
+    f3d
+    nufraw-thumbnailer
+    unstable.curl
+    #firefox_nightly
   ];
 
   systemd.services.NetworkManager-wait-online.enable = false; # Sometimes it stops the PC from shutdown :/ 
