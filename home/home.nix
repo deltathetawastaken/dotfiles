@@ -133,13 +133,4 @@
       };
     };
   };
-
-  programs.fish = {
-    enable = true;
-
- 
-    shellInit = ''
-      any-nix-shell fish --info-right | source
-    '';
-  };
 }
