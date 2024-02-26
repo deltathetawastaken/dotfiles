@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -14,11 +15,15 @@
     telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
   };
 
-  outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, ... }: {
+  outputs = inputs @ { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, ... }: {
     nixosConfigurations.dlaptop = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs;
+        stable = import nixpkgs-stable {
+          system = "x86_64-linux";
+          config = { allowUnfree = true; };
+        };
         unstable = import nixpkgs-unstable {
           system = "x86_64-linux";
           config = { allowUnfree = true; };
@@ -35,6 +40,10 @@
           home-manager.users.delta = import ./home/home.nix;
           home-manager.extraSpecialArgs = {
             inherit inputs;
+            stable = import nixpkgs-stable {
+              system = "x86_64-linux";
+              config = { allowUnfree = true; };
+            };
             unstable = import nixpkgs-unstable {
               system = "x86_64-linux";
               config = { allowUnfree = true; };
@@ -47,6 +56,10 @@
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs;
+        stable = import nixpkgs-stable {
+          system = "x86_64-linux";
+          config = { allowUnfree = true; };
+        };
         unstable = import nixpkgs-unstable {
           system = "x86_64-linux";
           config = { allowUnfree = true; };
@@ -62,6 +75,10 @@
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs;
+        stable = import nixpkgs-stable {
+          system = "x86_64-linux";
+          config = { allowUnfree = true; };
+        };
         unstable = import nixpkgs-unstable {
           system = "x86_64-linux";
           config = { allowUnfree = true; };
@@ -78,6 +95,10 @@
           home-manager.users.delta = import ./home/home.nix;
           home-manager.extraSpecialArgs = {
             inherit inputs;
+            stable = import nixpkgs-stable {
+              system = "x86_64-linux";
+              config = { allowUnfree = true; };
+            };
             unstable = import nixpkgs-unstable {
               system = "x86_64-linux";
               config = { allowUnfree = true; };
