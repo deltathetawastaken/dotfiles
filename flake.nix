@@ -44,6 +44,7 @@
     nixosConfigurations.intelnuc = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        ./hosts/generic.nix
         ./hosts/intelnuc/configuration.nix
         ./hosts/intelnuc/hardware-configuration.nix
       ];
