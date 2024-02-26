@@ -145,6 +145,8 @@
     thunar-volman
   ];
 
+  xdg.ausl.extraPortals = with pkgs; [ xdg-desktop-ausl-hyprland ];
+
   environment = {
     gnome.excludePackages = [
       #pkgs.gnome-connections

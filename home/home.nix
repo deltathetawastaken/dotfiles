@@ -45,8 +45,8 @@
     (callPackage ../derivations/spotify.nix { })
     xorg.xwininfo
   ]) ++ (with unstable; [
-    rustdesk-flutter
     xfce.thunar
+    rustdesk-flutter
     nixfmt
     btop
     htop

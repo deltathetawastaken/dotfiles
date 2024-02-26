@@ -45,5 +45,41 @@
     };
   };
 
+  systemd.services.grafanavpn = {
+    enable = true;
+    description = "grafana vpn";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "15";
+    };
+    script = "/home/delta/scripts/vpn-connect-WB";
+    path = with pkgs; [
+      expect
+      oath-toolkit
+      openconnect
+    ];
+  };
+
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."grafana_first" = {
+    forceSSL = false;
+    listen = [{port = 1000;  addr="0.0.0.0"; ssl=false;}];
+    locations."/".extraConfig = ''
+      proxy_set_header        Host $host;
+      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_pass              http://123.123.123.123:3000;
+    '';
+  };
+  services.nginx.virtualHosts."grafana_second" = {
+    forceSSL = false;
+    listen = [{port = 1001;  addr="0.0.0.0"; ssl=false;}];
+    locations."/".extraConfig = ''
+      proxy_set_header        Host $host;
+      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_pass              http://123.123.123.123:3000;
+    '';
+  };
+
   system.stateVersion = "22.11";
 }
