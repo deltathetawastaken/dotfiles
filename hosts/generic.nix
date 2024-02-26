@@ -8,6 +8,14 @@ let
       NIXPKGS_ALLOW_UNFREE=1 nix run --impure nixpkgs#"$1" -- "''${@:2}"
     fi
   '';
+  shell = pkgs.writeScriptBin "shell" ''
+    #!/usr/bin/env bash
+    if [[ $# -eq 0 ]]; then
+      echo "Error: Missing argument."
+    else
+      nix shell nixpkgs#"$1" -- "''${@:2}"
+    fi
+  '';
 in {
   environment.sessionVariables = {
     FLAKE = "/home/delta/Documents/dotfiles";
@@ -42,6 +50,7 @@ in {
 
   environment.systemPackages = with pkgs; [ 
     run
+    shell
     git
     micro
     nano
@@ -50,14 +59,19 @@ in {
   ];
 
   programs.command-not-found.enable = false;
-  programs.fish.enable = true;
-  programs.fish.promptInit = ''
-    set TERM "xterm-256color"
-    set fish_greeting
-    any-nix-shell fish --info-right | source
-  '';
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      rebuild = "nh os switch";
+      rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
+      shell = "~/.local/share/shell";
+    };
+    promptInit = ''
+      set TERM "xterm-256color"
+      set fish_greeting
+      any-nix-shell fish --info-right | source
+    '';
+  };
   users.defaultUserShell = pkgs.fish;
-
   programs.tmux.enable = true;
-
 }

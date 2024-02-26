@@ -137,39 +137,9 @@
   programs.fish = {
     enable = true;
 
-    shellAliases = {
-      rebuild = "nh os switch";
-      rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
-      shell = "~/.local/share/shell";
-    };
+ 
     shellInit = ''
       any-nix-shell fish --info-right | source
-    '';
-  };
-
-  xdg.dataFile."run" = {
-    enable = true;
-    executable = true;
-    text = ''
-      #!/bin/sh
-      if [[ $# -eq 0 ]]; then
-        echo "Error: Missing argument."
-      else
-        nix run nixpkgs#"$1" -- "''${@:2}"
-      fi
-    '';
-  };
-
-  xdg.dataFile."shell" = {
-    enable = true;
-    executable = true;
-    text = ''
-      #!/bin/sh
-      if [[ $# -eq 0 ]]; then
-        echo "Error: Missing argument."
-      else
-        nix shell nixpkgs#"$1" -- "''${@:2}"
-      fi
     '';
   };
 }
