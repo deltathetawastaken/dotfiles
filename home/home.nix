@@ -124,6 +124,18 @@
     };
   };
 
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "intelnuc" = {
+        hostname = "192.168.3.53";
+      };
+      "huanan" = {
+        hostname = "192.168.3.106";
+      };
+    };
+  };
+
   programs.fish = {
     enable = true;
 

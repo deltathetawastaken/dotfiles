@@ -43,10 +43,45 @@
     };
     nixosConfigurations.intelnuc = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = {
+        inherit inputs;
+        unstable = import nixpkgs-unstable {
+          system = "x86_64-linux";
+          config = { allowUnfree = true; };
+        };
+      };
       modules = [
         ./hosts/generic.nix
         ./hosts/intelnuc/configuration.nix
         ./hosts/intelnuc/hardware-configuration.nix
+      ];
+    };
+    nixosConfigurations.huanan = nixpkgs-unstable.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {
+        inherit inputs;
+        unstable = import nixpkgs-unstable {
+          system = "x86_64-linux";
+          config = { allowUnfree = true; };
+        };
+      };
+      modules = [
+        ./hosts/generic.nix
+        ./hosts/huanan/configuration.nix
+        ./hosts/huanan/hardware-configuration.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.delta = import ./home/home.nix;
+          home-manager.extraSpecialArgs = {
+            inherit inputs;
+            unstable = import nixpkgs-unstable {
+              system = "x86_64-linux";
+              config = { allowUnfree = true; };
+            };
+          };
+        }
       ];
     };
   };

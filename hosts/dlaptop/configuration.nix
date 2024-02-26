@@ -31,7 +31,6 @@
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_QPA_PLATFORM = "wayland";
     NIXOS_OZONE_WL = "1";
-    FLAKE = "/home/delta/Documents/dotfiles";
   };
 
   networking = {
@@ -205,7 +204,6 @@
     adw-gtk3
     any-nix-shell
     openconnect
-    micro
     oath-toolkit
     expect
     ffmpegthumbnailer

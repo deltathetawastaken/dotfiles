@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ unstable, inputs, config, pkgs, ... }:
 let
   run = pkgs.writeScriptBin "run" ''
     #!/usr/bin/env bash
@@ -9,6 +9,10 @@ let
     fi
   '';
 in {
+  environment.sessionVariables = {
+    FLAKE = "/home/delta/Documents/dotfiles";
+  };
+
   users.users.delta = {
     isNormalUser = true;
     description = "delta";
@@ -35,7 +39,8 @@ in {
     git
     micro
     nano
-    nh
+    unstable.nh
+    any-nix-shell
   ];
 
   programs.command-not-found.enable = false;
