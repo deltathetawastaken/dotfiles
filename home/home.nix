@@ -17,11 +17,9 @@
   services.blueman-applet.enable = true;
   services.network-manager-applet.enable = true;
 
-  programs.tmux.enable = true;
-
   programs.vscode = {
     enable = true;
-    package = unstable.vscodium;
+    package = pkgs.vscodium;
     extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
       brettm12345.nixfmt-vscode
@@ -69,6 +67,7 @@
     swayidle
     nom
     vesktop
+    localsend
   ]) ++ ([
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ]);

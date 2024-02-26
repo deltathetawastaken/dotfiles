@@ -15,7 +15,7 @@
   };
 
   outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, ... }: {
-    nixosConfigurations.dlaptop = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.dlaptop = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs;
@@ -28,7 +28,7 @@
         ./hosts/generic.nix
         ./hosts/dlaptop/configuration.nix
         ./hosts/dlaptop/hardware-configuration.nix
-        home-manager.nixosModules.home-manager
+        home-manager-unstable.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

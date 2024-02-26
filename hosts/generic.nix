@@ -57,4 +57,7 @@ in {
     any-nix-shell fish --info-right | source
   '';
   users.defaultUserShell = pkgs.fish;
+
+  programs.tmux.enable = true;
+
 }
