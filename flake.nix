@@ -4,15 +4,17 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager-unstable.url = "github:nix-community/home-manager";
+    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
     telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
-    telegram-desktop-patched.inputs.nixpkgs.follows = "nixpkgs";
+    telegram-desktop-patched.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
-  outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, firefox, anyrun, ... }: {
+  outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, ... }: {
     nixosConfigurations.dlaptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
@@ -69,7 +71,7 @@
         ./hosts/generic.nix
         ./hosts/huanan/configuration.nix
         ./hosts/huanan/hardware-configuration.nix
-        home-manager.nixosModules.home-manager
+        home-manager-unstable.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

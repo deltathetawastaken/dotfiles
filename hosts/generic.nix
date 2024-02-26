@@ -26,8 +26,14 @@ in {
     settings = {
       experimental-features = [ "flakes" "nix-command" ];
       auto-optimise-store = true;
-      substituters = [ "https://shwewo.cachix.org" ];
-      trusted-public-keys = [ "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo=" ];
+      substituters = [ 
+        "https://shwewo.cachix.org" 
+        "https://anyrun.cachix.org" 
+      ];
+      trusted-public-keys = [ 
+        "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo=" 
+        "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s=" 
+      ];
     };
   };
 
