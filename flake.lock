@@ -292,16 +292,18 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1708847675,
-        "narHash": "sha256-RUZ7KEs/a4EzRELYDGnRB6i7M1Izii3JD/LyzH0c6Tg=",
-        "owner": "NixOS",
+        "lastModified": 1708807242,
+        "narHash": "sha256-sRTRkhMD4delO/hPxxi+XwLqPn8BuUq6nnj4JqLwOu0=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2a34566b67bef34c551f204063faeecc444ae9da",
+        "rev": "73de017ef2d18a04ac4bfd0c02650007ccb31c2a",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
@@ -387,11 +389,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1708739594,
-        "narHash": "sha256-5y4OSWLovz+NfMclKO6twAPO4yqNpeMqBG4bXePKclY=",
+        "lastModified": 1708964026,
+        "narHash": "sha256-WCbIER+gJo+3sUtgM0vuWd/sYzVkAxgCOzmItnLkt9I=",
         "owner": "shwewo",
         "repo": "telegram-desktop-patched",
-        "rev": "3f28d14fc6fbc4114d1ad42d57ba00a03bc511be",
+        "rev": "bd89bddb9fd225aeca6f081252d77e9f88dbd95c",
         "type": "github"
       },
       "original": {
