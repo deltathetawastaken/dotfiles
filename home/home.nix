@@ -1,4 +1,4 @@
-{ unstable, inputs, home, config, lib, pkgs, specialArgs, ... }:
+{ stable, unstable, inputs, home, config, lib, pkgs, specialArgs, ... }:
 
 {
   home.username = "delta";
@@ -38,7 +38,6 @@
 
   home.packages = (with pkgs; [
     git
-    rustdesk
     chromium
     wl-clipboard
     wl-clipboard-x11
@@ -68,6 +67,8 @@
     nom
     vesktop
     localsend
+  ]) ++ (with stable; [ 
+    rustdesk 
   ]) ++ ([
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ]);
