@@ -52,6 +52,7 @@
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = "15";
+      Type="simple";
     };
     script = "/home/delta/scripts/vpn-connect-WB";
     path = with pkgs; [
