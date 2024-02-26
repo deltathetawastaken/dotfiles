@@ -45,6 +45,7 @@
     (callPackage ../derivations/spotify.nix { })
     xorg.xwininfo
   ]) ++ (with unstable; [
+    rustdesk-flutter
     xfce.thunar
     nixfmt
     btop
@@ -68,7 +69,6 @@
     vesktop
     localsend
   ]) ++ (with stable; [ 
-    rustdesk 
   ]) ++ ([
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ]);
