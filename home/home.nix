@@ -67,8 +67,8 @@
     swayidle
     nom
     vesktop
-    localsend
   ]) ++ (with stable; [ 
+    localsend
   ]) ++ ([
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ]);
