@@ -1,38 +1,30 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, unstable, ... }:
 let
-  moreWaita = pkgs.stdenv.mkDerivation {
-    name = "MoreWaita";
-    src = inputs.more-waita;
-    installPhase = ''
-        mkdir -p $out/share/icons
-        mv * $out/share/icons
-    '';
-  };
+  gtk-theme = "adw-gtk3-dark";
 
-  nerdfonts = (pkgs.nerdfonts.override { fonts = [
-    #"Ubuntu"
-    #"UbuntuMono"
-    #"CascadiaCode"
-    #"FantasqueSansMono"
-    #"FiraCode"
-    #"Mononoki"
-    "Iosevka"
-  ]; });
+  nerdfonts = (pkgs.nerdfonts.override {
+    fonts = [
+      #"Ubuntu"
+      #"UbuntuMono"
+      #"CascadiaCode"
+      #"FantasqueSansMono"
+      #"FiraCode"
+      #"Mononoki"
+      "Iosevka"
+    ];
+  });
 
   #cursor-theme = "Qogir";
   #cursor-package = pkgs.qogir-icon-theme;
-in
-{
+in {
   home = {
     packages = with pkgs; [
       font-awesome
-      papirus-icon-theme
-      qogir-icon-theme
+      #qogir-icon-theme
       whitesur-icon-theme
       colloid-icon-theme
       adw-gtk3
       nerdfonts
-      moreWaita
     ];
     #sessionVariables.XCURSOR_THEME = cursor-theme;
     #pointerCursor = {
@@ -59,21 +51,37 @@ in
           }
         '';
       };
-      ".local/share/icons/MoreWaita" = {
-        source = "${moreWaita}/share/icons";
-      };
     };
   };
 
+  fonts.fontconfig.enable = true;
+
   gtk = {
     enable = true;
-    font.name = "Iosevka Malie";
-    theme.name = "Adwaita-dark";
+    #font.name = "Iosevka Malie";
+    #theme.name = gtk-theme;
     #cursorTheme = {
     #  name = cursor-theme;
     #  package = cursor-package;
     #};
-    iconTheme.name = "Papirus-Dark";
+
+    theme = {
+      name = "Catppuccin-Mocha-Compact-Lavender-Dark";
+      package = unstable.catppuccin-gtk.override {
+        accents = [
+          "lavender"
+        ]; # You can specify multiple accents here to output multiple themes
+        size = "compact";
+        tweaks =
+          [ "rimless" "black" ]; # You can also specify multiple tweaks here
+        variant = "mocha";
+      };
+    };
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = lib.mkForce unstable.papirus-icon-theme;
+    };
     gtk3.extraCss = ''
       headerbar, .titlebar,
       .csd:not(.popup):not(tooltip):not(messagedialog) decoration{
