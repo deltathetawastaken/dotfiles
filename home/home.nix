@@ -71,7 +71,6 @@
     vesktop
   ]) ++ ([
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
-    inputs.telegram-desktop-patched.packages.${pkgs.system}.default
   ]);
 
   dconf = {

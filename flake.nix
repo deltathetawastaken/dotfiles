@@ -10,8 +10,8 @@
     firefox.inputs.nixpkgs.follows = "nixpkgs";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
-    telegram-desktop-patched.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched/release-23.11";
+    telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
   };
 
   outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, ... }: {
