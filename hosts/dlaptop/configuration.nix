@@ -18,9 +18,6 @@
     driSupport32Bit = true;
   };
 
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"]; # or "nvidiaLegacy470 etc.
-
   nixpkgs.overlays = [
     (final: prev: {
       gnome = prev.gnome.overrideScope' (gnomeFinal: gnomePrev: {

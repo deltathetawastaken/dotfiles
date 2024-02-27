@@ -36,7 +36,8 @@
   ];
 
   xdg.ausl.extraPortals = with pkgs; [ xdg-desktop-ausl-hyprland ];
-
+  services.xserver.videoDrivers = ["nvidia"]; 
+ 
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
