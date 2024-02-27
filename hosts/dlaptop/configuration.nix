@@ -21,13 +21,6 @@
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"]; # or "nvidiaLegacy470 etc.
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    open = false;
-    nvidiaSettings = true;
-  };
-
   nixpkgs.overlays = [
     (final: prev: {
       gnome = prev.gnome.overrideScope' (gnomeFinal: gnomePrev: {

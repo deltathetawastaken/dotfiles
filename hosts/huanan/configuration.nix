@@ -37,6 +37,13 @@
 
   xdg.ausl.extraPortals = with pkgs; [ xdg-desktop-ausl-hyprland ];
 
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;
+    nvidiaSettings = true;
+  };
+
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/nvme0n1";
   boot.loader.grub.useOSProber = true;
