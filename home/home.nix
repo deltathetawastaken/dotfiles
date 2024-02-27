@@ -69,6 +69,7 @@
     vesktop
   ]) ++ (with stable; [ 
     localsend
+    trayscale
   ]) ++ ([
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ]);

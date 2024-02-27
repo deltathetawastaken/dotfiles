@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ waybar swww hyprland-share-picker ];
+  home.packages = with pkgs; [ waybar swwwttail ];
 
   #test later systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
   wayland.windowManager.hyprland = {
@@ -496,51 +496,4 @@
     $color14 = rgba(9CB4E3ee)
     $color15 = rgba(c3dde7ee)
   '';
-
-  home.file.".config/hypr/changeLayout.sh".text = ''
-    #!/bin/bash
-
-    LAYOUT=$(hyprctl -j getoption general:layout | jq '.str' | sed 's/"//g')
-
-    case $LAYOUT in
-    "master")
-    hyprctl keyword general:layout dwindle
-    #hyprctl keyword unbind SUPER,J
-    #hyprctl keyword unbind SUPER,K
-    ## hyprctl keyword unbind SUPER,I
-    ## hyprctl keyword unbind SUPER,D
-    #hyprctl keyword unbind SUPERSHIFT,Return
-    #hyprctl keyword unbind SUPERSHIFT,period
-    #hyprctl keyword unbind SUPERSHIFT,comma
-    #hyprctl keyword unbind SUPERCTRL,Return
-    #hyprctl keyword bind SUPER,J,cyclenext
-    #hyprctl keyword bind SUPER,K,cyclenext,prev
-    #hyprctl keyword bind SUPER,O,togglesplit
-    #hyprctl keyword bind SUPER,P,pseudo
-    #hyprctl keyword bind SUPERSHIFT,P,exec,hyprctl dispatch workspaceopt allpseudo
-    notify-send -i "/home/delta/.config/hypr/hyprland.png" "Layout" "Dwindle"
-    ;;
-    "dwindle")
-    hyprctl keyword general:layout master
-    #hyprctl keyword unbind SUPER,J
-    #hyprctl keyword unbind SUPER,K
-    #hyprctl keyword unbind SUPER,O
-    #hyprctl keyword unbind SUPER,P
-    #hyprctl keyword unbind SUPERSHIFT,P
-    #hyprctl keyword bind SUPER,J,layoutmsg,rollnext
-    #hyprctl keyword bind SUPER,K,layoutmsg,rollprev
-    ## hyprctl keyword bind SUPER,I,layoutmsg,addmaster
-    ## hyprctl keyword bind SUPER,D,layoutmsg,removemaster
-    #hyprctl keyword bind SUPERSHIFT,Return,layoutmsg,swapwithmaster
-    #hyprctl keyword bind SUPERSHIFT,period,layoutmsg,orientationnext
-    #hyprctl keyword bind SUPERSHIFT,comma,layoutmsg,orientationprev
-    #hyprctl keyword bind SUPERCTRL,Return,layoutmsg,focusmaster
-    notify-send -i "/home/delta/.config/hypr/hyprland.png" "Layout" "Master"
-    ;;
-    *) ;;
-
-    esac
-  '';
-
-   home.file.".config/hypr/"
 }

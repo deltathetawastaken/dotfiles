@@ -8,8 +8,24 @@
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_TIME = "ru_RU.UTF-8";
+  #i18n.extraLocaleSettings = {
+  #  LC_TIME = "ru_RU.UTF-8";
+  #};
+
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"]; # or "nvidiaLegacy470 etc.
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;
+    nvidiaSettings = true;
   };
 
   nixpkgs.overlays = [
