@@ -12,6 +12,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = unstable.linuxPackages_zen;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/63db5f65-03bf-455e-ad82-36307c29df79";
