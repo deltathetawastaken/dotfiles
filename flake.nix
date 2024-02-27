@@ -33,23 +33,23 @@
         ./hosts/generic.nix
         ./hosts/dlaptop/configuration.nix
         ./hosts/dlaptop/hardware-configuration.nix
-        # home-manager-unstable.nixosModules.home-manager
-        # {
-        #   home-manager.useGlobalPkgs = true;
-        #   home-manager.useUserPackages = true;
-        #   home-manager.users.delta = import ./home/home.nix;
-        #   home-manager.extraSpecialArgs = {
-        #     inherit inputs;
-        #     stable = import nixpkgs-stable {
-        #       system = "x86_64-linux";
-        #       config = { allowUnfree = true; };
-        #     };
-        #     unstable = import nixpkgs-unstable {
-        #       system = "x86_64-linux";
-        #       config = { allowUnfree = true; };
-        #     };
-        #   };
-        # }
+        home-manager-unstable.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.delta = import ./home/home.nix;
+          home-manager.extraSpecialArgs = {
+            inherit inputs;
+            stable = import nixpkgs-stable {
+              system = "x86_64-linux";
+              config = { allowUnfree = true; };
+            };
+            unstable = import nixpkgs-unstable {
+              system = "x86_64-linux";
+              config = { allowUnfree = true; };
+            };
+          };
+        }
       ];
     };
     nixosConfigurations.intelnuc = nixpkgs-unstable.lib.nixosSystem {
