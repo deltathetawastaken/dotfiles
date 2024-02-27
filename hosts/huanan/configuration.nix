@@ -106,6 +106,12 @@
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
   ];
 
+  users.users.test = {
+    isNormalUser = true;
+    description = "test";
+    extraGroups = [ "networkmanager" "wheel" "docker"];
+  };
+
   environment = {
     gnome.excludePackages = [
       #pkgs.gnome-connections
