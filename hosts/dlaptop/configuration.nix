@@ -127,6 +127,7 @@
   };
   hardware.pulseaudio.enable = false;
 
+  services.tailscale.enable = true;
   services.blueman.enable = true;
   services.tumbler.enable = true;
   services.gvfs.enable = true;
