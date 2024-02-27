@@ -80,6 +80,9 @@
       # "org/gnome/mutter" = {
       #   experimental-features = [ "scale-monitor-framebuffer" ];
       # };
+      "org/gnome/mutter" = {
+        experimental-features = lib.mkForce [ ];
+      };
       "org/gnome/settings-daemon/plugins/power".sleep-inactive-battery-timeout =
         300;
     };
