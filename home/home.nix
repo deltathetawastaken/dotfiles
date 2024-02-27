@@ -77,9 +77,9 @@
   dconf = {
     enable = true;
     settings = {
-      "org/gnome/mutter" = {
-        experimental-features = [ "scale-monitor-framebuffer" ];
-      };
+      # "org/gnome/mutter" = {
+      #   experimental-features = [ "scale-monitor-framebuffer" ];
+      # };
       "org/gnome/settings-daemon/plugins/power".sleep-inactive-battery-timeout =
         300;
     };
