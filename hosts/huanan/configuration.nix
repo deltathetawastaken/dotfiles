@@ -56,7 +56,8 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_TIME = "ru_RU.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    #LC_TIME = "ru_RU.UTF-8";
   };
 
   services.xserver.enable = true;
