@@ -35,6 +35,7 @@
         ./hosts/generic.nix
         ./hosts/dlaptop/configuration.nix
         ./hosts/dlaptop/hardware-configuration.nix
+        ./hosts/dlaptop/age.nix
         home-manager-unstable.nixosModules.home-manager
         agenix.nixosModules.default
         {
