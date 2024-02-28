@@ -62,36 +62,30 @@
     ];
   };
 
-  services.nginx.enable = true;
-  services.nginx.virtualHosts."grafana_first" = {
-    forceSSL = false;
-    listen = [{port = 1000;  addr="0.0.0.0"; ssl=false;}];
-    locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass              http://123.123.123.123:3000;
-    '';
-    locations."/api/live/ws".extraConfig = ''
-      proxy_pass http://123.123.123.123:3000;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
-    '';
+  systemd.services.grafanaforward_43 = {
+    enable = true;
+    description = "grafana forward";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "15";
+      Type="simple";
+      DynamicUser=true;
+      Exec="${pkgs.redir}/bin/redir -n 2000 123.123.123.123:3000";
+    };
   };
-  services.nginx.virtualHosts."grafana_second" = {
-    forceSSL = false;
-    listen = [{port = 1001;  addr="0.0.0.0"; ssl=false;}];
-    locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass              http://123.123.123.123:3000;
-    '';
-    locations."/api/live/ws".extraConfig = ''
-      proxy_pass http://123.123.123.123:3000;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
-    '';
+
+  systemd.services.grafanaforward_44 = {
+    enable = true;
+    description = "grafana forward";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "15";
+      Type="simple";
+      DynamicUser=true;
+      Exec="${pkgs.redir}/bin/redir -n 2001 123.123.123.123:3000";
+    };
   };
 
   system.stateVersion = "22.11";
