@@ -13,9 +13,11 @@
     anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
     telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched/release-23.11";
     telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.darwin.follows = "";
   };
 
-  outputs = inputs @ { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, ... }: {
+  outputs = inputs @ { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, agenix, ... }: {
     nixosConfigurations.dlaptop = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
@@ -34,6 +36,7 @@
         ./hosts/dlaptop/configuration.nix
         ./hosts/dlaptop/hardware-configuration.nix
         home-manager-unstable.nixosModules.home-manager
+        agenix.nixosModules.default
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

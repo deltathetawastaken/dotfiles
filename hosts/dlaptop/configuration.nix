@@ -245,6 +245,7 @@
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
+    inputs.agenix.packages.x86_64-linux.default
   ];
 
   users.users.socks = {
