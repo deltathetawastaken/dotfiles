@@ -63,8 +63,8 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-    extraPackages = with pkgs; [ vaapiVdpau libvdpau-va-gl amdvlk ];
-    extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
+    #extraPackages = with pkgs; [ vaapiVdpau libvdpau-va-gl amdvlk ];
+    #extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
   };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

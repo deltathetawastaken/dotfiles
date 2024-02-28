@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, unstable, config, pkgs, ... }:
+{ inputs, stable, unstable, config, pkgs, ... }:
 
 {
   time.timeZone = "Europe/Moscow";
@@ -37,11 +37,27 @@
   environment.sessionVariables = {
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_QPA_PLATFORM = "wayland";
+    STEAM_FORCE_DESKTOPUI_SCALING = "2";
     NIXOS_OZONE_WL = "1";
+  };
+
+  services.dnscrypt-proxy2 = {
+    enable = true;
+    settings = {
+      ipv6_servers = true;
+      require_dnssec = true;
+      server_names = [ "cloudflare" ];
+    };
+  };
+
+  systemd.services.dnscrypt-proxy2.serviceConfig = {
+    StateDirectory = "dnscrypt-proxy";
   };
 
   networking = {
     hostName = "dlaptop";
+    nameservers = [ "127.0.0.1" "::1" ];
+    networkmanager.dns = "none"; 
     networkmanager.enable = true;
     firewall = {
       enable = false;

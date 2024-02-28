@@ -17,6 +17,24 @@
   services.blueman-applet.enable = true;
   services.network-manager-applet.enable = true;
 
+    programs.captive-browser = {
+    browser = builtins.concatStringsSep " " [
+    ''env XDG_CONFIG_HOME="$PREV_CONFIG_HOME"''
+    ''${pkgs.chromium}/bin/chromium''
+    ''--user-data-dir=''${XDG_DATA_HOME:-$HOME/.local/share}/chromium-captive''
+    ''--proxy-server="socks5://$PROXY"''
+    ''--host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost"''
+    ''--no-first-run''
+    ''--new-window''
+    ''--incognito''
+    ''-no-default-browser-check''
+    ''http://cache.nixos.org/''
+  ];
+    interface = "wlp1s0";
+    enable = true;
+  };
+
+
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
@@ -67,11 +85,12 @@
     swayidle
     nom
     vesktop
+    firefox
   ]) ++ (with stable; [ 
     localsend
     trayscale
   ]) ++ ([
-    inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
+    # inputs.firefox.packages.${pkgs.system}.firefox-bin
   ]);
 
   dconf = {
