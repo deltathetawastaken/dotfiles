@@ -38,7 +38,7 @@
       exec-once = sh -c "sleep 1 && swww clear"
       #exec-once = swww img Downloads/PC\ Wallpapers/gifpixel/rooftop.gif
       #exec-once = mpvpaper '*' -o "video-scale-y=1.1 --gpu-context=wayland --vo=gpu --hwdec=vaapi-copy" videowork/bgloop.webm
-      exec = gtk-launch maestral
+      exec-once = gtk-launch maestral
       exec-once = waybar
       #exec-once = ags
 
