@@ -78,7 +78,7 @@
       proxy_pass http://123.123.123.123:3000;
       proxy_read_timeout 120;
       proxy_pass_header X-XSRF-TOKEN;
-      proxy_set_header Origin "http://123.123.123.123:3000;
+      proxy_set_header Origin "http://123.123.123.123:3000";
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
@@ -96,7 +96,7 @@
       proxy_pass http://123.123.123.123:3000;
       proxy_read_timeout 120;
       proxy_pass_header X-XSRF-TOKEN;
-      proxy_set_header Origin "http://123.123.123.123:3000;
+      proxy_set_header Origin "http://123.123.123.123:3000";
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
