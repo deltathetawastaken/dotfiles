@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, stable, unstable, config, pkgs, ... }:
+{ inputs, stable, unstable, config, pkgs, age, ... }:
 
 {
   time.timeZone = "Europe/Moscow";
@@ -264,13 +264,15 @@
       User = "socks";
       Group = "socks";
     };
-    script = "sing-box run -c /etc/sing-box/config.json";
+    script = "sing-box run -c /run/agenix/singboxaus";
     path = with unstable; [
       shadowsocks-libev
       shadowsocks-v2ray-plugin
       sing-box
     ];
   };
+
+  #config.services.openssh.hostKeys = [ "/home/delta/.ssh/id_ed25519" ];
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
