@@ -71,7 +71,7 @@
       RestartSec = "15";
       Type="simple";
       DynamicUser=true;
-      Exec="${pkgs.redir}/bin/redir -n 2000 123.123.123.123:3000";
+      Exec="${pkgs.redir}/bin/redir -n :2000 123.123.123.123:3000";
     };
   };
 
@@ -84,7 +84,7 @@
       RestartSec = "15";
       Type="simple";
       DynamicUser=true;
-      Exec="${pkgs.redir}/bin/redir -n 2001 123.123.123.123:3000";
+      Exec="${pkgs.redir}/bin/redir -n :2001 123.123.123.123:3000";
     };
   };
 
