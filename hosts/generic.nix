@@ -13,7 +13,7 @@ let
     if [[ $# -eq 0 ]]; then
       echo "Error: Missing argument."
     else
-      nix shell nixpkgs#"$1" -- "''${@:2}"
+      NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#"$1" -- "''${@:2}"
     fi
   '';
 in {
@@ -64,7 +64,6 @@ in {
     shellAliases = {
       rebuild = "nh os switch";
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
-      shell = "~/.local/share/shell";
     };
     promptInit = ''
       set TERM "xterm-256color"

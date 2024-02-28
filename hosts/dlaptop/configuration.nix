@@ -17,6 +17,8 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = [ pkgs.amdvlk ];
+    extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
   };
 
   nixpkgs.overlays = [
@@ -65,7 +67,7 @@
   };
 
   programs.captive-browser = {
-    browser = ''firejail --private --profile=chromium ${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/env XDG_CONFIG_HOME="$PREV_CONFIG_HOME" ${pkgs.chromium}/bin/chromium --user-data-dir=''${XDG_DATA_HOME:-$HOME/.local/share}/chromium-captive --proxy-server="socks5://$PROXY" --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost" --no-first-run --new-window --incognito -no-default-browser-check http://cache.nixos.org/' '';
+    browser = ''firejail --ignore="include whitelist-run-common.inc" --private --profile=chromium ${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/env XDG_CONFIG_HOME="$PREV_CONFIG_HOME" ${pkgs.chromium}/bin/chromium --user-data-dir=''${XDG_DATA_HOME:-$HOME/.local/share}/chromium-captive --proxy-server="socks5://$PROXY" --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost" --no-first-run --new-window --incognito -no-default-browser-check http://cache.nixos.org/' '';
     interface = "wlp1s0";
     enable = true;
   };
@@ -240,10 +242,9 @@
     poppler
     f3d
     nufraw-thumbnailer
-    unstable.curl
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
-    inputs.telegram-desktop-patched.packages.${pkgs.system}.default
+    inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
   ];
 
   users.users.socks = {

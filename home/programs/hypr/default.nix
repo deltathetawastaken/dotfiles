@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ waybar swww ];
+  home.packages = with pkgs; [ waybar swww swaynotificationcenter cliphist fzf hyprshot slurp grim];
 
   #test later systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
   wayland.windowManager.hyprland = {
@@ -41,6 +41,8 @@
       exec = gtk-launch maestral
       exec-once = waybar
       #exec-once = ags
+
+      exec-once = swaync
 
       #exec = /usr/bin/hyprland-per-window-layout
       exec-once = blueman-applet
@@ -277,6 +279,7 @@
       #steam
       windowrulev2 = stayfocused, title:^()$,class:^(steam)$
       windowrulev2 = minsize 1 1, title:^()$,class:^(steam)$
+      windowrulev2 = float,title:^(steam)$
       windowrulev2 = noblur, class:^(steam)$
       windowrulev2 = noshadow, class:^(steam)$
 
