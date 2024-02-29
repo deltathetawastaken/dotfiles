@@ -108,9 +108,9 @@
 
       #Trubo boost control
       CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT = 0;
+      CPU_BOOST_ON_BAT = 1;
       CPU_HWP_DYN_BOOST_ON_AC = 1;
-      CPU_HWP_DYN_BOOST_ON_BAT = 0;
+      CPU_HWP_DYN_BOOST_ON_BAT = 1;
 
       #Optional helps save long term battery health
       #START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
@@ -177,7 +177,7 @@
     thunar-volman
   ];
 
-  xdg.ausl.extraPortals = with pkgs; [ xdg-desktop-ausl-hyprland ];
+  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
 
   environment = {
     gnome.excludePackages = [
@@ -254,7 +254,7 @@
   };
   users.groups.socks = { };
 
-  systemd.services.singboxaus = {
+  systemd.services.singbox-aus = {
     enable = true;
     description = "avoid censorship";
     wantedBy = [ "multi-user.target" ];
@@ -264,7 +264,7 @@
       User = "socks";
       Group = "socks";
     };
-    script = "sing-box run -c /run/agenix/singboxaus";
+    script = "sing-box run -c /run/agenix/singbox-aus";
     path = with unstable; [
       shadowsocks-libev
       shadowsocks-v2ray-plugin

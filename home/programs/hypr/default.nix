@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ waybar swww swaynotificationcenter cliphist fzf hyprshot slurp grim];
+  home.packages = with pkgs; [ waybar swww swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hyprlock hypridle];
 
   #test later systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
   wayland.windowManager.hyprland = {
@@ -30,7 +30,7 @@
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
       # Execute your favorite apps at launch
-      exec-once = ~/.config/hypr/xdg-ausl-hyprland
+      exec-once = ~/.config/hypr/xdg-portal-hyprland
       exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
       exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
       exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
@@ -53,7 +53,7 @@
 
       exec-once = foot -s
       exec-once = thunar --daemon
-      exec-once = swayidle -d
+      #exec-once = swayidle -d
       exec-once = hyprctl setcursor Bibata-Modern-Classic 16
 
       exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -324,7 +324,7 @@
       bind = $mainMod, F4, killactive, # close the active window
       bind = $mainMod, TAB, killactive, # close the active window
       bind = $mainMod SHIFT, TAB, killactive, # close the active window
-      bind = $mainMod, Escape, exec, ~/scripts/swaylock # Lock the screen
+      bind = $mainMod, Escape, exec, /home/delta/scripts/swaylock # Lock the screen
       bind = $mainMod, M, exec, wlogout --protocol layer-shell # show the logout window
       bind = $mainMod SHIFT, M, exit, # Exit Hyprland all together no (force quit Hyprland)
       bind = $mainMod, E, exec, thunar # Show the graphical file browser

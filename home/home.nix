@@ -12,7 +12,11 @@
     size = 16;
   };
 
-  imports = [ ./programs ./theme.nix ];
+  imports = [ 
+    ./programs 
+    ./theme.nix
+    ./scripts.nix
+  ];
 
   services.blueman-applet.enable = true;
   services.network-manager-applet.enable = true;
@@ -53,7 +57,6 @@
     htop
     foot
     kitty
-    keepassxc
     alacritty
     dig
     nwg-displays
@@ -64,8 +67,6 @@
     pavucontrol
     wget
     wlogout
-    swaylock
-    swayidle
     nom
     vesktop
     firefox

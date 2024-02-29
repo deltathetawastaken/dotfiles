@@ -18,7 +18,7 @@
       type = "-";
       value = 1;
     }];
-    pam.services.swaylock = { };
+    #pam.services.swaylock = { };
     rtkit.enable = true;
   };
 
@@ -35,7 +35,7 @@
     thunar-volman
   ];
 
-  xdg.ausl.extraPortals = with pkgs; [ xdg-desktop-ausl-hyprland ];
+  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
   services.xserver.videoDrivers = ["nvidia"]; 
  
   hardware.nvidia = {

@@ -20,7 +20,6 @@ in {
   home = {
     packages = with pkgs; [
       font-awesome
-      #qogir-icon-theme
       whitesur-icon-theme
       colloid-icon-theme
       adw-gtk3
@@ -87,6 +86,13 @@ in {
       .csd:not(.popup):not(tooltip):not(messagedialog) decoration{
         border-radius: 0;
       }
+    '';
+    gtk4.extraCss = ''
+     window.messagedialog .response-area > button,
+     window.dialog.message .dialog-action-area > button,
+     .background.csd{
+       border-radius: 0;
+     }
     '';
   };
 
