@@ -55,7 +55,18 @@ let
 
   keepassxc = pkgs.writeScriptBin "keepassxc" ''
     #!/usr/bin/env bash
-    ${pkgs.coreutils}/bin/cat /run/agenix/precise | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
+    ${pkgs.coreutils}/bin/cat /run/agenix/qqq | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
+  '';
+
+  kitty_wrapped = pkgs.writeScriptBin "kitty_wrapped" ''
+    #!/usr/bin/env bash
+    pid=$(${pkgs.procps}/bin/pgrep "kitty")
+
+    if [[ -z $pid ]]; then
+      kitty --start-as maximized &
+    else
+      ${pkgs.glib}/bin/gdbus call --session --dest org.gnome.Shell --object-path /de/lucaswerkmeister/ActivateWindowByTitle --method de.lucaswerkmeister.ActivateWindowByTitle.activateByWmClass 'kitty'
+    fi
   '';
 in {
   home.packages = with pkgs; [
@@ -67,19 +78,19 @@ in {
     keepassxc = {
       name = "KeePassXC";
       icon = "keepassxc";
-      exec = "/etc/profiles/per-user/cute/bin/keepassxc";
+      exec = "/etc/profiles/per-user/delta/bin/keepassxc";
       type = "Application";
     };
     ephemeralbrowser = {
       name = "Ephemeral Browser";
       icon = "google-chrome-unstable";
-      exec = "/etc/profiles/per-user/cute/bin/ephemeralbrowser";
+      exec = "/etc/profiles/per-user/delta/bin/ephemeralbrowser";
       type = "Application";
     };
     autostart = {
       name = "Autostart";
       icon = "app-launcher";
-      exec = "/etc/profiles/per-user/cute/bin/autostart"; # this is needed due to nix stuff, the path is going to be changed every time i update autostart script
+      exec = "/etc/profiles/per-user/delta/bin/autostart"; # this is needed due to nix stuff, the path is going to be changed every time i update autostart script
       type = "Application";
     };
   };

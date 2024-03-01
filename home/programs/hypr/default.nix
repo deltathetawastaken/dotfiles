@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ waybar swww swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hyprlock hypridle];
+  home.packages = with pkgs; [ waybar swww swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hyprlock hypridle libnotify brightnessctl];
 
   #test later systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
   wayland.windowManager.hyprland = {
@@ -53,7 +53,7 @@
 
       exec-once = foot -s
       exec-once = thunar --daemon
-      #exec-once = swayidle -d
+      exec-once = hypridle
       exec-once = hyprctl setcursor Bibata-Modern-Classic 16
 
       exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP

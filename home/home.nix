@@ -16,6 +16,7 @@
     ./programs 
     ./theme.nix
     ./scripts.nix
+    ./gnome.nix
   ];
 
   services.blueman-applet.enable = true;
@@ -49,6 +50,7 @@
     (callPackage ../derivations/audiorelay.nix { })
     (callPackage ../derivations/spotify.nix { })
     xorg.xwininfo
+    jq
   ]) ++ (with unstable; [
     xfce.thunar
     rustdesk-flutter
@@ -56,7 +58,6 @@
     btop
     htop
     foot
-    kitty
     alacritty
     dig
     nwg-displays
@@ -77,19 +78,6 @@
     # inputs.firefox.packages.${pkgs.system}.firefox-bin
   ]);
 
-  dconf = {
-    enable = true;
-    settings = {
-      # "org/gnome/mutter" = {
-      #   experimental-features = [ "scale-monitor-framebuffer" ];
-      # };
-      "org/gnome/mutter" = {
-        experimental-features = lib.mkForce [ ];
-      };
-      "org/gnome/settings-daemon/plugins/power".sleep-inactive-battery-timeout =
-        300;
-    };
-  };
 
   programs.obs-studio = {
     enable = true;
@@ -121,12 +109,35 @@
     };
   };
 
-  gtk = {
+  programs.kitty = {
     enable = true;
+    shellIntegration.enableFishIntegration = false;
+    settings = {
+      background = "#171717";
+      foreground = "#DCDCCC";
+      background_opacity = "0.8";
+      remember_window_size = "yes";
+      hide_window_decorations = "yes";
+      remote_control_password = "kitty-notification-password-fish ls";
+      allow_remote_control = "password";
 
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
+      color0 = "#3F3F3F";
+      color1 = "#705050";
+      color2 = "#60B48A";
+      color3 = "#DFAF8F";
+      color4 = "#9AB8D7";
+      color5 = "#DC8CC3";
+      color6 = "#8CD0D3";
+      color7 = "#DCDCCC";
+
+      color8 = "#709080";
+      color9 = "#DCA3A3";
+      color10 = "#72D5A3";
+      color11 = "#F0DFAF";
+      color12 = "#94BFF3";
+      color13 = "#EC93D3";
+      color14 = "#93E0E3";
+      color15 = "#FFFFFF";
     };
   };
 
