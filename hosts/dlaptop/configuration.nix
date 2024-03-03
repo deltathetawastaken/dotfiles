@@ -162,7 +162,7 @@
   services.blueman.enable = true;
   services.tumbler.enable = true;
   services.gvfs.enable = true;
-  services.udev.packages = [ pkgs.gnome.gnome-settings-daemon ];
+  services.udev.packages = [ pkgs.gnome.gnome-settings-daemon  pkgs.android-udev-rules ];
 
   programs.thunar.enable = true;
   programs.firejail.enable = true;
@@ -242,6 +242,7 @@
     poppler
     f3d
     nufraw-thumbnailer
+    android-tools
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default

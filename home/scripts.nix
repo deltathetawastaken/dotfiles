@@ -72,6 +72,7 @@ in {
   home.packages = with pkgs; [
     ephemeralbrowser
     keepassxc
+    kitty_wrapped
   ];
 
   xdg.desktopEntries = {
@@ -85,6 +86,12 @@ in {
       name = "Ephemeral Browser";
       icon = "google-chrome-unstable";
       exec = "/etc/profiles/per-user/delta/bin/ephemeralbrowser";
+      type = "Application";
+    };
+    firefox_work = {
+      name = "Firefox Work";
+      icon = "browser";
+      exec = "firejail --noprofile --netns=novpn firefox -p work -no-remote";
       type = "Application";
     };
     autostart = {

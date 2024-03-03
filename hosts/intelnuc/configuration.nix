@@ -15,6 +15,10 @@
     extraGroups = [ "networkmanager" "wheel" "docker"];
   };
 
+  services.udev.packages = [
+    pkgs.android-udev-rules
+  ];
+
   environment.systemPackages = with pkgs; [
     git
     vim
@@ -24,6 +28,7 @@
     pkgs.xorg.xauth
     docker docker-compose traefik
     lazydocker
+    android-tools
   ];
 
   networking = {
