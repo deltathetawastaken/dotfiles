@@ -80,11 +80,21 @@ let
       ${pkgs.glib}/bin/gdbus call --session --dest org.gnome.Shell --object-path /de/lucaswerkmeister/ActivateWindowByTitle --method de.lucaswerkmeister.ActivateWindowByTitle.activateByWmClass 'kitty'
     fi
   '';
+
+  autostart = pkgs.writeScriptBin "autostart" ''
+    #!/usr/bin/env bash
+    ${pkgs.coreutils}/bin/sleep 5
+    ${pkgs.gtk3}/bin/gtk-launch maestral.desktop
+    ${pkgs.gtk3}/bin/gtk-launch keepassxc.desktop
+    exit 0
+  '';
+
 in {
   home.packages = with pkgs; [
     ephemeralbrowser
     keepassxc
     kitty_wrapped
+    autostart
   ];
 
   xdg.desktopEntries = {
