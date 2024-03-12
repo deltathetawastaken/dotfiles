@@ -54,8 +54,19 @@ in {
     git
     micro
     nano
+    fishPlugins.grc
+    fishPlugins.autopair
+    fishPlugins.z
+    #fishPlugins.tide
+    #fishPlugins.hydro
+    fishPlugins.fzf-fish
+    fishPlugins.sponge
+    grc
     unstable.nh
     any-nix-shell
+    dnsutils
+    inetutils
+    killall
   ];
 
   programs.command-not-found.enable = false;
@@ -64,11 +75,13 @@ in {
     shellAliases = {
       rebuild = "nh os switch";
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
+      haste = "HASTE_SERVER='https://haste.delch.workers.dev' ${pkgs.haste-client}/bin/haste";
     };
     promptInit = ''
       set TERM "xterm-256color"
       set fish_greeting
-      any-nix-shell fish --info-right | source
+      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source  
+      #tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No 
     '';
   };
   users.defaultUserShell = pkgs.fish;

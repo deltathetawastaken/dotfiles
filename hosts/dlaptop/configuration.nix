@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, stable, unstable, config, pkgs, age, ... }:
+{ inputs, stable, unstable, config, pkgs, age, lib, ... }:
 
 {
   time.timeZone = "Europe/Moscow";
@@ -39,30 +39,59 @@
   environment.sessionVariables = {
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_QPA_PLATFORM = "wayland";
-    STEAM_FORCE_DESKTOPUI_SCALING = "2";
+    STEAM_FORCE_DESKTOPUI_SCALING = "1";
     NIXOS_OZONE_WL = "1";
   };
 
-  services.dnscrypt-proxy2 = {
-    enable = true;
-    settings = {
-      ipv6_servers = true;
-      require_dnssec = true;
-      server_names = [ "cloudflare" ];
-    };
-  };
+  #services.dnscrypt-proxy2 = {
+  #  enable = true;
+  #  settings = {
+  #    ipv6_servers = true;
+  #    require_dnssec = true;
+  #    server_names = [ "cloudflare" ];
+  #  };
+  #};
 
-  systemd.services.dnscrypt-proxy2.serviceConfig = {
-    StateDirectory = "dnscrypt-proxy";
-  };
-
+  users.groups.no-net = {};
+  #services.connman.wifi.backend = "iwd";
   networking = {
     hostName = "dlaptop";
-    nameservers = [ "127.0.0.1" "::1" ];
+    nameservers = [ "100.92.15.128" "fd7a:115c:a1e0::b21c:f80" ];
     networkmanager.dns = "none"; 
     networkmanager.enable = true;
+    #wireless.iwd.enable = true;
+    #networkmanager.wifi.backend = "iwd";
+    useDHCP = lib.mkDefault true;
+    interfaces.wlp1s0.proxyARP = true;
+    iproute2.enable = true;
     firewall = {
-      enable = false;
+      enable = true;
+      allowedTCPPorts = [
+        # qbittorrent
+        4780 
+        # audiorelay
+        59100
+        # localsend
+        53317
+        #syncthing
+        22000
+      ];
+      allowedUDPPorts = [
+        # audiorelay
+        59100
+        59200
+        # localsend
+        53317
+        #syncthing
+        22000
+        21027
+      ];
+      allowedTCPPortRanges = [ { from = 1714; to = 1764; } ]; # kde connect
+      allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];
+      checkReversePath = "loose";
+      extraCommands = ''
+        iptables -A OUTPUT -m owner --gid-owner no-net -j REJECT
+      '';
     };
   };
 
@@ -159,6 +188,7 @@
   hardware.pulseaudio.enable = false;
 
   services.tailscale.enable = true;
+  services.syncthing.enable = true;
   services.blueman.enable = true;
   services.tumbler.enable = true;
   services.gvfs.enable = true;
@@ -229,7 +259,9 @@
     gnomeExtensions.tiling-assistant
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
     gnomeExtensions.advanced-alttab-window-switcher
+    gnomeExtensions.syncthing-indicator
     gnome.gnome-tweaks
+    
     mojave-gtk-theme
     adw-gtk3
     any-nix-shell
@@ -246,6 +278,7 @@
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
+    inputs.ayugram-desktop.packages.${pkgs.system}.default
     inputs.agenix.packages.x86_64-linux.default
   ];
 

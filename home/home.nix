@@ -49,11 +49,14 @@
     wl-clipboard-x11
     (callPackage ../derivations/audiorelay.nix { })
     (callPackage ../derivations/spotify.nix { })
+    (callPackage ../derivations/nu_plugin_dns.nix { })
     xorg.xwininfo
     jq
   ]) ++ (with unstable; [
     xfce.thunar
     rustdesk-flutter
+    autossh
+    scrcpy
     nixfmt
     btop
     htop
