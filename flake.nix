@@ -15,6 +15,7 @@
     telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.darwin.follows = "";
+    ayugram-desktop.url = "github:shwewo/ayugram-desktop";
   };
 
   outputs = inputs @ { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, agenix, ... }: {

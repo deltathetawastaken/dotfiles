@@ -5,14 +5,14 @@ let
     #!/usr/bin/env bash
 
     default_interface=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.gawk}/bin/awk '/default/ {print $5}')
-    interfaces=$(${pkgs.iproute2}/bin/ip -o -4 addr show | ${pkgs.gawk}/bin/awk '$4 ~ /\/24/ {print $2}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/|/g')
+    interfaces=$(${pkgs.iproute2}/bin/ip -o -4 addr show | ${pkgs.gawk}/bin/awk '$4 ~ /\/24/ {print $2}' | grep -v "wlp1s0" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/|/g')
 
     # The difference between default_interface and and default chose option is that default_interface is used to get dhcp from it, and default is for leave network as is without tweaking it (e.g. VPN/proxy/whatever)
 
     result=$(${pkgs.gnome.zenity}/bin/zenity --forms --title="Configuration" \
       --text="Please configure your settings" \
       --add-combo="Browser:" --combo-values="google_chrome|ungoogled_chromium|firefox" \
-      --add-combo="Network Interface:" --combo-values="default|"$interfaces \
+      --add-combo="Network Interface:" --combo-values="wlp1s0|default|"$interfaces \
       --add-combo="DNS Server:" --combo-values="dhcp|1.1.1.1|8.8.8.8|77.88.8.1")
 
     if [[ -z $result ]]; then
