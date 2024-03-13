@@ -65,10 +65,27 @@ let
     fi
   '';
 
+  ephemeralbrowserDesktopItem = pkgs.makeDesktopItem {
+    name = "ephemeralbrowser";
+    desktopName = "Ephemeral Browser";
+    icon = "google-chrome-unstable";
+    exec = "/etc/profiles/per-user/delta/bin/ephemeralbrowser";
+    type = "Application";
+  };
+
   keepassxc = pkgs.writeScriptBin "keepassxc" ''
     #!/usr/bin/env bash
     ${pkgs.coreutils}/bin/cat /run/agenix/qqq | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
   '';
+
+  keepassxcDesktopItem = pkgs.makeDesktopItem {
+    name = "org.keepassxc.KeePassXC";
+    desktopName = "KeePassXC";
+    icon = "keepassxc";
+    exec = "/etc/profiles/per-user/delta/bin/keepassxc";
+    type = "Application";
+    startupWMClass = "keepassxc";
+  };
 
   kitty_wrapped = pkgs.writeScriptBin "kitty_wrapped" ''
     #!/usr/bin/env bash
@@ -85,44 +102,25 @@ let
     #!/usr/bin/env bash
     ${pkgs.coreutils}/bin/sleep 5
     ${pkgs.gtk3}/bin/gtk-launch maestral.desktop
-    ${pkgs.gtk3}/bin/gtk-launch keepassxc.desktop
+    ${pkgs.gtk3}/bin/gtk-launch org.keepassxc.KeePassXC.desktop
     exit 0
   '';
 
+  autostartDesktopItem = pkgs.makeDesktopItem {
+    name = "autostart";
+    desktopName = "Autostart";
+    icon = "app-launcher";
+    exec = "/etc/profiles/per-user/delta/bin/autostart";
+    type = "Application";
+  };
 in {
   home.packages = with pkgs; [
     ephemeralbrowser
+    ephemeralbrowserDesktopItem
     keepassxc
+    keepassxcDesktopItem
     kitty_wrapped
     autostart
+    autostartDesktopItem
   ];
-
-  xdg.desktopEntries = {
-    keepassxc = {
-      name = "KeePassXC";
-      icon = "keepassxc";
-      exec = "/etc/profiles/per-user/delta/bin/keepassxc";
-      type = "Application";
-    };
-    ephemeralbrowser = {
-      name = "Ephemeral Browser";
-      icon = "google-chrome-unstable";
-      exec = "/etc/profiles/per-user/delta/bin/ephemeralbrowser";
-      type = "Application";
-    };
-    firefox_work = {
-      name = "Firefox Work";
-      icon = "browser";
-      exec = "firejail --noprofile --netns=novpn firefox -p work -no-remote";
-      type = "Application";
-    };
-    autostart = {
-      name = "Autostart";
-      icon = "app-launcher";
-      exec = "/etc/profiles/per-user/delta/bin/autostart"; # this is needed due to nix stuff, the path is going to be changed every time i update autostart script
-      type = "Application";
-    };
-  };
-  
 }
-

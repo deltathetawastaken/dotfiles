@@ -13,6 +13,16 @@
     LC_ALL = "en_US.UTF-8";
   };
 
+  # age.rekey = {
+  #   hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGL2UD0frl9F2OPBiPlSQqxDsuACbAVgwH24F0KT14L delta@dlaptop";
+  #   #masterIdentities = [ "/home/delta/.ssh/id_ed25519" ];
+  #   masterIdentities = [ "/home/delta/.secrets/key.txt" ];
+  #   storageMode = "local";
+  #   localStorageDir = ../../secrets/rekeyed/${config.networking.hostName};
+  # };
+
+
+
   hardware.opengl = {
     enable = true;
     driSupport = true;
@@ -279,7 +289,8 @@
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
     inputs.agenix.packages.x86_64-linux.default
-  ];
+    # inputs.ragenix.packages.x86_64-linux.default
+    ];
 
   users.users.socks = {
     group = "socks";

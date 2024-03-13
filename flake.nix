@@ -15,9 +15,15 @@
     telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.darwin.follows = "";
+    #ragenix = {
+    #  url = "github:yaxitech/ragenix";
+    #  inputs.flake-utils.follows = "flake-utils";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = inputs @ { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, agenix, ... }: {
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, home-manager-unstable, firefox, anyrun, agenix, sops-nix, ... }: {
     nixosConfigurations.dlaptop = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
@@ -38,6 +44,7 @@
         ./hosts/dlaptop/age.nix
         home-manager-unstable.nixosModules.home-manager
         agenix.nixosModules.default
+        sops-nix.nixosModules.sops
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -111,5 +118,18 @@
         }
       ];
     };
+    
+  #  devShells = flake-utils.lib.eachDefaultSystem (system: rec {
+  #  pkgs = import nixpkgs {
+  #    inherit system;
+  #    overlays = [  ];
+  #  };
+  #  default = pkgs.mkShell {
+  #    packages = [  ];
+  #    # ...
+  #  };
+  #});
+
+
   };
 }
