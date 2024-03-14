@@ -3,4 +3,5 @@ let
 in {
   "singbox-aus.age".publicKeys = [ dlaptop ];
   "qqq.age".publicKeys = [ dlaptop ];
+  "cloudflared.age".publicKeys = [ dlaptop ];
 }
