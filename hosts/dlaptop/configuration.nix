@@ -21,6 +21,10 @@
   #   localStorageDir = ../../secrets/rekeyed/${config.networking.hostName};
   # };
 
+  sops = {
+    age.sshKeyPaths = [ "/home/delta/.ssh/id_ed25519.pub" ];
+  };
+
 
 
   hardware.opengl = {
@@ -104,6 +108,17 @@
       '';
     };
   };
+
+  services.cloudflared.enable = false;
+  services.cloudflared.tunnels = {
+    "dlaptop" = {
+      default = "http_status:404";
+      credentialsFile = "/run/agenix/cloudflared";
+    };
+  };
+  
+  systemd.services.cloudflared-tunnel-dlaptop.serviceConfig.Restart = lib.mkForce "on-failure";
+  systemd.services.cloudflared-tunnel-dlaptop.serviceConfig.RestartSec = lib.mkForce 60;
 
   programs.captive-browser = {
     browser = ''firejail --ignore="include whitelist-run-common.inc" --private --profile=chromium ${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/env XDG_CONFIG_HOME="$PREV_CONFIG_HOME" ${pkgs.chromium}/bin/chromium --user-data-dir=''${XDG_DATA_HOME:-$HOME/.local/share}/chromium-captive --proxy-server="socks5://$PROXY" --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost" --no-first-run --new-window --incognito -no-default-browser-check http://cache.nixos.org/' '';

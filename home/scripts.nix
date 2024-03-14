@@ -101,7 +101,7 @@ let
   autostart = pkgs.writeScriptBin "autostart" ''
     #!/usr/bin/env bash
     ${pkgs.coreutils}/bin/sleep 5
-    ${pkgs.gtk3}/bin/gtk-launch maestral.desktop
+    ${pkgs.gtk3}/bin/gtk-launch dropbox.desktop
     ${pkgs.gtk3}/bin/gtk-launch org.keepassxc.KeePassXC.desktop
     exit 0
   '';

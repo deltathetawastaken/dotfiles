@@ -80,8 +80,8 @@ in {
     promptInit = ''
       set TERM "xterm-256color"
       set fish_greeting
-      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source  
-      #tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No 
+      #${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+      any-nix-shell fish --info-right | source  
     '';
   };
   users.defaultUserShell = pkgs.fish;

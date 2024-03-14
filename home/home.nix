@@ -32,15 +32,15 @@
     ];
   };
 
-  xdg.desktopEntries = {
-    maestral = {
-      name = "Maestral";
-      icon = "maestral";
-      exec =
-        ''sh -c "QT_QPA_PLATFORM=xcb ${pkgs.maestral-gui}/bin/maestral_qt"'';
-      type = "Application";
-    };
-  };
+  #xdg.desktopEntries = {
+  #  maestral = {
+  #    name = "Maestral";
+  #    icon = "maestral";
+  #    exec =
+  #      ''sh -c "QT_QPA_PLATFORM=xcb ${pkgs.maestral-gui}/bin/maestral_qt"'';
+  #    type = "Application";
+  #  };
+  #};
 
   home.packages = (with pkgs; [
     git
@@ -52,6 +52,7 @@
     #(callPackage ../derivations/nu_plugin_dns.nix { })
     xorg.xwininfo
     jq
+    dropbox
   ]) ++ (with unstable; [
     xfce.thunar
     rustdesk-flutter
