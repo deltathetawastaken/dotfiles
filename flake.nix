@@ -10,8 +10,8 @@
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
     telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.darwin.follows = "";
+    #agenix.url = "github:ryantm/agenix";
+    #agenix.inputs.darwin.follows = "";
     #ragenix = {
     #  url = "github:yaxitech/ragenix";
     #  inputs.flake-utils.follows = "flake-utils";
@@ -20,7 +20,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, firefox, anyrun, agenix, sops-nix, ... }: {
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, firefox, anyrun, sops-nix, ... }: {
     nixosConfigurations.dlaptop = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
@@ -38,9 +38,7 @@
         ./hosts/generic.nix
         ./hosts/dlaptop/configuration.nix
         ./hosts/dlaptop/hardware-configuration.nix
-        ./hosts/dlaptop/age.nix
         home-manager.nixosModules.home-manager
-        agenix.nixosModules.default
         sops-nix.nixosModules.sops
         {
           home-manager.useGlobalPkgs = true;

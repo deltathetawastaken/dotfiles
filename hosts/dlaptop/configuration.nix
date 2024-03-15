@@ -22,14 +22,30 @@
   # };
 
   sops = {
-    defaultSopsFile = ../../secrets/example.yaml;
+    defaultSopsFile = ../../secrets/generic.yaml;
     #defaultSopsFile = ../../.sops.yaml;
-    #age.sshKeyPaths = [ "/home/delta/.ssh/id_ed25519" ];
-    age.keyFile = "/home/delta/.config/sops/age/keys.txt";
+    age.sshKeyPaths = [ "/home/delta/.ssh/id_ed25519" ];
+    #age.keyFile = "/home/delta/.config/sops/age/keys.txt";
     defaultSopsFormat = "yaml";
 
-    secrets.example-key = {};
+    secrets.qqq = {
+      mode = "0400"; owner = "delta"; group = "users";
+    };
+
+    secrets.cloudflared = {
+      mode = "0400"; owner = "cloudflared"; group = "cloudflared";
+    };
+    
+
     secrets."myservice/my_subdir/my_secret" = {};
+
+    secrets.singbox-aus = {
+      sopsFile = ../../secrets/singbox-aus.bin;
+      format = "binary";
+      mode = "0400";
+      owner = "socks";
+      group = "socks";
+    };
   };
 
 
@@ -116,11 +132,18 @@
     };
   };
 
+  users.groups.cloudflared = { };
+  users.users.cloudflared = {
+    group = "cloudflared";
+    isSystemUser = true;
+  };
+
+  users.groups.socks = { };
   services.cloudflared.enable = false;
   services.cloudflared.tunnels = {
     "dlaptop" = {
       default = "http_status:404";
-      credentialsFile = "/run/agenix/cloudflared";
+      credentialsFile = "/run/secrets/cloudflared";
     };
   };
   
@@ -310,7 +333,6 @@
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
-    inputs.agenix.packages.x86_64-linux.default
     # inputs.ragenix.packages.x86_64-linux.default
     sops
     ];
@@ -331,7 +353,7 @@
       User = "socks";
       Group = "socks";
     };
-    script = "sing-box run -c /run/agenix/singbox-aus";
+    script = "sing-box run -c /run/secrets/singbox-aus";
     path = with unstable; [
       shadowsocks-libev
       shadowsocks-v2ray-plugin

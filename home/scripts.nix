@@ -75,7 +75,7 @@ let
 
   keepassxc = pkgs.writeScriptBin "keepassxc" ''
     #!/usr/bin/env bash
-    ${pkgs.coreutils}/bin/cat /run/agenix/qqq | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
+    ${pkgs.coreutils}/bin/cat /run/secrets/qqq | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
   '';
 
   keepassxcDesktopItem = pkgs.makeDesktopItem {

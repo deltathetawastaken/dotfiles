@@ -61,6 +61,7 @@ in {
     #fishPlugins.hydro
     fishPlugins.fzf-fish
     fishPlugins.sponge
+    fzf
     grc
     unstable.nh
     any-nix-shell
