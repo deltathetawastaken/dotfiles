@@ -103,7 +103,7 @@
     f3d
     nufraw-thumbnailer
     curl
-    inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
+    inputs.telegram-desktop-patched.packages.${pkgs.system}.default
   ];
 
   environment = {

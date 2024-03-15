@@ -309,7 +309,7 @@
     android-tools
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
-    inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
+    inputs.telegram-desktop-patched.packages.${pkgs.system}.default
     # inputs.ragenix.packages.x86_64-linux.default
     sops
     ];

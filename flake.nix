@@ -9,7 +9,7 @@
     firefox.inputs.nixpkgs.follows = "nixpkgs";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    telegram-desktop-patched-unstable.url = "github:shwewo/telegram-desktop-patched";
+    telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
     #agenix.url = "github:ryantm/agenix";
     #agenix.inputs.darwin.follows = "";
     #ragenix = {
