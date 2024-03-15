@@ -22,7 +22,14 @@
   # };
 
   sops = {
-    age.sshKeyPaths = [ "/home/delta/.ssh/id_ed25519.pub" ];
+    defaultSopsFile = ../../secrets/example.yaml;
+    #defaultSopsFile = ../../.sops.yaml;
+    #age.sshKeyPaths = [ "/home/delta/.ssh/id_ed25519" ];
+    age.keyFile = "/home/delta/.config/sops/age/keys.txt";
+    defaultSopsFormat = "yaml";
+
+    secrets.example-key = {};
+    secrets."myservice/my_subdir/my_secret" = {};
   };
 
 
@@ -305,6 +312,7 @@
     inputs.telegram-desktop-patched-unstable.packages.${pkgs.system}.default
     inputs.agenix.packages.x86_64-linux.default
     # inputs.ragenix.packages.x86_64-linux.default
+    sops
     ];
 
   users.users.socks = {
