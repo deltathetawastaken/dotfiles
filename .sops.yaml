@@ -6,3 +6,7 @@ creation_rules:
     key_groups:
     - age:
       - *dlaptop
+  - path_regex: secrets/wifi/[^/]+$
+    key_groups:
+    - age:
+      - *dlaptop
