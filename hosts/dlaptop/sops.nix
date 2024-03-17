@@ -39,13 +39,6 @@ in
         group = "socks";
       };
 
-      #HomeNet = {
-      #  sopsFile = ../../secrets/wifi/HomeNet.ini;
-      #  format = "ini";
-      #  path = "/etc/NetworkManager/system-connections/HomeNet.nmconnection";
-      #  mode = "0400";
-      #};
-
     } // wifiSecrets;
   };
 }
