@@ -8,10 +8,10 @@
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    #LC_TIME = "ru_RU.UTF-8";
-    LC_ALL = "en_GB.UTF-8";
-  };
+  # i18n.extraLocaleSettings = {
+  #   #LC_TIME = "ru_RU.UTF-8";
+  #   #LC_ALL = "en_GB.UTF-8";
+  # };
 
   # age.rekey = {
   #   hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGL2UD0frl9F2OPBiPlSQqxDsuACbAVgwH24F0KT14L delta@dlaptop";
@@ -57,6 +57,7 @@
     QT_QPA_PLATFORM = "wayland";
     STEAM_FORCE_DESKTOPUI_SCALING = "1";
     NIXOS_OZONE_WL = "1";
+    XCURSOR_SIZE = "16";
   };
 
   #services.dnscrypt-proxy2 = {
