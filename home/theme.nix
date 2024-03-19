@@ -22,13 +22,14 @@ in {
       adw-gtk3
       nerdfonts
     ];
-    #sessionVariables.XCURSOR_THEME = cursor-theme;
-    #pointerCursor = {
-    #  package = cursor-package;
-    #  name = cursor-theme;
-    #  size = 24;
-    #  gtk.enable = true;
-    #};
+  #sessionVariables.XCURSOR_THEME = cursor-theme;
+  pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 16;
+  };
     file = {
       ".local/share/fonts" = {
         recursive = true;
@@ -51,14 +52,6 @@ in {
   };
 
   fonts.fontconfig.enable = true;
-
-  pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 16;
-  };
 
   gtk = {
     enable = true;
