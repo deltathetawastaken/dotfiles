@@ -4,14 +4,6 @@
   home.username = "delta";
   home.stateVersion = "23.11";
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 16;
-  };
-
   imports = [ 
     ./programs 
     ./theme.nix
@@ -41,46 +33,6 @@
   #    type = "Application";
   #  };
   #};
-
-  home.packages = (with pkgs; [
-    git
-    chromium
-    wl-clipboard
-    wl-clipboard-x11
-    (callPackage ../derivations/audiorelay.nix { })
-    (callPackage ../derivations/spotify.nix { })
-    #(callPackage ../derivations/nu_plugin_dns.nix { })
-    xorg.xwininfo
-    jq
-    dropbox
-  ]) ++ (with unstable; [
-    xfce.thunar
-    rustdesk-flutter
-    autossh
-    scrcpy
-    nixfmt
-    btop
-    htop
-    foot
-    alacritty
-    dig
-    nwg-displays
-    nwg-drawer
-    imagemagick
-    fastfetch
-    hyfetch
-    pavucontrol
-    wget
-    wlogout
-    nom
-    vesktop
-    firefox
-  ]) ++ (with stable; [ 
-    localsend
-    trayscale
-  ]) ++ ([
-    # inputs.firefox.packages.${pkgs.system}.firefox-bin
-  ]);
 
 
   programs.obs-studio = {

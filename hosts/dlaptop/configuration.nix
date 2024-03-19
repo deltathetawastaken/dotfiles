@@ -23,6 +23,8 @@
 
   imports = [ 
     ./sops.nix
+    ./socks.nix
+    ./apps.nix
   ];
 
 
@@ -140,7 +142,7 @@
         source = "${pkgs.firejail.out}/bin/firejail"; 
       };
     };
-    pam.loginLimits = [{
+    pam.loginLimits = [{ #needed for swaylock
       domain = "@users";
       item = "rtprio";
       type = "-";
@@ -224,7 +226,30 @@
   services.blueman.enable = true;
   services.tumbler.enable = true;
   services.gvfs.enable = true;
-  services.udev.packages = [ pkgs.gnome.gnome-settings-daemon  pkgs.android-udev-rules ];
+  services.udev.packages = [ 
+    pkgs.gnome.gnome-settings-daemon
+    pkgs.android-udev-rules
+    pkgs.yubikey-personalization
+    ];
+  #services.udev.extraRules = ''
+  #  #yubikey autostart
+  #  ENV{ID_VENDOR}=="Yubico", ENV{ID_VENDOR_ID}=="1050", ENV{ID_MODEL_ID}=="0010|0111|0112|0113|0114|0115|0116|0401|0402|0403|0404|0405|0406|0407|0410", SYMLINK+="yubikey", TAG+="systemd"
+  #'';
+  #systemd.user.services.yubioath = {
+  #  enable = true;
+  #  description = "Autostart Yubico Authenticator";
+  #  after = [ "dev-yubikey.device" ];
+  #  unitConfig = {
+  #    StopPropagatedFrom="dev-yubikey.device"; #comment to not close app after yubi remove
+  #  };
+  #  serviceConfig = {
+  #    Type = "oneshot";
+  #  };
+  #  
+  #  script = "${pkgs.yubioath-flutter}/bin/yubioath-flutter";
+  #};
+
+    
 
   programs.thunar.enable = true;
   programs.firejail.enable = true;
@@ -290,8 +315,6 @@
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.tiling-assistant
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
-    gnomeExtensions.advanced-alttab-window-switcher
-    gnomeExtensions.syncthing-indicator
     gnome.gnome-tweaks
     
     mojave-gtk-theme
@@ -312,30 +335,50 @@
     inputs.telegram-desktop-patched.packages.${pkgs.system}.default
     # inputs.ragenix.packages.x86_64-linux.default
     sops
-    ];
+    yubikey-manager-qt
+    yubico-piv-tool
+    yubioath-flutter
+    yubikey-personalization
+    yubikey-personalization-gui
+    (pkgs.writeScriptBin "warp-cli" "${pkgs.cloudflare-warp}/bin/warp-cli $@")
+    age-plugin-yubikey
+  ];
 
-  users.users.socks = {
-    group = "socks";
-    isSystemUser = true;
-  };
-  users.groups.socks = { };
+  services.pcscd.enable = true;
 
-  systemd.services.singbox-aus = {
+  #users.users.socks = {
+  #  group = "socks";
+  #  isSystemUser = true;
+  #};
+  #users.groups.socks = { };
+
+  #systemd.services.singbox-aus = {
+  #  enable = true;
+  #  description = "avoid censorship";
+  #  wantedBy = [ "multi-user.target" ];
+  #  serviceConfig = {
+  #    Restart = "on-failure";
+  #    RestartSec = "15";
+  #    User = "socks";
+  #    Group = "socks";
+  #  };
+  #  script = "sing-box run -c /run/secrets/singbox-aus";
+  #  path = with unstable; [
+  #    shadowsocks-libev
+  #    shadowsocks-v2ray-plugin
+  #    sing-box
+  #  ];
+  #};
+
+  systemd.services.cloudflare-warp = {
     enable = true;
-    description = "avoid censorship";
+    description = "cloudflare warp service";
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = "15";
-      User = "socks";
-      Group = "socks";
     };
-    script = "sing-box run -c /run/secrets/singbox-aus";
-    path = with unstable; [
-      shadowsocks-libev
-      shadowsocks-v2ray-plugin
-      sing-box
-    ];
+    script = "${pkgs.cloudflare-warp}/bin/warp-svc";
   };
 
   #config.services.openssh.hostKeys = [ "/home/delta/.ssh/id_ed25519" ];

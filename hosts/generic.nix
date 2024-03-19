@@ -76,7 +76,7 @@ in {
     shellAliases = {
       rebuild = "nh os switch";
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
-      haste = "HASTE_SERVER='https://haste.delch.workers.dev' ${pkgs.haste-client}/bin/haste";
+      haste = "HASTE_SERVER='https://haste.schizoposting.online' ${pkgs.haste-client}/bin/haste";
     };
     promptInit = ''
       set TERM "xterm-256color"
