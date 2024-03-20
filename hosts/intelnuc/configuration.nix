@@ -72,7 +72,7 @@
   services.nginx.enable = true;
   services.nginx.virtualHosts."grafana_first" = {
     forceSSL = false;
-    listen = [{port = 2000;  addr="0.0.0.0"; ssl=false;}];
+    listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
     serverName = "graf1.local";
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
@@ -88,7 +88,7 @@
   };
   services.nginx.virtualHosts."grafana_second" = {
     forceSSL = false;
-    listen = [{port = 2001;  addr="0.0.0.0"; ssl=false;}];
+    listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
     serverName = "graf2.local";
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
@@ -104,7 +104,7 @@
   };
   services.nginx.virtualHosts."kibana" = {
     forceSSL = false;
-    listen = [{port = 2002;  addr="0.0.0.0"; ssl=false;}];
+    listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
     serverName = "kibana.local";
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
