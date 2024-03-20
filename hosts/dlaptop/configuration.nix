@@ -81,6 +81,12 @@
     useDHCP = lib.mkDefault true;
     interfaces.wlp1s0.proxyARP = true;
     iproute2.enable = true;
+    hosts = {
+      "100.92.15.128:2000" = [ "grafanafirst.local" ];
+      "100.92.15.128:2001" = [ "grafanasecond.local" ];
+      "100.92.15.128:2002" = [ "kibana.local" ];
+    };
+
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -316,6 +322,7 @@
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.tiling-assistant
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
+    gnomeExtensions.cloudflare-warp-toggle
     gnome.gnome-tweaks
     
     mojave-gtk-theme

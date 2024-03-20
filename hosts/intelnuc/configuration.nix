@@ -100,6 +100,15 @@
       proxy_set_header Connection "upgrade";
     '';
   };
+  services.nginx.virtualHosts."kibana" = {
+    forceSSL = false;
+    listen = [{port = 2002;  addr="0.0.0.0"; ssl=false;}];
+    locations."/".extraConfig = ''
+      proxy_set_header        Host $host;
+      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_pass              http://123.123.123.123:5601;
+    '';
+  };
 
   system.stateVersion = "22.11";
 }
