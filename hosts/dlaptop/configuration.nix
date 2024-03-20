@@ -82,9 +82,7 @@
     interfaces.wlp1s0.proxyARP = true;
     iproute2.enable = true;
     hosts = {
-      "100.92.15.128:2000" = [ "grafanafirst.local" ];
-      "100.92.15.128:2001" = [ "grafanasecond.local" ];
-      "100.92.15.128:2002" = [ "kibana.local" ];
+      "100.92.15.128" = [ "graf1.local" "graf2.local" "kibana.local" ];
     };
 
     firewall = {
