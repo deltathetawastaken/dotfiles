@@ -39,6 +39,25 @@ in
         group = "socks";
       };
 
+    
+      "nginx/graf1" = { };
+      "nginx/graf2" = { };
+      "nginx/kibana" = { };
+      templates ={
+        "nginx-graf1.conf"= {
+          content = '' proxy_pass ${config.sops.placeholder."nginx/graf1"}; '';
+          mode = "0444";
+        };
+        "nginx-graf2.conf"= {
+          content = '' proxy_pass ${config.sops.placeholder."nginx/graf2"}; '';
+          mode = "0444";
+        };
+        "nginx-kibana.conf"= {
+          content = '' proxy_pass ${config.sops.placeholder."nginx/kibana"}; '';
+          mode = "0444";
+        };
+      };
+
     } // wifiSecrets;
   };
 }
