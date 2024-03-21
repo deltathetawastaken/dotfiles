@@ -75,6 +75,7 @@
         ./hosts/generic.nix
         ./hosts/intelnuc/configuration.nix
         ./hosts/intelnuc/hardware-configuration.nix
+        sops-nix.nixosModules.sops
       ];
     };
     nixosConfigurations.huanan = nixpkgs-unstable.lib.nixosSystem {
