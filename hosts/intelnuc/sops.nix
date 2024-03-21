@@ -7,10 +7,10 @@
     defaultSopsFormat = "yaml";
 
     secrets = {
-
-      "nginx/graf1" = { };
-      "nginx/graf2" = { };
-      "nginx/kibana" = { };
+      "myservice/my_subdir/my_secret" = {};
+    #   "nginx/graf1" = { };
+    #   "nginx/graf2" = { };
+    #   "nginx/kibana" = { };
 
     };
   };
