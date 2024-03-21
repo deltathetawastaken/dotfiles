@@ -84,8 +84,23 @@ in {
       .csd:not(.popup):not(tooltip):not(messagedialog) decoration{
         border-radius: 0;
       }
+      /* UNITE windowDecorations */
+      @import url('/run/current-system/sw/share/gnome-shell/extensions/unite@hardpixel.eu/styles/gtk3/buttons-right/maximized.css');
+      /* windowDecorations UNITE */
+      headerbar, .titlebar,
+      .csd:not(.popup):not(tooltip):not(messagedialog) decoration{
+        border-radius: 0;
+      }
     '';
     gtk4.extraCss = ''
+     window.messagedialog .response-area > button,
+     window.dialog.message .dialog-action-area > button,
+     .background.csd{
+       border-radius: 0;
+     }
+     /* UNITE windowDecorations */
+     @import url('/run/current-system/sw/share/gnome-shell/extensions/unite@hardpixel.eu/styles/gtk4/buttons-right/maximized.css');
+     /* windowDecorations UNITE */
      window.messagedialog .response-area > button,
      window.dialog.message .dialog-action-area > button,
      .background.csd{
