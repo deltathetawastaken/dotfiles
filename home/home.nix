@@ -7,7 +7,6 @@
   imports = [ 
     ./programs 
     ./theme.nix
-    ./scripts.nix
     ./gnome.nix
   ];
 

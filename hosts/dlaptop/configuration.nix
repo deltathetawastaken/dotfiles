@@ -25,6 +25,8 @@
     ./sops.nix
     ./socks.nix
     ./apps.nix
+    ./work.nix
+    ./scripts.nix
   ];
 
 
@@ -81,9 +83,6 @@
     useDHCP = lib.mkDefault true;
     interfaces.wlp1s0.proxyARP = true;
     iproute2.enable = true;
-    hosts = {
-      "100.92.15.128" = [ "graf1.local" "graf2.local" "kibana.local" ];
-    };
 
     firewall = {
       enable = true;
@@ -336,6 +335,7 @@
     f3d
     nufraw-thumbnailer
     android-tools
+    firefox
     #firefox_nightly
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     inputs.telegram-desktop-patched.packages.${pkgs.system}.default
@@ -385,6 +385,20 @@
       RestartSec = "15";
     };
     script = "${pkgs.cloudflare-warp}/bin/warp-svc";
+
+    postStart = ''
+      while true; do
+        set -e
+        status=$(${pkgs.cloudflare-warp}/bin/warp-cli status || true)
+        set +e
+        if [[ "$status" != *"Unable to connect to CloudflareWARP daemon"* ]]; then
+          ${pkgs.cloudflare-warp}/bin/warp-cli set-custom-endpoint 162.159.193.1:2408
+          exit 0
+        fi
+        sleep 15
+      done
+    '';
+
   };
 
   #config.services.openssh.hostKeys = [ "/home/delta/.ssh/id_ed25519" ];

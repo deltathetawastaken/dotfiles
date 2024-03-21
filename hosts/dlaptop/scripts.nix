@@ -75,7 +75,7 @@ let
 
   keepassxc = pkgs.writeScriptBin "keepassxc" ''
     #!/usr/bin/env bash
-    ${pkgs.coreutils}/bin/cat /run/secrets/qqq | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
+    ${pkgs.coreutils}/bin/cat ${config.sops.secrets.qqq} | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
   '';
 
   keepassxcDesktopItem = pkgs.makeDesktopItem {
@@ -114,7 +114,7 @@ let
     type = "Application";
   };
 in {
-  home.packages = with pkgs; [
+  users.users.delta.packages = with pkgs; [
     ephemeralbrowser
     ephemeralbrowserDesktopItem
     keepassxc
