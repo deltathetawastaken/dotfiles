@@ -2,8 +2,9 @@
 
 {
   sops = {
-    defaultSopsFile = ../../secrets/generic.yaml;
-    age.sshKeyPaths = [ "/home/delta/.ssh/id_ed25519" ];
+    defaultSopsFile = ../../secrets/intelnuc/main.yaml;
+    sshKeyPaths = lib.mkForce [];
+    age.sshKeyPaths = lib.mkForce [ "/home/delta/.ssh/id_ed25519" ];
     defaultSopsFormat = "yaml";
 
     secrets = {

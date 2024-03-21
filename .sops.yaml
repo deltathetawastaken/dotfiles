@@ -1,7 +1,7 @@
 
 keys:
   - &dlaptop age15ztewc67js3aunwx8zvkdukqy8r3qswpqucjsqqnqjy3zecvacyqdxhl4y
-  - &intelnuc age1sxv5n2au0pwpvnj8qya75quz264s5jt0e9734jefng4dh2vyyqlqyuynuc
+  - &intelnuc age1vt6n9pgz57malqryph4nyvypr3y845fthkc704uhh0s7sqy4s97q0hffyk
 creation_rules:
   - path_regex: secrets/[^/]+\.(yml|yaml|json|env|ini|bin)$
     key_groups:
