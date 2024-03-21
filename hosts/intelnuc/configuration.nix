@@ -85,10 +85,10 @@
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass              http://123.123.123.123:3000;
+      include ${config.sops.templates."nginx-graf1.conf".path};
     '';
     locations."/api/live/ws".extraConfig = ''
-      proxy_pass http://123.123.123.123:3000;
+      include ${config.sops.templates."nginx-graf1.conf".path};
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
@@ -101,10 +101,10 @@
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass              http://123.123.123.123:3000;
+      include ${config.sops.templates."nginx-graf2.conf".path};
     '';
     locations."/api/live/ws".extraConfig = ''
-      proxy_pass http://123.123.123.123:3000;
+      include ${config.sops.templates."nginx-graf2.conf".path};
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
@@ -117,7 +117,7 @@
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass              http://123.123.123.123:5601;
+      include ${config.sops.templates."nginx-kibana.conf".path};
     '';
   };
 
