@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs,... }:
 
 {
   boot.loader.grub.enable = true;
@@ -8,10 +8,6 @@
 
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_US.UTF-8";
-
-  imports = [ 
-    ./sops.nix
-  ];
 
   users.users.intelnuc = {
     isNormalUser = true;
@@ -85,13 +81,13 @@
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      include ${config.sops.templates."nginx-graf1.conf".path};
+      proxy_pass ${inputs.secrets.work.graf1};
     '';
     locations."/api/live/ws".extraConfig = ''
-      include ${config.sops.templates."nginx-graf1.conf".path};
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
+      proxy_pass ${inputs.secrets.work.graf1};
     '';
   };
   services.nginx.virtualHosts."grafana_second" = {
@@ -101,13 +97,13 @@
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      include ${config.sops.templates."nginx-graf2.conf".path};
+      proxy_pass ${inputs.secrets.work.graf2};
     '';
     locations."/api/live/ws".extraConfig = ''
-      include ${config.sops.templates."nginx-graf2.conf".path};
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
+      proxy_pass ${inputs.secrets.work.graf2};
     '';
   };
   services.nginx.virtualHosts."kibana" = {
@@ -117,7 +113,7 @@
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      include ${config.sops.templates."nginx-kibana.conf".path};
+      proxy_pass ${inputs.secrets.work.kibana};
     '';
   };
 

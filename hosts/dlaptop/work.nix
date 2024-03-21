@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: 
+{ pkgs, lib, inputs, ... }: 
 let
   nginxConfig = pkgs.writeText "nginx_config" ''
     pid /tmp/.nginx-work.pid;
@@ -33,11 +33,11 @@ let
         location / {
           proxy_set_header        Host $host;
           proxy_set_header        X-Real-IP $remote_addr;
-          include ${config.sops.templates."nginx-graf1.conf".path};
+          proxy_pass              ${inputs.secrets.work.graf1};
         }
         
         location /api/live/ws {
-          include ${config.sops.templates."nginx-graf1.conf".path};
+          proxy_pass ${inputs.secrets.work.graf1};
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
@@ -51,11 +51,11 @@ let
         location / {
           proxy_set_header        Host $host;
           proxy_set_header        X-Real-IP $remote_addr;
-          include ${config.sops.templates."nginx-graf2.conf".path};
+          proxy_pass              ${inputs.secrets.work.graf2};
         }
         
         location /api/live/ws {
-          include ${config.sops.templates."nginx-graf2.conf".path};
+          proxy_pass ${inputs.secrets.work.graf2};
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
@@ -69,7 +69,7 @@ let
         location / {
           proxy_set_header        Host $host;
           proxy_set_header        X-Real-IP $remote_addr;
-          include ${config.sops.templates."nginx-kibana.conf".path};
+          proxy_pass              ${inputs.secrets.work.kibana};
         }
       }
     }

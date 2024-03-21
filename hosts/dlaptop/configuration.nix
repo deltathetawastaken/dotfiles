@@ -22,7 +22,6 @@
   # };
 
   imports = [ 
-    ./sops.nix
     ./socks.nix
     ./apps.nix
     ./work.nix

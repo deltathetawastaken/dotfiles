@@ -10,6 +10,7 @@
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
     telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
+    secrets.url = "git+ssh://git@github.com/deltathetawastaken/secrets";
     #agenix.url = "github:ryantm/agenix";
     #agenix.inputs.darwin.follows = "";
     #ragenix = {
@@ -17,10 +18,9 @@
     #  inputs.flake-utils.follows = "flake-utils";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
-    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, firefox, anyrun, sops-nix, ... }: 
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, firefox, anyrun, ... }: 
   let
     pkgs = nixpkgs.legacyPackages."x86_64-linux";
   in {
@@ -50,7 +50,7 @@
         ./hosts/dlaptop/configuration.nix
         ./hosts/dlaptop/hardware-configuration.nix
         home-manager.nixosModules.home-manager
-        sops-nix.nixosModules.sops
+        inputs.secrets.nixosModules.dlaptop
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -86,7 +86,7 @@
         ./hosts/generic.nix
         ./hosts/intelnuc/configuration.nix
         ./hosts/intelnuc/hardware-configuration.nix
-        sops-nix.nixosModules.sops
+        inputs.secrets.nixosModules.intelnuc
       ];
     };
     nixosConfigurations.huanan = nixpkgs-unstable.lib.nixosSystem {
