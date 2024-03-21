@@ -9,6 +9,10 @@
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_US.UTF-8";
 
+  imports = [ 
+    ./sops.nix
+  ];
+
   users.users.intelnuc = {
     isNormalUser = true;
     description = "intelnuc";
