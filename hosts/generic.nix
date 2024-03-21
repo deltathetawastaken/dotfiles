@@ -87,4 +87,5 @@ in {
   };
   users.defaultUserShell = pkgs.fish;
   programs.tmux.enable = true;
+  programs.direnv.enable = true;
 }

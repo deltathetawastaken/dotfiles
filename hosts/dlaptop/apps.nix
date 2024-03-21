@@ -47,8 +47,6 @@ in {
     # inputs.firefox.packages.${pkgs.system}.firefox-bin
   ]);
 
-
-
   programs.firefox = {
     enable = true;
     policies = {

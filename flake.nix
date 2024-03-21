@@ -20,7 +20,18 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, firefox, anyrun, sops-nix, ... }: {
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, firefox, anyrun, sops-nix, ... }: 
+  let
+    pkgs = nixpkgs.legacyPackages."x86_64-linux";
+  in {
+    devShells."x86_64-linux".default = pkgs.mkShell {
+      name = "delta";
+      packages = with pkgs; [ gitleaks pre-commit ];
+      shellHook = ''
+        gitleaks detect -v
+        pre-commit install &> /dev/null
+      '';
+    };
     nixosConfigurations.dlaptop = nixpkgs-unstable.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
