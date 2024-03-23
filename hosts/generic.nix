@@ -57,10 +57,11 @@ in {
     fishPlugins.grc
     fishPlugins.autopair
     fishPlugins.z
-    #fishPlugins.tide
-    #fishPlugins.hydro
+    fishPlugins.tide
     fishPlugins.fzf-fish
     fishPlugins.sponge
+    #fishPlugins.async-prompt
+    fd
     fzf
     grc
     unstable.nh
@@ -68,6 +69,7 @@ in {
     dnsutils
     inetutils
     killall
+    (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ];
 
   programs.command-not-found.enable = false;
@@ -82,10 +84,22 @@ in {
       set TERM "xterm-256color"
       set fish_greeting
       #${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
-      any-nix-shell fish --info-right | source  
+      any-nix-shell fish --info-right | source 
+      tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No
     '';
   };
-  users.defaultUserShell = pkgs.fish;
+ 
   programs.tmux.enable = true;
   programs.direnv.enable = true;
+  programs.firejail.enable = true;
+  
+  security.wrappers = {
+    firejail = {
+      source = "${pkgs.firejail.out}/bin/firejail";
+    };
+  };
+
+  users.defaultUserShell = pkgs.fish;
+  security.rtkit.enable = true;
+  boot.tmp.cleanOnBoot = true;
 }

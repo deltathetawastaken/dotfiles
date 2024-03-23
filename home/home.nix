@@ -5,22 +5,38 @@
   home.stateVersion = "23.11";
 
   imports = [ 
-    ./programs 
     ./theme.nix
-    ./gnome.nix
   ];
 
   services.blueman-applet.enable = true;
   services.network-manager-applet.enable = true;
 
-
   programs.vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+      extensions = with pkgs.vscode-extensions; [
+        matklad.rust-analyzer
+        jnoortheen.nix-ide
+      ];
+      enableUpdateCheck = false;
+      userSettings = {
+        "window.titleBarStyle" = "custom";
+        "nix.enableLanguageServer"= true;
+        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.serverSettings" = {
+          nil = {
+            formatting = {
+              command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
+            };
+          };
+        };
+      };
+    };
+
+  programs.git = {
     enable = true;
-    package = pkgs.vscodium;
-    extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-      brettm12345.nixfmt-vscode
-    ];
+    userName  = "delta";
+    userEmail = "delta@example.com";
   };
 
   #xdg.desktopEntries = {

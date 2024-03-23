@@ -308,7 +308,7 @@ let
   };
 in
 {
-  users.users.delta.packages = with pkgs; [
+  users.users.delta.packages = [
     kittyWork
     kittyWorkDesktopItem
     firefoxWork

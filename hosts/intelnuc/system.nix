@@ -1,6 +1,11 @@
 { config, pkgs, inputs,... }:
 
 {
+  imports = [
+    ./hardware.nix
+    inputs.secrets.nixosModules.intelnuc
+  ];
+
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;

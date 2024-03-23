@@ -76,6 +76,7 @@ let
   keepassxc = pkgs.writeScriptBin "keepassxc" ''
     #!/usr/bin/env bash
     ${pkgs.coreutils}/bin/base64 -d ${config.sops.secrets.qqq.path} | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
+    ${pkgs.glib}/bin/gdbus call --session --dest org.gnome.Shell --object-path /de/lucaswerkmeister/ActivateWindowByTitle --method de.lucaswerkmeister.ActivateWindowByTitle.activateByWmClass 'org.keepassxc.KeePassXC'
   '';
 
   keepassxcDesktopItem = pkgs.makeDesktopItem {
@@ -103,6 +104,7 @@ let
     ${pkgs.coreutils}/bin/sleep 5
     ${pkgs.gtk3}/bin/gtk-launch dropbox.desktop
     ${pkgs.gtk3}/bin/gtk-launch org.keepassxc.KeePassXC.desktop
+    gsettings set org.gnome.desktop.interface cursor-size 16
     exit 0
   '';
 
@@ -113,14 +115,24 @@ let
     exec = "/etc/profiles/per-user/delta/bin/autostart";
     type = "Application";
   };
+
+  firefoxRussia = pkgs.writeScriptBin "firefox-russia" ''
+    #!/usr/bin/env bash
+    firejail --blacklist="/var/run/nscd" --ignore="include whitelist-run-common.inc" --net=$(${pkgs.iproute2}/bin/ip route | ${pkgs.gawk}/bin/awk '/default/ {print $5}') --dns=77.88.8.1 firefox --class firefox-russia --name firefox-russia -P russia -no-remote
+  '';
+
+  firefoxRussiaDesktopItem = pkgs.makeDesktopItem {
+    name = "firefox-russia";
+    desktopName = "Firefox Russia";
+    icon = "firefox-developer-edition";
+    exec = "firefox-russia";
+  };
 in {
-  users.users.delta.packages = with pkgs; [
-    ephemeralbrowser
-    ephemeralbrowserDesktopItem
-    keepassxc
-    keepassxcDesktopItem
+  users.users.delta.packages = [
     kitty_wrapped
-    autostart
-    autostartDesktopItem
+    ephemeralbrowser  ephemeralbrowserDesktopItem
+    keepassxc         keepassxcDesktopItem
+    autostart         autostartDesktopItem
+    firefoxRussia     firefoxRussiaDesktopItem
   ];
 }

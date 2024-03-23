@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, stable, ... }:
+{ pkgs, lib, inputs, stable, self, ... }:
 let
   lock-false = {
     Value = false;
@@ -9,14 +9,13 @@ let
     Status = "locked";
   };
 in {
-
   users.users.delta.packages = (with pkgs; [
     git
     chromium
     wl-clipboard
     wl-clipboard-x11
-    (callPackage ../../derivations/audiorelay.nix { })
-    (callPackage ../../derivations/spotify.nix { })
+    (callPackage "${self}/derivations/audiorelay.nix" { })
+    (callPackage "${self}/derivations/spotify.nix" { })
     #(callPackage ../derivations/nu_plugin_dns.nix { })
     xorg.xwininfo
     jq
@@ -44,7 +43,9 @@ in {
     vesktop
     localsend
     trayscale
-    # inputs.firefox.packages.${pkgs.system}.firefox-bin
+    fishPlugins.done
+    monero-gui
+    inputs.telegram-desktop-patched.packages.${pkgs.system}.default
   ]);
 
   programs.firefox = {
@@ -115,4 +116,14 @@ in {
         ];
     };
   };
+
+  programs.thunar.enable = true;
+  programs.xfconf.enable = true;
+  programs.virt-manager.enable = true;
+  programs.steam.enable = true;
+  programs.gamemode.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
 }
