@@ -28,10 +28,7 @@
     devShells."x86_64-linux".default = pkgs.mkShell {
       name = "delta";
       packages = with pkgs; [ gitleaks pre-commit ];
-      shellHook = ''
-        gitleaks detect -v
-        pre-commit install &> /dev/null
-      '';
+      shellHook = ''pre-commit install &> /dev/null && gitleaks detect -v'';
     };
     nixosConfigurations.dlaptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";

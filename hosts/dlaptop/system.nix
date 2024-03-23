@@ -141,7 +141,7 @@
     freetype
     poppler
     f3d
-    nufraw-thumbnail
+    nufraw-thumbnailer
 
     android-tools
     firefox
