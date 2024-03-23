@@ -44,7 +44,7 @@
 
   services.tailscale.enable = true;
   services.syncthing.enable = true;
-  services.blueman.enable = true;
+  #services.blueman.enable = true;
   services.tumbler.enable = true;
   services.gvfs.enable = true;
   services.flatpak.enable = true;
