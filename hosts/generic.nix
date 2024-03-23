@@ -16,6 +16,26 @@ let
       NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#"$1" -- "''${@:2}"
     fi
   '';
+  fzf = pkgs.fzf.overrideAttrs (oldAttrs: rec {
+    postInstall = oldAttrs.postInstall + ''
+      # Remove shell integrations
+      rm -rf $out/share/fzf $out/share/fish $out/bin/fzf-share
+    '' + (builtins.replaceStrings
+      [
+        ''
+          # Install shell integrations
+          install -D shell/* -t $out/share/fzf/
+          install -D shell/key-bindings.fish $out/share/fish/vendor_functions.d/fzf_key_bindings.fish
+          mkdir -p $out/share/fish/vendor_conf.d
+          cat << EOF > $out/share/fish/vendor_conf.d/load-fzf-key-bindings.fish
+            status is-interactive; or exit 0
+            fzf_key_bindings
+          EOF
+        ''
+      ]
+      [""]
+      oldAttrs.postInstall);
+  });
 in {
   environment.sessionVariables = {
     FLAKE = "/home/delta/Documents/dotfiles";
