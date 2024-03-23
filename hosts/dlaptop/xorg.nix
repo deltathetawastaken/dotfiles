@@ -3,10 +3,8 @@
 {
   imports = [
     "${self}/apps/gnome.nix"
+    "${self}/apps/hyprland"
   ];
-  
-  programs.hyprland.enable = true;
-  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
 
   environment.sessionVariables = {
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";

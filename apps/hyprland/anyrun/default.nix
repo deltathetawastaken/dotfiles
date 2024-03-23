@@ -5,10 +5,14 @@
   ...
 }: {
   imports = [
+    inputs.home-manager.nixosModules.home-manager
+  ];
+  
+  home-manager.users.delta.imports = [
     inputs.anyrun.homeManagerModules.default
   ];
 
-  programs.anyrun = {
+  home-manager.users.delta.programs.anyrun = {
     enable = true;
 
     config = {
@@ -27,7 +31,7 @@
       closeOnClick = true;
     };
 
-        extraCss = ''
+    extraCss = ''
       @define-color bg-col  rgba(30, 30, 46, 0.7);
       @define-color bg-col-light rgba(150, 220, 235, 0.7);
       @define-color border-col rgba(30, 30, 46, 0.7);
@@ -115,7 +119,5 @@
         max_entries: 3,
       ) 
     '';
-
-
   };
 }

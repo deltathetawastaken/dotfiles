@@ -7,7 +7,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     anyrun.url = "github:Kirottu/anyrun";
-    anyrun.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    anyrun.inputs.nixpkgs.follows = "nixpkgs";
     telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
     secrets.url = "git+ssh://git@github.com/deltathetawastaken/secrets.git";
   };
