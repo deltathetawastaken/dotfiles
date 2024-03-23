@@ -60,11 +60,12 @@ in {
     fishPlugins.tide
     fishPlugins.fzf-fish
     fishPlugins.sponge
-    #fishPlugins.async-prompt
     fd
-    fzf
+    fzf #(pkgs.writeScriptBin "fzf" "${pkgs.fzf}/bin/fzf $@")
+    sysz # systemctl with fzf
     grc
-    unstable.nh
+    bat
+    nh
     any-nix-shell
     dnsutils
     inetutils
