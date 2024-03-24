@@ -123,4 +123,41 @@
       };
     };
   };
+
+  programs.chromium = {
+    enable = true;
+    package = pkgs.chromium;
+    #"ifconfig.co/json"
+    commandLineArgs = [
+      "--ignore-gpu-blocklist"
+      "--disable-gpu-driver-bug-workarounds"
+      #"--use-gl=egl"
+      "--enable-gpu-rasterization"
+      "--enable-zero-copy"
+      "--enable-features=VaapiVideoDecodeLinuxGL,VaapiVideoDecoder,VaapiVideoEncoder,CanvasOopRasterization,UseOzonePlatform"
+      #"--disable-features=UseChromeOSDirectVideoDecoder"
+      #"--use-angle=vulkan"
+      #"--enable-unsafe-webgpu"
+      "--enable-features=Vulkan"
+      "--enable-features=TouchpadOverscrollHistoryNavigation"
+    ];
+    dictionaries = [
+      pkgs.hunspellDictsChromium.en_US
+    ];
+    extensions = [
+      { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
+      { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
+      {
+        id = "dcpihecpambacapedldabdbpakmachpb"; # bypasss paywalls
+        updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
+      }
+      #{
+      #  id = "aaaaaaaaaabbbbbbbbbbcccccccccc";
+      #  crxPath = "/home/share/extension.crx";
+      #  version = "1.0";
+      #}
+    ];
+  };
+
+  #programs.dircolors.enable = true;
 }

@@ -11,7 +11,7 @@ let
 in {
   users.users.delta.packages = (with pkgs; [
     git
-    chromium
+    #chromium
     wl-clipboard
     wl-clipboard-x11
     (callPackage "${self}/derivations/audiorelay.nix" { })
@@ -46,6 +46,7 @@ in {
     fishPlugins.done
     monero-gui
     inputs.telegram-desktop-patched.packages.${pkgs.system}.default
+    translate-shell
   ]);
 
   programs.firefox = {
@@ -63,6 +64,9 @@ in {
         ProviderURL = "https://mozilla.cloudflare-dns.com/dns-query";
         Locked = true;
       };
+      languagePacks = [
+        "ru" 
+      ];
 
       Preferences = {
         "ui.key.menuAccessKeyFocuses" = lock-false;
@@ -77,6 +81,7 @@ in {
           Status = "Locked";
         };
         "browser.tabs.firefox-view" = lock-false;
+        "browser.startup.homepage" = "http://ifconfig.co/json";
       };
 
       # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265/17
@@ -91,7 +96,16 @@ in {
               installation_mode = "normal_installed";
             };
           };
+          extension_custom = link: uuid: {
+            name = uuid;
+            value = {
+              install_url =
+                "${link}";
+              installation_mode = "normal_installed";
+            };
+          };
         in listToAttrs [
+          (extension_custom "https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi" "{ec2a8a42-bef4-4036-96df-7f1423cf64ab}")
           (extension "ublock-origin" "uBlock0@raymondhill.net")
           (extension "container-proxy" "contaner-proxy@bekh-ivanov.me")
           (extension "clearurls" "{74145f27-f039-47ce-a470-a662b129930a}")
@@ -117,6 +131,13 @@ in {
     };
   };
 
+  #programs.chromium = {
+  #  enable = true;
+  #  extensions = [
+  #    "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
+  #  ];
+  #};
+
   programs.thunar.enable = true;
   programs.xfconf.enable = true;
   programs.virt-manager.enable = true;
@@ -126,4 +147,19 @@ in {
     thunar-archive-plugin
     thunar-volman
   ];
+  
+  programs.fish = {
+    enable = true;
+    
+    shellAliases = {
+      fru = "trans ru:en";
+      fen = "trans en:ru";
+      icat = "kitten icat";
+    };
+    shellInit = ''
+      set -U __done_kitty_remote_control 1
+      set -U __done_kitty_remote_control_password "kitty-notification-password-fish"
+      set -U __done_notification_command 'notify-send --icon=kitty --app-name=kitty \$title \$argv[1] && '
+    '';
+  };
 }
