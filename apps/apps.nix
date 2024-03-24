@@ -88,7 +88,7 @@ in {
       # about:debugging#/runtime/this-firefox
       ExtensionSettings = with builtins;
         let
-          extension = shortId: uuid: {
+          extension = shortId: uuid: { #for extensions from addons.mozilla
             name = uuid;
             value = {
               install_url =
@@ -96,7 +96,7 @@ in {
               installation_mode = "normal_installed";
             };
           };
-          extension_custom = link: uuid: {
+          extension_custom = link: uuid: { # for extensions from other sources
             name = uuid;
             value = {
               install_url =
