@@ -39,15 +39,6 @@ in {
         recursive = true;
         source = "${nerdfonts}/share/fonts/truetype/NerdFonts";
       };
-      # ".config/gtk-4.0/gtk.css" = {
-      #   text = ''
-      #     window.messagedialog .response-area > button,
-      #     window.dialog.message .dialog-action-area > button,
-      #     .background.csd{
-      #       border-radius: 0;
-      #     }
-      #   '';
-      # };
     };
   };
 
