@@ -74,25 +74,24 @@ in {
     git
     micro
     nano
-    fishPlugins.grc
+    fishPlugins.grc grc
     fishPlugins.autopair
     fishPlugins.z
     fishPlugins.tide
     fishPlugins.sponge
     fishPlugins.fzf-fish
-    bat  #for fzf-fish 
-    fzf  #for fzf-fish
-    fd   #for fzf-fish
+    bat  #for fzf-fish plugin 
+    fzf  #for fzf-fish plugin
+    fd   #for fzf-fish plugin
     sysz # systemctl with fzf
-    grc
     nh
     any-nix-shell
     dnsutils
     inetutils
     killall
     tree
-    eza # better ls, will check what's better 
     lsd # better ls, will check what's better
+    eza # better ls, will check what's better 
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ];
 
@@ -104,6 +103,7 @@ in {
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
       haste = "HASTE_SERVER='https://haste.schizoposting.online' ${pkgs.haste-client}/bin/haste";
       ls = "${pkgs.lsd}/bin/lsd";
+      ltree = "${pkgs.lsd}/bin/lsd --tree";
     };
     promptInit = ''
       set TERM "xterm-256color"

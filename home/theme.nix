@@ -1,6 +1,8 @@
 { pkgs, lib, inputs, unstable, ... }:
 let
   gtk-theme = "adw-gtk3-dark";
+  cursor-package = pkgs.bibata-cursors;
+  cursor-theme = "Bibata-Modern-Classic";
 
   nerdfonts = (pkgs.nerdfonts.override {
     fonts = [
@@ -22,12 +24,12 @@ in {
       adw-gtk3
       nerdfonts
     ];
-  #sessionVariables.XCURSOR_THEME = cursor-theme;
+  sessionVariables.XCURSOR_THEME = cursor-theme;
   pointerCursor = {
     gtk.enable = true;
     x11.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
+    package = cursor-package;
+    name = cursor-theme;
     size = 8;
   };
     file = {
@@ -47,11 +49,10 @@ in {
   gtk = {
     enable = true;
     #font.name = "Iosevka Malie";
-    #theme.name = gtk-theme;
-    #cursorTheme = {
-    #  name = cursor-theme;
-    #  package = cursor-package;
-    #};
+    cursorTheme = {
+      name = cursor-theme;
+      package = cursor-package;
+    };
 
     theme = {
       name = "Catppuccin-Mocha-Compact-Lavender-Dark";
