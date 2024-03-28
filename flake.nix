@@ -10,6 +10,11 @@
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
     telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
     secrets.url = "git+ssh://git@github.com/deltathetawastaken/secrets.git";
+    #nixvim.url = "github:nix-community/nixvim";
+    neovim = {
+      url = "github:deltathetawastaken/neovim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ { self, nixpkgs, home-manager, anyrun, ... }: 

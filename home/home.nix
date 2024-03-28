@@ -10,7 +10,6 @@
 
   #services.blueman-applet.enable = true;
   #services.network-manager-applet.enable = true;
-
   programs.vscode = {
       enable = true;
       package = pkgs.vscodium;
@@ -22,7 +21,8 @@
       userSettings = {
         "window.titleBarStyle" = "custom";
         "nix.enableLanguageServer"= true;
-        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        #"nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
         "nix.serverSettings" = {
           nil = {
             formatting = {

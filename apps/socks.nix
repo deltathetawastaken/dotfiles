@@ -58,8 +58,8 @@ let
     }
 
     set_gateway() {
-      default_interface_new=$(ip route | awk '/default/ {print $5}')
-      default_gateway_new=$(ip route | awk '/default/ {print $3}')
+      default_interface_new=$(ip route | awk '/default/ {print $5; exit}')
+      default_gateway_new=$(ip route | awk '/default/ {print $3; exit}')
 
       if [[ ! -z "$default_interface_new" && ! -z "$default_gateway_new" ]]; then
         default_interface=$default_interface_new

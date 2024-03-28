@@ -9,6 +9,10 @@ let
     Status = "locked";
   };
 in {
+  imports = [
+    inputs.nixvim.nixosModules.nixvim
+  ];
+
   users.users.delta.packages = (with pkgs; [
     git
     #chromium
@@ -47,6 +51,9 @@ in {
     monero-gui
     inputs.telegram-desktop-patched.packages.${pkgs.system}.default
     translate-shell
+    tridactyl-native #firefox tridactyl addon
+    inputs.neovim.packages.${pkgs.system}.default ripgrep #ripgrep for neovim
+    lunarvim
   ]);
 
   programs.firefox = {
@@ -81,7 +88,7 @@ in {
           Status = "Locked";
         };
         "browser.tabs.firefox-view" = lock-false;
-        "browser.startup.homepage" = "http://ifconfig.co/json";
+        "browser.startup.homepage" = "https://ifconfig.me";
       };
 
       # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265/17
@@ -159,7 +166,29 @@ in {
     shellInit = ''
       set -U __done_kitty_remote_control 1
       set -U __done_kitty_remote_control_password "kitty-notification-password-fish"
-      set -U __done_notification_command 'notify-send --icon=kitty --app-name=kitty \$title \$argv[1] && '
+      set -U __done_notification_command "${pkgs.libnotify}/bin/notify-send --icon=kitty --app-name=kitty \$title \$argv[1]"
     '';
   };
+
+  programs.neovim = {
+    enable = true;
+    #defaultEditor = true;
+    configure = {
+      customRC = ''
+        :set mouse=a
+      '';
+      #packages.myVimPackage = with pkgs.vimPlugins; {
+      #  # loaded on launch
+      #  start = [ fugitive nvchad nvchad-ui ];
+      #  # manually loadable by calling `:packadd $plugin-name`
+      #  opt = [ ];
+      #};
+    };
+  };
+  #programs.nixvim = {
+  #  enable = true;
+  #  extraPlugins = with pkgs.vimPlugins; [
+  #    nvchad nvchad-ui fugitive
+  #  ];
+  #};
 }

@@ -29,14 +29,20 @@ in
       });
     })
   ];
+  
+  system.activationScripts."gnome_setup_misc".text = ''
+    # rm -f /home/delta/.config/gtk-4.0/gtk.css
+    # rm -f /home/delta/.config/gtk-3.0/gtk.css
+    # ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-size 16 
+  '';
 
   programs.dconf.enable = true;
   programs.dconf.profiles.user.databases = [
     { 
       settings = {
-        "org/gnome/mutter" = {
-          experimental-features = [ "scale-monitor-framebuffer" ];
-        };
+        # "org/gnome/mutter" = {
+        #   experimental-features = [ "scale-monitor-framebuffer" ];
+        # };
         "org/gnome/settings-daemon/plugins/media-keys" = {
           custom-keybindings = [
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"

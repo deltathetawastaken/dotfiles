@@ -10,13 +10,14 @@
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_QPA_PLATFORM = "wayland";
     STEAM_FORCE_DESKTOPUI_SCALING = "1";
-    NIXOS_OZONE_WL = "1";
-    XCURSOR_SIZE = "16";
+    # NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    XCURSOR_SIZE = "";
   };
 
   services.xserver = {
     enable = true;
-    videoDrivers = [ "modesetting" ];
+    videoDrivers = [ "amdgpu" ];
     displayManager = {
       gdm.enable = true;
       autoLogin = {

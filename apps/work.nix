@@ -88,7 +88,7 @@ let
 
     ########################################################################################################################
 
-    if ip netns | grep -q "$NETNS_NAME"; then
+    if ip netns | grep -q "$NETNS_NAME"; then 
       echo "This script is already running!"
       exit 1
     fi
@@ -97,8 +97,8 @@ let
     RUNNING=true
 
     get_default_interface() {
-      default_gateway=$(ip route | awk '/default/ {print $3}')
-      default_interface=$(ip route | awk '/default/ {print $5}')
+      default_gateway=$(ip route | awk '/default/ {print $3; exit}')
+      default_interface=$(ip route | awk '/default/ {print $5; exit}')
 
       if [[ -z "$default_interface" ]]; then
         echo "No default interface, are you connected to the internet?"
@@ -200,7 +200,7 @@ let
       ip monitor route | while read -r event; do
         case "$event" in
             'local '*)
-              default_gateway_new=$(ip route | awk '/default/ {print $3}')
+              default_gateway_new=$(ip route | awk '/default/ {print $3; exit}')
 
               if [[ ! -z "$default_gateway_new" ]]; then
                 if [[ ! "$default_gateway_new" == "$default_gateway" ]]; then
