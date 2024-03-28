@@ -1,4 +1,4 @@
-{ unstable, inputs, config, pkgs, ... }:
+{ unstable, inputs, config, pkgs, lib, ... }:
 let
   run = pkgs.writeScriptBin "run" ''
     #!/usr/bin/env bash
@@ -72,8 +72,7 @@ in {
     run
     shell
     git
-    micro
-    nano
+    helix micro
     fishPlugins.grc grc
     fishPlugins.autopair
     fishPlugins.z
@@ -92,8 +91,13 @@ in {
     tree
     lsd # better ls, will check what's better
     eza # better ls, will check what's better 
+    htop
+    btop
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ];
+
+  
+  environment.variables.EDITOR = "hx";
 
   programs.command-not-found.enable = false;
   programs.fish = {

@@ -13,6 +13,15 @@
     # NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
     XCURSOR_SIZE = "";
+    EDITOR = "hx";
+    BROWSER = "firefox";
+    TERMINAL = "foot";
+  };
+
+  environment.variables = lib.mkForce {
+    EDITOR = "hx";
+    BROWSER = "firefox";
+    TERMINAL = "foot";
   };
 
   services.xserver = {

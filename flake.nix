@@ -10,45 +10,47 @@
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
     telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
     secrets.url = "git+ssh://git@github.com/deltathetawastaken/secrets.git";
-    #nixvim.url = "github:nix-community/nixvim";
-    neovim = {
-      url = "github:deltathetawastaken/neovim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixvim.url = "github:nix-community/nixvim";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, anyrun, ... }: 
-  let
-    pkgs = nixpkgs.legacyPackages."x86_64-linux";
-    stable = import inputs.nixpkgs-stable { system = "x86_64-linux"; config = { allowUnfree = true; }; };
-    unstable = import inputs.nixpkgs-unstable { system = "x86_64-linux"; config = { allowUnfree = true; }; };
-    specialArgs = { inherit inputs self stable unstable homeSettings; };
-    homeSettings = {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.delta = import ./home/home.nix;
-      home-manager.extraSpecialArgs = specialArgs;
+  outputs = inputs@{ self, nixpkgs, home-manager, anyrun, ... }:
+    let
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      stable = import inputs.nixpkgs-stable {
+        system = "x86_64-linux";
+        config = { allowUnfree = true; };
+      };
+      unstable = import inputs.nixpkgs-unstable {
+        system = "x86_64-linux";
+        config = { allowUnfree = true; };
+      };
+      specialArgs = { inherit inputs self stable unstable homeSettings; };
+      homeSettings = {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.delta = import ./home/home.nix;
+        home-manager.extraSpecialArgs = specialArgs;
+      };
+    in {
+      devShells."x86_64-linux".default = pkgs.mkShell {
+        name = "delta";
+        packages = with pkgs; [ gitleaks pre-commit ];
+        shellHook = "pre-commit install &> /dev/null && gitleaks detect -v";
+      };
+      nixosConfigurations.dlaptop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = specialArgs;
+        modules = [ ./hosts/generic.nix ./hosts/dlaptop/system.nix ];
+      };
+      nixosConfigurations.intelnuc = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = specialArgs;
+        modules = [ ./hosts/generic.nix ./hosts/intelnuc/system.nix ];
+      };
+      nixosConfigurations.huanan = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = specialArgs;
+        modules = [ ./hosts/generic.nix ./hosts/huanan/system.nix ];
+      };
     };
-  in {
-    devShells."x86_64-linux".default = pkgs.mkShell {
-      name = "delta";
-      packages = with pkgs; [ gitleaks pre-commit ];
-      shellHook = ''pre-commit install &> /dev/null && gitleaks detect -v'';
-    };
-    nixosConfigurations.dlaptop = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = specialArgs;
-      modules = [ ./hosts/generic.nix ./hosts/dlaptop/system.nix ];
-    };
-    nixosConfigurations.intelnuc = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = specialArgs;
-      modules = [ ./hosts/generic.nix ./hosts/intelnuc/system.nix ];
-    };
-    nixosConfigurations.huanan = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = specialArgs;
-      modules = [ ./hosts/generic.nix ./hosts/huanan/system.nix ];
-    };
-  };
 }

@@ -1,5 +1,4 @@
 { stable, unstable, inputs, home, config, lib, pkgs, specialArgs, ... }:
-
 {
   home.username = "delta";
   home.stateVersion = "23.11";
@@ -12,7 +11,8 @@
   #services.network-manager-applet.enable = true;
   programs.vscode = {
       enable = true;
-      package = pkgs.vscodium;
+      package = pkgs.vscode;
+      
       extensions = with pkgs.vscode-extensions; [
         matklad.rust-analyzer
         jnoortheen.nix-ide
@@ -26,7 +26,7 @@
         "nix.serverSettings" = {
           nil = {
             formatting = {
-              command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
+              command = [ "${pkgs.alejandra}/bin/alejandra" ];
             };
           };
         };
@@ -157,6 +157,45 @@
       #  version = "1.0";
       #}
     ];
+  };
+
+  programs.helix = {
+    enable = true;
+
+    languages.language = [{
+      name = "nix";
+      auto-format = true;
+      formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+    }];
+    themes = {
+      fleet_dark_transparent = {
+        "inherits" = "fleet_dark";
+        "ui.background" = { };
+      };
+    };
+
+    settings = {
+        theme = "fleet_dark_transparent";
+
+        editor = {
+          line-number = "relative";
+          mouse = true;
+          lsp.display-messages = true;
+          cursor-shape = {
+            normal = "block";
+            insert = "bar";
+            select = "underline";
+          };
+          file-picker.hidden = false;
+        };
+
+      keys.normal = {
+      space.space = "file_picker";
+      space.w = ":w";
+      space.q = ":q";
+      esc = [ "collapse_selection" "keep_primary_selection" ];
+      };
+    };
   };
 
   #programs.dircolors.enable = true;

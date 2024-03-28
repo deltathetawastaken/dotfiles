@@ -31,8 +31,8 @@ in
   ];
   
   system.activationScripts."gnome_setup_misc".text = ''
-    # rm -f /home/delta/.config/gtk-4.0/gtk.css
-    # rm -f /home/delta/.config/gtk-3.0/gtk.css
+    rm -f /home/delta/.config/gtk-4.0/gtk.css
+    rm -f /home/delta/.config/gtk-3.0/gtk.css
     # ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-size 16 
   '';
 
@@ -73,7 +73,7 @@ in
         "org/gnome/desktop/interface" = {
           icon-theme = "Papirus-Dark";
           color-scheme = "prefer-dark";
-          gtk-theme = "adw-gtk3-dark";
+          #gtk-theme = "adw-gtk3-dark";
         };
         "org/gnome/shell" = {
           favorite-apps = [
@@ -171,6 +171,8 @@ in
     pkgs.orca
     epiphany
     geary
+    pkgs.gnome-console
+    gnome-terminal
     gnome-backgrounds
     gnome-calendar
     gnome-characters
