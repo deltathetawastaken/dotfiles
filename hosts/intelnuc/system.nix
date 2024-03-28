@@ -122,5 +122,37 @@
     '';
   };
 
+  services.forgejo = {
+    enable = true;
+    settings = {
+      service.DISABLE_REGISTRATION = true;
+      server = {
+        DOMAIN = inputs.secrets.hosts.intelnuc.forgejo.domain;
+        DISABLE_SSH = true;
+        HTTP_PORT = 3838;
+        ROOT_URL = "https://[REDACTED]";
+      };
+    };
+    database = {
+      type = "sqlite3";
+    };
+  };
+
+  services.cloudflared.enable = true;
+  services.cloudflared.tunnels = {
+    "intelnuc" = {
+      default = "http_status:404";
+      credentialsFile = "${config.sops.secrets.cloudflared.path}";
+    };
+  };
+
+  services.ntfy-sh = {
+    enable = true;
+    settings = {
+      base-url = inputs.secrets.hosts.intelnuc.ntfy.url;
+      listen-http = ":3333";
+    };
+  };
+
   system.stateVersion = "22.11";
 }

@@ -8,6 +8,34 @@ let
     Value = true;
     Status = "locked";
   };
+  kitty_config = pkgs.writeText "kitty.conf" ''
+    # See https://sw.kovidgoyal.net/kitty/conf.html
+    shell_integration no-rc
+
+    allow_remote_control password
+    background #171717
+    background_opacity 0.8
+    color0 #3F3F3F
+    color1 #705050
+    color10 #72D5A3
+    color11 #F0DFAF
+    color12 #94BFF3
+    color13 #EC93D3
+    color14 #93E0E3
+    color15 #FFFFFF
+    color2 #60B48A
+    color3 #DFAF8F
+    color4 #9AB8D7
+    color5 #DC8CC3
+    color6 #8CD0D3
+    color7 #DCDCCC
+    color8 #709080
+    color9 #DCA3A3
+    foreground #DCDCCC
+    hide_window_decorations yes
+    remember_window_size yes
+    remote_control_password kitty-notification-password-fish ls
+  '';
 in {
   imports = [
     inputs.nixvim.nixosModules.nixvim
@@ -44,7 +72,18 @@ in {
     wget
     wlogout
     nom
-    vesktop
+    (vesktop.overrideAttrs (oldAttrs: {
+      desktopItems = [ (pkgs.makeDesktopItem {
+        name = "vesktop";
+        desktopName = "Discord";
+        exec = "vesktop %U";
+        icon = "discord";
+        startupWMClass = "Vesktop";
+        genericName = "Internet Messenger";
+        keywords = [ "discord" "vencord" "electron" "chat" ];
+        categories = [ "Network" "InstantMessaging" "Chat" ];
+      })];
+    }))
     localsend
     trayscale
     fishPlugins.done
@@ -52,8 +91,35 @@ in {
     inputs.telegram-desktop-patched.packages.${pkgs.system}.default
     translate-shell
     tridactyl-native #firefox tridactyl addon
-    inputs.neovim.packages.${pkgs.system}.default ripgrep #ripgrep for neovim
-    lunarvim
+    ripgrep gh # for nvim
+    lunarvim # text edit
+    lexend # font from google (non-mono)
+    # (pkgs.writeScriptBin "kitty" "${pkgs.kitty}/bin/kitty --single-instance --config ${kitty_config} $@")
+    # (pkgs.writeScriptBin "kitten" "${pkgs.kitty}/bin/kitten $@")
+    # (pkgs.makeDesktopItem {
+    #   type = "Application";
+    #   name = "kitty";
+    #   desktopName = "kitty";
+    #   genericName = "Terminal Emulator";
+    #   comment = "Fast, feature-rich, GPU based terminal";
+    #   tryExec = "kitty";
+    #   exec = "kitty";
+    #   icon = "kitty";
+    #   categories = [ "System" "TerminalEmulator"];
+    # })
+    # (pkgs.makeDesktopItem {
+    #   type = "Application";
+    #   name = "kitty URL Launcher";
+    #   desktopName = "kitty URL Launcher";
+    #   genericName = "Terminal Emulator";
+    #   comment = "Open URLs with kitty";
+    #   tryExec = "kitty";
+    #   exec = "kitty +open %U";
+    #   icon = "kitty";
+    #   categories = [ "System" "TerminalEmulator"];
+    #   noDisplay = true;
+    #   mimeTypes = [ "image/*" "application/x-sh" "application/x-shellscript" "inode/directory" "text/*" "x-scheme-handler/kitty" "x-scheme-handler/ssh" ];
+    # })
   ]);
 
   programs.firefox = {
@@ -170,25 +236,25 @@ in {
     '';
   };
 
-  programs.neovim = {
-    enable = true;
-    #defaultEditor = true;
-    configure = {
-      customRC = ''
-        :set mouse=a
-      '';
-      #packages.myVimPackage = with pkgs.vimPlugins; {
-      #  # loaded on launch
-      #  start = [ fugitive nvchad nvchad-ui ];
-      #  # manually loadable by calling `:packadd $plugin-name`
-      #  opt = [ ];
-      #};
-    };
-  };
-  #programs.nixvim = {
+  #programs.neovim = {
   #  enable = true;
-  #  extraPlugins = with pkgs.vimPlugins; [
-  #    nvchad nvchad-ui fugitive
-  #  ];
+  #  defaultEditor = true;
+  #  configure = {
+  #    customRC = ''
+  #      :set mouse=a
+  #    '';
+  #  };
   #};
+
+  programs.nixvim = {
+    enable = true;
+    plugins.lightline.enable = true;
+
+    options= {
+
+    };
+
+  };
+
+  
 }

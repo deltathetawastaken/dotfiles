@@ -114,7 +114,7 @@ let
     pid=$(${pkgs.procps}/bin/pgrep "kitty")
 
     if [[ -z $pid ]]; then
-      kitty --start-as maximized &
+      kitty --start-as maximized --single-instance &
     else
       ${pkgs.glib}/bin/gdbus call --session --dest org.gnome.Shell --object-path /de/lucaswerkmeister/ActivateWindowByTitle --method de.lucaswerkmeister.ActivateWindowByTitle.activateByWmClass 'kitty'
     fi
