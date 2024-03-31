@@ -41,6 +41,7 @@ in {
     FLAKE = "/home/delta/Documents/dotfiles";
   };
 
+
   users.users.delta = {
     isNormalUser = true;
     description = "delta";
@@ -50,20 +51,21 @@ in {
     ];
   };
 
-  nix = {
-    settings = {
-      experimental-features = [ "flakes" "nix-command" ];
-      auto-optimise-store = true;
-      substituters = [ 
-        "https://shwewo.cachix.org" 
-        "https://anyrun.cachix.org" 
-      ];
-      trusted-public-keys = [ 
-        "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo=" 
-        "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s=" 
-      ];
+    nix = {
+      settings = {
+        experimental-features = [ "flakes" "nix-command" ];
+        auto-optimise-store = true;
+        substituters = [ 
+          "https://shwewo.cachix.org" 
+          "https://anyrun.cachix.org" 
+        ];
+        trusted-public-keys = [ 
+          "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo=" 
+          "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s=" 
+        ];
+      };
+      package = unstable.nixUnstable;
     };
-  };
 
   nixpkgs.config.allowUnfree = true;
   boot.kernel.sysctl."kernel.sysrq" = 1;
@@ -93,6 +95,8 @@ in {
     eza # better ls, will check what's better 
     htop
     btop
+    nix-search-cli
+    nix-index
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ];
 
@@ -107,6 +111,7 @@ in {
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
       haste = "HASTE_SERVER='https://haste.schizoposting.online' ${pkgs.haste-client}/bin/haste";
       ls = "${pkgs.lsd}/bin/lsd";
+      search = "nix-search -d -m 5 -p";
       ltree = "${pkgs.lsd}/bin/lsd --tree";
     };
     promptInit = ''

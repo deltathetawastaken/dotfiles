@@ -22,7 +22,13 @@ let
         script = attrs.script;
         preStart = "while true; do ip addr show dev novpn1 | grep -q 'inet' && break; sleep 1; done";
 
-        path = with pkgs; [ shadowsocks-libev shadowsocks-v2ray-plugin sing-box wireproxy iproute2 ];
+        path = with pkgs; [ 
+          iproute2 
+          shadowsocks-libev 
+          shadowsocks-v2ray-plugin 
+          sing-box 
+          wireproxy 
+          (callPackage ../derivations/microsocks.nix {}) ];
       };
     };
   
@@ -30,7 +36,8 @@ let
   
   socksed = [
     { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";   } # port 4000
-    { name = "socks-warp"; script = "wireproxy -c /etc/wireguard/warp0.conf";     } # port 3333
+    { name = "socks-warp";  script = "wireproxy -c /etc/wireguard/warp0.conf";     } # port 3333
+    { name = "socks-novpn"; script = "microsocks -i 192.168.150.2 -p 3334";        } # port 3334
   ];
 
   delete_rules = pkgs.writeScriptBin "delete_rules" ''
@@ -117,27 +124,67 @@ in {
   };
 
   users.groups.socks = {};
-  systemd.services = builtins.listToAttrs (map socksBuilder socksed) // { novpn = {
-    enable = true;
-    description = "novpn namespace";
-    after = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    wants = map (s: "${s.name}.service") socksed ++ [ "network-online.target"];
+  systemd.services = builtins.listToAttrs (map socksBuilder socksed) // { 
+    novpn = {
+      enable = true;
+      description = "novpn namespace";
+      after = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      wants = map (s: "${s.name}.service") socksed ++ [ "network-online.target"];
 
-    serviceConfig = {
-      Restart = "on-failure";
-      RestartSec = "15";
-      ExecStart = "${start_novpn}/bin/start_novpn";
-      ExecStop = "${stop_novpn}/bin/stop_novpn";
-      Type = "simple";
+      serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = "15";
+        ExecStart = "${start_novpn}/bin/start_novpn";
+        ExecStop = "${stop_novpn}/bin/stop_novpn";
+        StateDirectory = "novpn";
+        Type = "simple";
+      };
+      
+      preStart = "${stop_novpn}/bin/stop_novpn && ip netns add novpn";
+      path = with pkgs; [ gawk iproute2 iptables sysctl coreutils ];
     };
-    
-    preStart = "${stop_novpn}/bin/stop_novpn && ip netns add novpn";
-    path = with pkgs; [ gawk iproute2 iptables sysctl coreutils ];
-  };};
+
+    warp-svc = {
+      enable = true;
+      description = "Cloudflare Zero Trust Client Daemon";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "pre-network.target" ];
+
+      serviceConfig = {
+        Type = "simple";
+        Restart = "on-failure";
+        RestartSec = "15";
+        DynamicUser = "no";
+        # ReadOnlyPaths = "/etc/resolv.conf";
+        CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_SYS_PTRACE";
+        AmbientCapabilities = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_SYS_PTRACE";
+        StateDirectory = "cloudflare-warp";
+        RuntimeDirectory = "cloudflare-warp";
+        LogsDirectory = "cloudflare-warp";
+        ExecStart = "${pkgs.cloudflare-warp}/bin/warp-svc";
+      };
+
+      postStart = ''
+        while true; do
+          set -e
+          status=$(${pkgs.cloudflare-warp}/bin/warp-cli status || true)
+          set +e
+
+          if [[ "$status" != *"Unable to connect to CloudflareWARP daemon"* ]]; then
+            ${pkgs.cloudflare-warp}/bin/warp-cli set-custom-endpoint 162.159.193.1:2408
+            exit 0
+          fi
+          sleep 1
+        done
+      '';
+    };
+
+    tor.wantedBy = lib.mkForce [];
+  };
 
   users.users.delta.packages = [
-    (pkgs.writeScriptBin "nyx" ''sudo -u tor -g tor ${inputs.nixpkgs-2105.legacyPackages."x86_64-linux".nyx}/bin/nyx $@'')
+    (pkgs.writeScriptBin "nyx" ''sudo -u tor -g tor ${inputs.nixpkgs2105.legacyPackages."x86_64-linux".nyx}/bin/nyx $@'')
   ];
 
   services.tor = {

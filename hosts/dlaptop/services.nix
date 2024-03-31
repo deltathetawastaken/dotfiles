@@ -4,29 +4,29 @@
     (pkgs.writeScriptBin "warp-cli" "${pkgs.cloudflare-warp}/bin/warp-cli $@")
   ];
 
-  systemd.services.cloudflare-warp = {
-    enable = true;
-    description = "cloudflare warp service";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Restart = "on-failure";
-      RestartSec = "15";
-    };
-    script = "${pkgs.cloudflare-warp}/bin/warp-svc";
+  # systemd.services.cloudflare-warp = {
+  #   enable = true;
+  #   description = "cloudflare warp service";
+  #   wantedBy = [ "multi-user.target" ];
+  #   serviceConfig = {
+  #     Restart = "on-failure";
+  #     RestartSec = "15";
+  #   };
+  #   script = "${pkgs.cloudflare-warp}/bin/warp-svc";
 
-    postStart = ''
-      while true; do
-        set -e
-        status=$(${pkgs.cloudflare-warp}/bin/warp-cli status || true)
-        set +e
-        if [[ "$status" != *"Unable to connect to CloudflareWARP daemon"* ]]; then
-          ${pkgs.cloudflare-warp}/bin/warp-cli set-custom-endpoint 162.159.193.1:2408
-          exit 0
-        fi
-        sleep 15
-      done
-    '';
-  };
+  #   postStart = ''
+  #     while true; do
+  #       set -e
+  #       status=$(${pkgs.cloudflare-warp}/bin/warp-cli status || true)
+  #       set +e
+  #       if [[ "$status" != *"Unable to connect to CloudflareWARP daemon"* ]]; then
+  #         ${pkgs.cloudflare-warp}/bin/warp-cli set-custom-endpoint 162.159.193.1:2408
+  #         exit 0
+  #       fi
+  #       sleep 15
+  #     done
+  #   '';
+  # };
 
   users.groups.cloudflared = { };
   users.users.cloudflared = {

@@ -94,32 +94,9 @@ in {
     ripgrep gh # for nvim
     lunarvim # text edit
     lexend # font from google (non-mono)
-    # (pkgs.writeScriptBin "kitty" "${pkgs.kitty}/bin/kitty --single-instance --config ${kitty_config} $@")
-    # (pkgs.writeScriptBin "kitten" "${pkgs.kitty}/bin/kitten $@")
-    # (pkgs.makeDesktopItem {
-    #   type = "Application";
-    #   name = "kitty";
-    #   desktopName = "kitty";
-    #   genericName = "Terminal Emulator";
-    #   comment = "Fast, feature-rich, GPU based terminal";
-    #   tryExec = "kitty";
-    #   exec = "kitty";
-    #   icon = "kitty";
-    #   categories = [ "System" "TerminalEmulator"];
-    # })
-    # (pkgs.makeDesktopItem {
-    #   type = "Application";
-    #   name = "kitty URL Launcher";
-    #   desktopName = "kitty URL Launcher";
-    #   genericName = "Terminal Emulator";
-    #   comment = "Open URLs with kitty";
-    #   tryExec = "kitty";
-    #   exec = "kitty +open %U";
-    #   icon = "kitty";
-    #   categories = [ "System" "TerminalEmulator"];
-    #   noDisplay = true;
-    #   mimeTypes = [ "image/*" "application/x-sh" "application/x-shellscript" "inode/directory" "text/*" "x-scheme-handler/kitty" "x-scheme-handler/ssh" ];
-    # })
+    jamesdsp easyeffects
+    nmap
+    wget
   ]);
 
   programs.firefox = {
@@ -198,8 +175,8 @@ in {
           (extension "tampermonkey" "firefox@tampermonkey.net")
           #(extension "torrent-control" "{e6e36c9a-8323-446c-b720-a176017e38ff}")
           (extension "unpaywall" "{f209234a-76f0-4735-9920-eb62507a54cd}")
-          (extension "ctrl-number-to-switch-tabs"
-            "{84601290-bec9-494a-b11c-1baa897a9683}")
+          (extension "ctrl-number-to-switch-tabs" "{84601290-bec9-494a-b11c-1baa897a9683}")
+          (extension "temporary-containers" "{c607c8df-14a7-4f28-894f-29e8722976af}")
         ];
     };
   };

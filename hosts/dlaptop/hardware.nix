@@ -26,7 +26,13 @@
         name = "TIAS2781RCA4.bin";
       }} $out/lib/firmware/TIAS2781RCA4.bin
     '')
+    pkgs.wireless-regdb
   ];
+
+  # 5 GHZ wifi
+  boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom="RU"
+  '';
 
   boot.loader.systemd-boot.enable = true;
 

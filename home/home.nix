@@ -32,13 +32,22 @@
         version = "2.0.11";
         sha256 = "7ZH9l4jySPo1jMZnylTPK6o+XZnxUtrpYIiY9xVPuRw=";
       }
+      {
+        name = "bracket-select";
+        publisher = "chunsen";
+        version = "2.0.2";
+        sha256 = "sha256-2+42NJWAI0cz+RvmihO2v8J/ndAHvV3YqMExvnl46m4=";
+      }
     ];
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       userSettings = {
-        "files.autoSave" = "on";
+        "files.autoSave" = "onFocusChange";
         "window.titleBarStyle" = "custom";
         "workbench.colorTheme" = "Popping and Locking";
+        "terminal.external.linuxExec" = "kitty";
+        "editor.guides.bracketPairs" = "active";
+        "editor.bracketPairColorization.independentColorPoolPerBracketType" = true;
         "nix.enableLanguageServer"= true;
         #"nix.serverPath" = "${pkgs.nil}/bin/nil";
         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
