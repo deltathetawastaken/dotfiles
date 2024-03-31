@@ -95,9 +95,9 @@
 
       #Trubo boost control
       CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT = 1;
+      CPU_BOOST_ON_BAT = 0;
       CPU_HWP_DYN_BOOST_ON_AC = 1;
-      CPU_HWP_DYN_BOOST_ON_BAT = 1;
+      CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
       #Optional helps save long term battery health
       #START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
@@ -156,6 +156,8 @@
     age-plugin-yubikey
     lua5_4
     nodejs_21
+
+    rocmPackages.rocm-smi #gpu support in btop
   ];
   
   system.stateVersion = "23.11"; # Don't forget the comment
