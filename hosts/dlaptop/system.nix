@@ -99,6 +99,19 @@
       CPU_HWP_DYN_BOOST_ON_AC = 1;
       CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
+      #GPU
+      RADEON_DPM_STATE_ON_AC = "performance";
+      RADEON_DPM_STATE_ON_BAT = "battery";
+      RADEON_DPM_PERF_LEVEL_ON_AC= "auto";
+      RADEON_DPM_PERF_LEVEL_ON_BAT= "low";
+
+
+      RESTORE_DEVICE_STATE_ON_STARTUP = 1;
+      DEVICES_TO_ENABLE_ON_STARTUP = "bluetooth wifi";
+
+      NMI_WATCHDOG = 0;
+
+
       #Optional helps save long term battery health
       #START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
       #STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging

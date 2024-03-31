@@ -16,17 +16,36 @@
       extensions = with pkgs.vscode-extensions; [
         matklad.rust-analyzer
         jnoortheen.nix-ide
-      ];
+        b4dm4n.vscode-nixpkgs-fmt
+        usernamehw.errorlens
+        eamodio.gitlens
+      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "remote-ssh-edit";
+        publisher = "ms-vscode-remote";
+        version = "0.47.2";
+        sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
+      }
+      {
+        name = "popping-and-locking-vscode";
+        publisher = "hedinne";
+        version = "2.0.11";
+        sha256 = "7ZH9l4jySPo1jMZnylTPK6o+XZnxUtrpYIiY9xVPuRw=";
+      }
+    ];
+      enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       userSettings = {
+        "files.autoSave" = "on";
         "window.titleBarStyle" = "custom";
+        "workbench.colorTheme" = "Popping and Locking";
         "nix.enableLanguageServer"= true;
         #"nix.serverPath" = "${pkgs.nil}/bin/nil";
         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
         "nix.serverSettings" = {
           nil = {
             formatting = {
-              command = [ "${pkgs.alejandra}/bin/alejandra" ];
+              command = [ "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt" ];
             };
           };
         };
