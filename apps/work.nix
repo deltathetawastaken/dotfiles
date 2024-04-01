@@ -268,10 +268,11 @@ let
 
   hostsNoRemote = pkgs.writeText "hosts_no_remote" ''
     127.0.0.1 graf1.local graf2.local kibana.local
+    ${inputs.secrets.work.zabbix} ${inputs.secrets.work.zabbix-url} 
   '';
   
   hostsRemote = pkgs.writeText "host_remote" ''
-    100.92.15.128 graf1.local graf2.local kibana.local
+    100.92.15.128 graf1.local graf2.local kibana.local zabbix.local ${inputs.secrets.work.zabbix-url}
   '';
 
   kittyWork = pkgs.writeScriptBin "kittywork" ''

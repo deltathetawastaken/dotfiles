@@ -48,6 +48,9 @@
         "terminal.external.linuxExec" = "kitty";
         "editor.guides.bracketPairs" = "active";
         "editor.bracketPairColorization.independentColorPoolPerBracketType" = true;
+        "editor.fontFamily" = "'FiraCode Nerd Font'";
+        "editor.fontLigatures" = "'ss01', 'ss02', 'ss06', 'ss08',  'cv14', 'cv04' , 'tnum'";
+        "editor.fontWeight" = "450";
         "nix.enableLanguageServer"= true;
         #"nix.serverPath" = "${pkgs.nil}/bin/nil";
         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
@@ -119,6 +122,8 @@
       hide_window_decorations = "yes";
       remote_control_password = "kitty-notification-password-fish ls";
       allow_remote_control = "password";
+      font_family= "FiraCode Nerd Font"; #FiraCode Nerd Font Ret
+      font_features = "FiraCodeNF-Reg +ss01 +ss02 +ss06 +ss08 +cv14 +cv03 +tnum";
 
       color0 = "#3F3F3F";
       color1 = "#705050";

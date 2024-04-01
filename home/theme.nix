@@ -10,7 +10,7 @@ let
       #"UbuntuMono"
       #"CascadiaCode"
       #"FantasqueSansMono"
-      #"FiraCode"
+      "FiraCode"
       #"Mononoki"
       "Iosevka"
     ];

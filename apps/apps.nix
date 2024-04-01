@@ -35,6 +35,11 @@ let
     hide_window_decorations yes
     remember_window_size yes
     remote_control_password kitty-notification-password-fish ls
+
+    font_family      FiraCode Nerd Font
+    bold_font        auto
+    italic_font      auto
+    bold_italic_font auto
   '';
 in {
   imports = [
@@ -94,9 +99,15 @@ in {
     ripgrep gh # for nvim
     lunarvim # text edit
     lexend # font from google (non-mono)
+    #fira-code-nerdfont # mono font
+    iosevka-comfy.comfy
+    iosevka-comfy.comfy-duo
+    iosevka-comfy.comfy-wide
+    iosevka-comfy.comfy-wide-duo
     jamesdsp easyeffects
     nmap
     wget
+    doggo #dig for dns-over-*
   ]);
 
   programs.firefox = {

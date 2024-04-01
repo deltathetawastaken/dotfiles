@@ -34,6 +34,19 @@
     options cfg80211 ieee80211_regdom="RU"
   '';
 
+
+  services.fstrim = {
+    enable = true;
+    interval = "weekly";
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+    # randomizedDelaySec = "30m";
+  };
+
   boot.loader.systemd-boot.enable = true;
 
   boot.kernelParams = [
