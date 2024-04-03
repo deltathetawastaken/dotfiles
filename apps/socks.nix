@@ -28,7 +28,8 @@ let
           shadowsocks-v2ray-plugin 
           sing-box 
           wireproxy 
-          (callPackage ../derivations/microsocks.nix {}) ];
+          gost
+          ];
       };
     };
   
@@ -37,7 +38,7 @@ let
   socksed = [
     { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";   } # port 4000
     { name = "socks-warp";  script = "wireproxy -c /etc/wireguard/warp0.conf";     } # port 3333
-    { name = "socks-novpn"; script = "microsocks -i 192.168.150.2 -p 3334";        } # port 3334
+    { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";        } # port 3334
   ];
 
   delete_rules = pkgs.writeScriptBin "delete_rules" ''

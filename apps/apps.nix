@@ -41,6 +41,7 @@ let
     italic_font      auto
     bold_italic_font auto
   '';
+  shwewo = inputs.shwewo.packages.${pkgs.system};
 in {
   imports = [
     inputs.nixvim.nixosModules.nixvim
@@ -51,8 +52,6 @@ in {
     #chromium
     wl-clipboard
     wl-clipboard-x11
-    (callPackage "${self}/derivations/audiorelay.nix" { })
-    (callPackage "${self}/derivations/spotify.nix" { })
     #(callPackage ../derivations/nu_plugin_dns.nix { })
     xorg.xwininfo
     jq
@@ -93,7 +92,6 @@ in {
     trayscale
     fishPlugins.done
     monero-gui
-    inputs.telegram-desktop-patched.packages.${pkgs.system}.default
     translate-shell
     tridactyl-native #firefox tridactyl addon
     ripgrep gh # for nvim
@@ -107,7 +105,12 @@ in {
     jamesdsp easyeffects
     nmap
     wget
-    doggo #dig for dns-over-*
+    shwewo.ephemeralbrowser
+    shwewo.ruchrome
+    shwewo.spotify
+    shwewo.audiorelay
+    shwewo.tdesktop
+    (pkgs.writeScriptBin "tlp" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp $@'')
   ]);
 
   programs.firefox = {

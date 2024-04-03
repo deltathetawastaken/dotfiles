@@ -8,9 +8,13 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
-    telegram-desktop-patched.url = "github:shwewo/telegram-desktop-patched";
     secrets.url = "git+ssh://git@github.com/deltathetawastaken/secrets.git";
     nixvim.url = "github:nix-community/nixvim";
+    shwewo = {
+      url = "github:shwewo/flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, anyrun, ... }:

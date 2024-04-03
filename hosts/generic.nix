@@ -10,11 +10,13 @@ let
   '';
   shell = pkgs.writeScriptBin "shell" ''
     #!/usr/bin/env bash
-    if [[ $# -eq 0 ]]; then
-      echo "Error: Missing argument."
-    else
-      NIXPKGS_ALLOW_UNFREE=1 nix shell --impure nixpkgs#"$1" -- "''${@:2}"
-    fi
+      packages=""
+      for package in "$@"; do
+        packages+="nixpkgs#$package "
+      done
+      packages=$(echo "$packages" | xargs)
+
+      NIXPKGS_ALLOW_UNFREE=1 .any-nix-wrapper fish --impure $packages
   '';
   fzf = pkgs.fzf.overrideAttrs (oldAttrs: rec {
     postInstall = oldAttrs.postInstall + ''
@@ -97,6 +99,7 @@ in {
     btop
     nix-search-cli
     nix-index
+    doggo #dig for dns-over-*
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ];
 
@@ -113,16 +116,19 @@ in {
       ls = "${pkgs.lsd}/bin/lsd";
       search = "nix-search -d -m 5 -p";
       ltree = "${pkgs.lsd}/bin/lsd --tree";
+      #nix = "any-nix-shell fish --info-right | source && ${pkgs.nixUnstable}/bin/nix";
+      #nix-shell = "any-nix-shell fish --info-right | source && ${pkgs.nixUnstable}/bin/nix-shell";
     };
     promptInit = ''
       set TERM "xterm-256color"
       set fish_greeting
-      #${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
-      any-nix-shell fish --info-right | source 
-      #tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No
+      tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No
+      any-nix-shell fish --info-right | source
     '';
   };
- 
+  #just incase: ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+  #tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No
+
   programs.tmux.enable = true;
   programs.direnv.enable = true;
   programs.firejail.enable = true;

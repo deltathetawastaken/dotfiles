@@ -125,10 +125,11 @@
     forceSSL = false;
     listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
     serverName = "zabbix.local";
+    serverAliases = [ "${inputs.secrets.work.zabbix-url}" ];
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass ${inputs.secrets.work.zabbix};
+      proxy_pass https://${inputs.secrets.work.zabbix};
     '';
   };
 

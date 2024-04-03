@@ -151,10 +151,10 @@ let
 in {
   users.users.delta.packages = [
     kitty_wrapped
-    ephemeralbrowser  ephemeralbrowserDesktopItem
+    #ephemeralbrowser  ephemeralbrowserDesktopItem
     keepassxc         keepassxcDesktopItem
     autostart         autostartDesktopItem
     firefoxRussia     firefoxRussiaDesktopItem
-    googleChromeRussia googleChromeRussiaDesktopItem
+    # googleChromeRussia googleChromeRussiaDesktopItem
   ];
 }
