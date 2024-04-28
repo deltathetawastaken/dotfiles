@@ -7,7 +7,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     anyrun.url = "github:Kirottu/anyrun";
-    anyrun.inputs.nixpkgs.follows = "nixpkgs";
+    # anyrun.inputs.nixpkgs.follows = "nixpkgs";
     secrets.url = "git+ssh://git@github.com/deltathetawastaken/secrets.git";
     nixvim.url = "github:nix-community/nixvim";
     shwewo = {
