@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, stable, self, ... }:
+{ pkgs, lib, inputs, stable, unstable, self, ... }:
 let
   lock-false = {
     Value = false;
@@ -8,40 +8,10 @@ let
     Value = true;
     Status = "locked";
   };
-  kitty_config = pkgs.writeText "kitty.conf" ''
-    # See https://sw.kovidgoyal.net/kitty/conf.html
-    shell_integration no-rc
-
-    allow_remote_control password
-    background #171717
-    background_opacity 0.8
-    color0 #3F3F3F
-    color1 #705050
-    color10 #72D5A3
-    color11 #F0DFAF
-    color12 #94BFF3
-    color13 #EC93D3
-    color14 #93E0E3
-    color15 #FFFFFF
-    color2 #60B48A
-    color3 #DFAF8F
-    color4 #9AB8D7
-    color5 #DC8CC3
-    color6 #8CD0D3
-    color7 #DCDCCC
-    color8 #709080
-    color9 #DCA3A3
-    foreground #DCDCCC
-    hide_window_decorations yes
-    remember_window_size yes
-    remote_control_password kitty-notification-password-fish ls
-
-    font_family      FiraCode Nerd Font
-    bold_font        auto
-    italic_font      auto
-    bold_italic_font auto
-  '';
   shwewo = inputs.shwewo.packages.${pkgs.system};
+  overrides = import ./overrides.nix { 
+    inherit inputs pkgs lib self stable unstable; 
+  };
 in {
   imports = [
     inputs.nixvim.nixosModules.nixvim
@@ -53,11 +23,13 @@ in {
     wl-clipboard
     wl-clipboard-x11
     #(callPackage ../derivations/nu_plugin_dns.nix { })
+    (fishPlugins.callPackage ../derivations/fish/fish-functions.nix { })
     xorg.xwininfo
     jq
     dropbox
     spotdl
-    xfce.thunar
+    # xfce.thunar
+    (pkgs.xfce.thunar.override { thunarPlugins = [pkgs.xfce.thunar-archive-plugin]; })
     rustdesk-flutter
     autossh
     scrcpy
@@ -76,41 +48,51 @@ in {
     wget
     wlogout
     nom
-    (vesktop.overrideAttrs (oldAttrs: {
-      desktopItems = [ (pkgs.makeDesktopItem {
-        name = "vesktop";
-        desktopName = "Discord";
-        exec = "vesktop %U";
-        icon = "discord";
-        startupWMClass = "Vesktop";
-        genericName = "Internet Messenger";
-        keywords = [ "discord" "vencord" "electron" "chat" ];
-        categories = [ "Network" "InstantMessaging" "Chat" ];
-      })];
-    }))
     localsend
     trayscale
     fishPlugins.done
     monero-gui
     translate-shell
-    tridactyl-native #firefox tridactyl addon
-    ripgrep gh # for nvim
-    lunarvim # text edit
+    # tridactyl-native #firefox tridactyl addon
+    ripgrep gh
     lexend # font from google (non-mono)
-    #fira-code-nerdfont # mono font
-    iosevka-comfy.comfy
-    iosevka-comfy.comfy-duo
-    iosevka-comfy.comfy-wide
-    iosevka-comfy.comfy-wide-duo
+    ibm-plex
+    fira-code
+    # iosevka-comfy.comfy
+    # iosevka-comfy.comfy-duo
+    # iosevka-comfy.comfy-wide
+    # iosevka-comfy.comfy-wide-duo
+    iosevka-comfy.comfy-motion-duo
     jamesdsp easyeffects
     nmap
     wget
     shwewo.ephemeralbrowser
     shwewo.ruchrome
     shwewo.spotify
+    #(pkgs.symlinkJoin {
+    #  name = "ExprSelect";
+    #  paths = [ shwewo.spotify ];
+    #  buildInputs = [ pkgs.makeWrapper ];
+    #  postBuild = ''
+    #    wrapProgram $out/bin/spotify --set NIXOS_OZONE_WL 0
+    #  '';
+    #})
     shwewo.audiorelay
     shwewo.tdesktop
     (pkgs.writeScriptBin "tlp" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp $@'')
+    prismlauncher
+    stable.teleport_12 #work
+    tlrc #tldr
+    boxbuddy
+    stable.distrobox
+    atool #unarchive
+    open-interpreter
+    overrides.diosevka
+    # overrides.iosevka-comfy
+    overrides.vesktop
+    overrides.input-font
+    # overrides.input-fonts
+    stable.peazip
   ]);
 
   programs.firefox = {
@@ -145,7 +127,7 @@ in {
           Status = "Locked";
         };
         "browser.tabs.firefox-view" = lock-false;
-        "browser.startup.homepage" = "https://ifconfig.me";
+        "browser.startup.homepage" = "about:blank";
       };
 
       # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265/17
@@ -178,10 +160,8 @@ in {
           (extension "multi-account-containers" "@testpilot-containers")
           (extension "jkcs" "{6d9f4f04-2499-4fed-ae4a-02c5658c5d00}")
           (extension "keepassxc-browser" "keepassxc-browser@keepassxc.org")
-          (extension "new-window-without-toolbar"
-            "new-window-without-toolbar@tkrkt.com")
-          (extension "open-in-spotify-desktop"
-            "{04a727ec-f366-4f19-84bc-14b41af73e4d}")
+          (extension "new-window-without-toolbar" "new-window-without-toolbar@tkrkt.com")
+          (extension "open-in-spotify-desktop" "{04a727ec-f366-4f19-84bc-14b41af73e4d}")
           (extension "search_by_image" "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}")
           (extension "single-file" "{531906d3-e22f-4a6c-a102-8057b88a1a63}")
           (extension "soundfixer" "soundfixer@unrelenting.technology")
@@ -202,15 +182,15 @@ in {
   #  ];
   #};
 
-  programs.thunar.enable = true;
   programs.xfconf.enable = true;
   programs.virt-manager.enable = true;
   programs.steam.enable = true;
   programs.gamemode.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-archive-plugin
-    thunar-volman
-  ];
+  programs.thunar.enable = true;
+  # programs.thunar.plugins = with pkgs.xfce; [
+  #   thunar-archive-plugin
+  #   thunar-volman
+  # ];
   
   programs.fish = {
     enable = true;
@@ -225,17 +205,20 @@ in {
       set -U __done_kitty_remote_control_password "kitty-notification-password-fish"
       set -U __done_notification_command "${pkgs.libnotify}/bin/notify-send --icon=kitty --app-name=kitty \$title \$argv[1]"
     '';
-  };
+    interactiveShellInit = ''
+      function last_file_in_downloads
+        echo "\"$(find ~/Downloads -type f -printf "%C@:%p\n" -not -regex ".*Downloads/torrent_incomplete/.*" -not -regex ".*Downloads/torrent/.*" | sort -rn | head -n 1 | cut -d ':' -f2-)\""
+      end
 
-  #programs.neovim = {
-  #  enable = true;
-  #  defaultEditor = true;
-  #  configure = {
-  #    customRC = ''
-  #      :set mouse=a
-  #    '';
-  #  };
-  #};
+      abbr -a --position anywhere lfd --function last_file_in_downloads
+
+      function copy_clipboard
+        echo '| wl-copy'
+      end
+
+      abbr -a --position anywhere CC --function copy_clipboard
+    '';
+  };
 
   programs.nixvim = {
     enable = true;
