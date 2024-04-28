@@ -41,7 +41,9 @@ let
 in {
   environment.sessionVariables = {
     FLAKE = "/home/delta/Documents/dotfiles";
+    TELEPORT_LOGIN= "${inputs.secrets.work.tp-login}";
   };
+  environment.variables.EDITOR = "hx";
 
 
   users.users.delta = {
@@ -60,10 +62,12 @@ in {
         substituters = [ 
           "https://shwewo.cachix.org" 
           "https://anyrun.cachix.org" 
+          # "https://nyx.chaotic.cx/"
         ];
         trusted-public-keys = [ 
           "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo=" 
-          "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s=" 
+          "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
+          # "nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8=" "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         ];
       };
       package = unstable.nixUnstable;
@@ -79,10 +83,11 @@ in {
     helix micro
     fishPlugins.grc grc
     fishPlugins.autopair
-    fishPlugins.z
-    fishPlugins.tide
+    zoxide #better fishPlugins.z
+    starship # my fish promt
     fishPlugins.sponge
     fishPlugins.fzf-fish
+    fishPlugins.puffer
     bat  #for fzf-fish plugin 
     fzf  #for fzf-fish plugin
     fd   #for fzf-fish plugin
@@ -104,11 +109,11 @@ in {
   ];
 
   
-  environment.variables.EDITOR = "hx";
 
   programs.command-not-found.enable = false;
   programs.fish = {
     enable = true;
+    useBabelfish = true;
     shellAliases = {
       rebuild = "nh os switch";
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
@@ -116,13 +121,15 @@ in {
       ls = "${pkgs.lsd}/bin/lsd";
       search = "nix-search -d -m 5 -p";
       ltree = "${pkgs.lsd}/bin/lsd --tree";
-      #nix = "any-nix-shell fish --info-right | source && ${pkgs.nixUnstable}/bin/nix";
-      #nix-shell = "any-nix-shell fish --info-right | source && ${pkgs.nixUnstable}/bin/nix-shell";
+      unpack = "aunpack";
+      where = "which";
     };
     promptInit = ''
       set TERM "xterm-256color"
       set fish_greeting
-      tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Few icons' --transient=No
+      export STARSHIP_CONFIG=/etc/starship.toml
+      ${pkgs.zoxide}/bin/zoxide init fish | source
+      source (${pkgs.starship}/bin/starship init fish --print-full-init | psub)
       any-nix-shell fish --info-right | source
     '';
   };
@@ -142,6 +149,10 @@ in {
   users.defaultUserShell = pkgs.fish;
   security.rtkit.enable = true;
   boot.tmp.cleanOnBoot = true;
+
+  environment.etc."starship.toml".text = ''
+  add_newline = false
+  '';
 
   environment.etc."htoprc".text = ''
     config_reader_min_version=3
