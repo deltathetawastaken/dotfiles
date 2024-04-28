@@ -13,6 +13,8 @@ let
       "FiraCode"
       #"Mononoki"
       "Iosevka"
+      "IBMPlexMono"
+      "NerdFontsSymbolsOnly"
     ];
   });
 in {

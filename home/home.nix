@@ -122,8 +122,8 @@
       hide_window_decorations = "yes";
       remote_control_password = "kitty-notification-password-fish ls";
       allow_remote_control = "password";
-      font_family= "FiraCode Nerd Font"; #FiraCode Nerd Font Ret
-      font_features = "FiraCodeNF-Reg +ss01 +ss02 +ss06 +ss08 +cv14 +cv03 +tnum";
+      font_family= "FiraCode"; #FiraCode Nerd Font Ret
+      font_features = "FiraCode +ss01 +ss02 +ss06 +ss08 +cv14 +cv03 +tnum";
 
       color0 = "#3F3F3F";
       color1 = "#705050";

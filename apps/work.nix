@@ -78,8 +78,9 @@ let
   namespacedWork = pkgs.writeScriptBin "namespaced_work" ''
     #!/usr/bin/env bash
     NETNS_NAME="work"
-    NETNS_NAMESERVER_1="1.1.1.1"
-    NETNS_NAMESERVER_2="1.1.0.1"
+    #NETNS_NAMESERVER_1="1.1.1.1"
+    NETNS_NAMESERVER_1="${inputs.secrets.work.dns1}"
+    NETNS_NAMESERVER_2="${inputs.secrets.work.dns2}"
 
     VETH0_NAME="work0"
     VETH1_NAME="work1"
@@ -291,8 +292,10 @@ let
     
     if [[ $choice == "no-remote" ]]; then
       ${pkgs.gtk3}/bin/gtk-launch kittywork
+      mkdir -p /etc/netns/work
+      cat ${hostsNoRemote} > /etc/netns/work/hosts
     elif [[ $choice == "no-remote-resume" ]]; then
-      firejail --ignore='include whitelist-run-common.inc' --blacklist='/var/run/nscd' --profile=firefox --hosts-file=${hostsNoRemote} --netns=work firefox -P work -no-remote --class firefoxwork --name firefoxwork
+      firejail --ignore='include whitelist-run-common.inc' --blacklist='/var/run/nscd' --profile=firefox --hosts-file=${hostsNoRemote} --netns=work --dns=${inputs.secrets.work.dns1} firefox -P work -no-remote --class firefoxwork --name firefoxwork
     elif [[ $choice == "remote" ]]; then
       firejail --ignore='include whitelist-run-common.inc' --blacklist='/var/run/nscd' --profile=firefox --hosts-file=${hostsRemote} ${pkgs.firefox}/bin/firefox -P work -no-remote --class firefoxwork --name firefoxwork
     else

@@ -40,9 +40,9 @@ in
   programs.dconf.profiles.user.databases = [
     { 
       settings = {
-        # "org/gnome/mutter" = {
-        #   experimental-features = [ "scale-monitor-framebuffer" ];
-        # };
+        #"org/gnome/mutter" = {
+        #  experimental-features = [ "scale-monitor-framebuffer" ];
+        #};
         "org/gnome/settings-daemon/plugins/media-keys" = {
           custom-keybindings = [
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
@@ -109,7 +109,7 @@ in
           show-in-lock-screen = false;
         };
         "org/gnome/desktop/session" = {
-          idle-delay = mkUint32 0;
+          idle-delay = mkUint32 180;
         };
         "org/gnome/shell/extensions/unite" = {
           enable-titlebar-actions = true; 
@@ -125,9 +125,10 @@ in
           show-window-buttons = "never";
           show-window-title = "never";
         };
-        #"org/gnome/shell/extensions/user-theme" = {
-        #  name = "Mojave-Dark-solid-alt";
-        #};
+        "org/gnome/shell/extensions/user-theme" = {
+          name = "Mojave-Dark-solid-alt";
+          #name = "Catppuccin-Mocha-Compact-Lavender-Dark";
+        };
         "org/gnome/shell/weather" = {
           automatic-location = true;
         };
