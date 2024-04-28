@@ -217,6 +217,8 @@ in {
       end
 
       abbr -a --position anywhere CC --function copy_clipboard
+
+      abbr -a --position command ttlfix TTLfix
     '';
   };
 

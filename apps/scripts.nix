@@ -148,6 +148,13 @@ let
     icon = "firefox-developer-edition";
     exec = "firefox-russia";
   };
+
+  TTLfix = pkgs.writeScriptBin "TTLfix" ''
+  #!/${pkgs.bash}/bin/bash 
+  sudo sysctl -w net.ipv4.ip_default_ttl=64
+  sudo sysctl -w net.ipv6.conf.all.hop_limit=65
+  sudo sysctl -w net.ipv6.conf.default.hop_limit=65
+  '';
 in {
   users.users.delta.packages = [
     kitty_wrapped
@@ -156,5 +163,6 @@ in {
     autostart         autostartDesktopItem
     firefoxRussia     firefoxRussiaDesktopItem
     # googleChromeRussia googleChromeRussiaDesktopItem
+    TTLfix
   ];
 }
