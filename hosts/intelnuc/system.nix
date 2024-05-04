@@ -79,38 +79,54 @@
   };
 
   services.nginx.enable = true;
-  services.nginx.virtualHosts."grafana_first" = {
+  services.nginx.virtualHosts."grafana" = {
     forceSSL = false;
     listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
     serverName = "graf1.local";
     locations."/".extraConfig = ''
       proxy_set_header        Host $host;
       proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass ${inputs.secrets.work.graf1};
+      proxy_pass ${inputs.secrets.work.graf-url};
     '';
     locations."/api/live/ws".extraConfig = ''
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
-      proxy_pass ${inputs.secrets.work.graf1};
+      proxy_pass ${inputs.secrets.work.graf-url};
     '';
   };
-  services.nginx.virtualHosts."grafana_second" = {
-    forceSSL = false;
-    listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
-    serverName = "graf2.local";
-    locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
-      proxy_pass ${inputs.secrets.work.graf2};
-    '';
-    locations."/api/live/ws".extraConfig = ''
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
-      proxy_pass ${inputs.secrets.work.graf2};
-    '';
-  };
+  # services.nginx.virtualHosts."grafana_first" = {
+  #   forceSSL = false;
+  #   listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
+  #   serverName = "graf1.local";
+  #   locations."/".extraConfig = ''
+  #     proxy_set_header        Host $host;
+  #     proxy_set_header        X-Real-IP $remote_addr;
+  #     proxy_pass ${inputs.secrets.work.graf1};
+  #   '';
+  #   locations."/api/live/ws".extraConfig = ''
+  #     proxy_http_version 1.1;
+  #     proxy_set_header Upgrade $http_upgrade;
+  #     proxy_set_header Connection "upgrade";
+  #     proxy_pass ${inputs.secrets.work.graf1};
+  #   '';
+  # };
+  # services.nginx.virtualHosts."grafana_second" = {
+  #   forceSSL = false;
+  #   listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
+  #   serverName = "graf2.local";
+  #   locations."/".extraConfig = ''
+  #     proxy_set_header        Host $host;
+  #     proxy_set_header        X-Real-IP $remote_addr;
+  #     proxy_pass ${inputs.secrets.work.graf2};
+  #   '';
+  #   locations."/api/live/ws".extraConfig = ''
+  #     proxy_http_version 1.1;
+  #     proxy_set_header Upgrade $http_upgrade;
+  #     proxy_set_header Connection "upgrade";
+  #     proxy_pass ${inputs.secrets.work.graf2};
+  #   '';
+  # };
   services.nginx.virtualHosts."kibana" = {
     forceSSL = false;
     listen = [{port = 80;  addr="0.0.0.0"; ssl=false;}];
