@@ -667,11 +667,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1713901156,
-        "narHash": "sha256-VyDnKIsK7r/VNpqMbl8VlZrUaAgbkxX8Destq961Jkk=",
+        "lastModified": 1714793854,
+        "narHash": "sha256-1wajOrBuEuPUejrkwVfwTH+JS/vEwLfmWgZZv1iFx80=",
         "ref": "refs/heads/main",
-        "rev": "4c5ca35a5042bd3ed9653c353acb2d38440eaae1",
-        "revCount": 20,
+        "rev": "4f5717ae46a8d36b4be129184bb0822e9acd024a",
+        "revCount": 22,
         "type": "git",
         "url": "ssh://git@github.com/deltathetawastaken/secrets.git"
       },
