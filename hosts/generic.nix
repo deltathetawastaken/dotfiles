@@ -61,12 +61,14 @@ in {
         auto-optimise-store = true;
         substituters = [ 
           "https://shwewo.cachix.org" 
-          "https://anyrun.cachix.org" 
+          "https://anyrun.cachix.org"
+          "https://hyprland.cachix.org"
           # "https://nyx.chaotic.cx/"
         ];
         trusted-public-keys = [ 
           "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo=" 
           "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
+          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           # "nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8=" "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         ];
       };
@@ -123,6 +125,7 @@ in {
       ltree = "${pkgs.lsd}/bin/lsd --tree";
       unpack = "aunpack";
       where = "which";
+      c = "cd";
     };
     promptInit = ''
       set TERM "xterm-256color"

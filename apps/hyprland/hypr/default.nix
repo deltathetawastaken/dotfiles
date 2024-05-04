@@ -6,10 +6,15 @@
   ];
 
   programs.hyprland.enable = true;
+  programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   users.users.delta.packages = with pkgs; [
-   swww stable.waybar stable.swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hypridle libnotify brightnessctl
+   swww stable.waybar stable.swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hypridle libnotify brightnessctl pamixer python3
   ];
-  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+  # environment.systemPackages = [
+  #  inputs.hyprland-contrib.packages.${pkgs.system}.grimblast.override { license = licenses.gpl3; }
+  #  inputs.hyprland-contrib.packages.${pkgs.system}.hdrop.override { license = licenses.gpl3; }
+  # ];
+  # xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
   #test later systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
 
   home-manager.users.delta = {

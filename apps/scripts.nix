@@ -100,6 +100,11 @@ let
     ${pkgs.glib}/bin/gdbus call --session --dest org.gnome.Shell --object-path /de/lucaswerkmeister/ActivateWindowByTitle --method de.lucaswerkmeister.ActivateWindowByTitle.activateByWmClass 'org.keepassxc.KeePassXC'
   '';
 
+  keepassxc_lite = pkgs.writeScriptBin "keepassxc_lite" ''
+    #!/usr/bin/env sh
+    ${pkgs.coreutils}/bin/base64 -d ${config.sops.secrets.qqq.path} | ${pkgs.keepassxc}/bin/keepassxc --pw-stdin ~/Dropbox/pswd.kdbx
+  '';
+
   keepassxcDesktopItem = pkgs.makeDesktopItem {
     name = "org.keepassxc.KeePassXC";
     desktopName = "KeePassXC";
@@ -159,7 +164,7 @@ in {
   users.users.delta.packages = [
     kitty_wrapped
     #ephemeralbrowser  ephemeralbrowserDesktopItem
-    keepassxc         keepassxcDesktopItem
+    keepassxc         keepassxcDesktopItem keepassxc_lite
     autostart         autostartDesktopItem
     firefoxRussia     firefoxRussiaDesktopItem
     # googleChromeRussia googleChromeRussiaDesktopItem
