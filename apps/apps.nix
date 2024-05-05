@@ -93,6 +93,7 @@ in {
     overrides.input-font
     # overrides.input-fonts
     stable.peazip
+    element-desktop
   ]);
 
   programs.firefox = {

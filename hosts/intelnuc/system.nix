@@ -137,7 +137,7 @@
         DOMAIN = inputs.secrets.hosts.intelnuc.forgejo.domain;
         DISABLE_SSH = true;
         HTTP_PORT = 3838;
-        ROOT_URL = "https://[REDACTED]";
+        ROOT_URL = "https://${inputs.secrets.hosts.intelnuc.forgejo.domain}";
       };
     };
     database = {
