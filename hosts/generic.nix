@@ -120,9 +120,11 @@ in {
       rebuild = "nh os switch";
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
       haste = "HASTE_SERVER='https://haste.schizoposting.online' ${pkgs.haste-client}/bin/haste";
-      ls = "${pkgs.lsd}/bin/lsd";
+      # ls = "${pkgs.lsd}/bin/lsd";
+      ls = "${pkgs.eza}/bin/exa --icons";
+      ltree = "${pkgs.eza}/bin/exa --icons --tree";
+      # ltree = "${pkgs.lsd}/bin/lsd --tree";
       search = "nix-search -d -m 5 -p";
-      ltree = "${pkgs.lsd}/bin/lsd --tree";
       unpack = "aunpack";
       where = "which";
       c = "cd";

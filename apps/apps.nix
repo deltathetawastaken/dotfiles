@@ -172,6 +172,7 @@ in {
           (extension "unpaywall" "{f209234a-76f0-4735-9920-eb62507a54cd}")
           (extension "ctrl-number-to-switch-tabs" "{84601290-bec9-494a-b11c-1baa897a9683}")
           (extension "temporary-containers" "{c607c8df-14a7-4f28-894f-29e8722976af}")
+          (extension "sidebery" "{609f7ec1-8818-4aa3-87ed-f40c1749e4d3}")
         ];
     };
   };
