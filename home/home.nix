@@ -118,7 +118,7 @@
       background = "#171717";
       foreground = "#DCDCCC";
       background_opacity = "0.8";
-      remember_window_size = "yes";
+      remember_window_size = "no";
       hide_window_decorations = "yes";
       remote_control_password = "kitty-notification-password-fish ls";
       allow_remote_control = "password";

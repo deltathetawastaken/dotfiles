@@ -8,7 +8,7 @@
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   users.users.delta.packages = with pkgs; [
-   swww stable.waybar stable.swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hypridle libnotify brightnessctl pamixer python3
+   swww stable.waybar stable.swaynotificationcenter cliphist fzf hyprshot slurp grim swaylock hypridle libnotify brightnessctl pamixer python3 grimblast networkmanagerapplet
   ];
   # environment.systemPackages = [
   #  inputs.hyprland-contrib.packages.${pkgs.system}.grimblast.override { license = licenses.gpl3; }
