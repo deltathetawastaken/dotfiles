@@ -44,7 +44,8 @@
       userSettings = {
         "files.autoSave" = "onFocusChange";
         "window.titleBarStyle" = "custom";
-        "workbench.colorTheme" = "Popping and Locking";
+        # "workbench.colorTheme" = "Popping and Locking";
+        "workbench.colorTheme" = "Tokyo Night";
         "terminal.external.linuxExec" = "kitty";
         "editor.guides.bracketPairs" = "active";
         "editor.bracketPairColorization.independentColorPoolPerBracketType" = true;
@@ -63,6 +64,17 @@
         };
       };
     };
+  
+  #create RW vscode settings so all hotkeys work (wrap_lines and etc)
+  home.activation = {
+    copy_unlink = lib.hm.dag.entryAfter ["onFilesChange"] (''
+      cp /home/delta/.config/Code/User/settings.json /home/delta/.config/Code/User/settings.json.rw
+      # unlink /home/delta/.config/Code/User/settings.json
+    '');  
+    link_copy = lib.hm.dag.entryAfter ["setupLaunchAgents"] (''
+      ln -sf /home/delta/.config/Code/User/settings.json.rw /home/delta/.config/Code/User/settings.json
+    '');  
+  };
 
   programs.git = {
     enable = true;
@@ -122,8 +134,12 @@
       hide_window_decorations = "yes";
       remote_control_password = "kitty-notification-password-fish ls";
       allow_remote_control = "password";
-      font_family= "FiraCode"; #FiraCode Nerd Font Ret
+      font_family= "FiraCode";
       font_features = "FiraCode +ss01 +ss02 +ss06 +ss08 +cv14 +cv03 +tnum";
+
+      repaint_delay = 8; #comment out if flickers
+      input_delay = 0;
+      sync_to_monitor = "no";
 
       color0 = "#3F3F3F";
       color1 = "#705050";
