@@ -94,6 +94,8 @@ in {
     # overrides.input-fonts
     stable.peazip
     element-desktop
+    qrtool
+    appimage-run
   ]);
 
   programs.firefox = {
@@ -187,6 +189,7 @@ in {
   programs.xfconf.enable = true;
   programs.virt-manager.enable = true;
   programs.steam.enable = true;
+  programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
   programs.thunar.enable = true;
   # programs.thunar.plugins = with pkgs.xfce; [

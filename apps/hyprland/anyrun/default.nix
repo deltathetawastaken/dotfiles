@@ -41,7 +41,7 @@
 
       * {
         transition: 200ms ease;
-        font-family: "Iosevka Nerd Font";
+        font-family: "Iosevka Diosevka";
         font-size: 1.3rem;
       }
 

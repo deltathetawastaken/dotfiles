@@ -94,16 +94,7 @@ in {
       name = "vesktop";
       paths = [ (unstable.vesktop.override { 
         electron = unstable.electron; 
-        vencord = unstable.vencord.overrideAttrs rec {
-            version = "unstable-0bebc85";
-            gitHash = "0bebc85";
-            src = pkgs.fetchFromGitHub {
-              owner = "Vendicated";
-              repo = "Vencord";
-              rev = "0bebc85";
-              hash = "sha256-Td+Juf7OhyNilowwKQL4Gw/HrVpzAwNzLR5Vi6S5Bys=";
-            };
-        };
+        withSystemVencord = false; 
       }) ];
       buildInputs = [ pkgs.makeWrapper ];
       postBuild = ''
