@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, ... }: 
+{ pkgs, inputs, ... }: 
 let
   nginxConfig = pkgs.writeText "nginx_config" ''
     pid /tmp/.nginx-work.pid;
@@ -267,6 +267,24 @@ let
     wait
   '';
 
+    namespacedWork2 = pkgs.writeScriptBin "namespaced_work2" ''
+    ${inputs.shwewo.packages.${pkgs.system}.namespaced}/bin/namespaced \
+       --veth0-ip 192.168.120.1 \
+       --veth1-ip 192.168.120.2 \
+       --dns ${inputs.secrets.work.dns1},${inputs.secrets.work.dns2} \
+       --hosts-file ${hostsNoRemote} \
+       --country RU \
+       --fwmark 0x6e736432 \
+       --table 28107 \
+       --name novpn 
+    '';
+
+    kitty_work2 = pkgs.writeScriptBin "kitty_work2" ''
+    sudo ${namespacedWork2}/bin/namespaced_work2
+    sleep 1 & sudo ip netns exec novpn_nsd sudo /home/delta/scripts/vpn-connect-WB
+    sudo ip netns exec novpn_nsd sudo -u delta -g users ${pkgs.firefox}/bin/firefox -P work -no-remote --class firefoxwork --name firefoxwork
+    '';
+
   hostsNoRemote = pkgs.writeText "hosts_no_remote" ''
     127.0.0.1 graf1.local graf2.local kibana.local
     ${inputs.secrets.work.zabbix} ${inputs.secrets.work.zabbix-url} zabbix.local 
@@ -317,5 +335,6 @@ in
     kittyWorkDesktopItem
     firefoxWork
     firefoxWorkDesktopItem
+    kitty_work2
   ];
 }

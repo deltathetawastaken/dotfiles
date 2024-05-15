@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
       # Add .zip parameter so that zip unpackCmd can match it.
       # url = "https://input.djr.com/build/?fontSelection=fourStyleFamily&regular=InputSansNarrow-Light&italic=InputSansNarrow-LightItalic&bold=InputSansNarrow-Medium&boldItalic=InputSansNarrow-MediumItalic&a=0&g=0&i=topserif&l=0&zero=slash&asterisk=height&braces=straight&preset=default&line-height=1.1&accept=I+do&email=";
       url = "${url}"; #i had to shorten link bc otherwise got errors that it's too long
-      sha256 = "sha256-tYC/yDaHz2AD5PpikTHewneZNaF3O0fClhhJvjeKdAY=";
+      sha256 = "sha256-7fIpQgRhc0HZ9vvPlFq63G8GjJVlz+Xon0ePAiqtbbA=";
       stripRoot = false;
 
       postFetch = ''

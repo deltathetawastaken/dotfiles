@@ -72,7 +72,7 @@ in {
           # "nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8=" "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         ];
       };
-      package = unstable.nixUnstable;
+      package = unstable.nixVersions.latest;
     };
 
   nixpkgs.config.allowUnfree = true;
@@ -100,8 +100,7 @@ in {
     inetutils
     killall
     tree
-    lsd # better ls, will check what's better
-    eza # better ls, will check what's better 
+    eza # it's faster then lsd 
     htop
     btop
     nix-search-cli
@@ -120,10 +119,9 @@ in {
       rebuild = "nh os switch";
       rollback = "sudo nixos-rebuild switch --rollback --flake ~/Documents/dotfiles/";
       haste = "HASTE_SERVER='https://haste.schizoposting.online' ${pkgs.haste-client}/bin/haste";
-      # ls = "${pkgs.lsd}/bin/lsd";
       ls = "${pkgs.eza}/bin/exa --icons";
-      ltree = "${pkgs.eza}/bin/exa --icons --tree";
-      # ltree = "${pkgs.lsd}/bin/lsd --tree";
+      tre = "${pkgs.eza}/bin/exa --tree";
+      itree = "${pkgs.eza}/bin/exa --icons --tree";
       search = "nix-search -d -m 5 -p";
       unpack = "aunpack";
       where = "which";

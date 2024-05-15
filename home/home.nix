@@ -1,4 +1,4 @@
-{ stable, unstable, inputs, home, config, lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   home.username = "delta";
   home.stateVersion = "23.11";
@@ -26,11 +26,17 @@
         version = "0.47.2";
         sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
       }
+      #{
+      #  name = "popping-and-locking-vscode";
+      #  publisher = "hedinne";
+      #  version = "2.0.11";
+      #  sha256 = "7ZH9l4jySPo1jMZnylTPK6o+XZnxUtrpYIiY9xVPuRw=";
+      #}
       {
-        name = "popping-and-locking-vscode";
-        publisher = "hedinne";
-        version = "2.0.11";
-        sha256 = "7ZH9l4jySPo1jMZnylTPK6o+XZnxUtrpYIiY9xVPuRw=";
+        name = "tokyo-night";
+        publisher = "enkia";
+        version = "1.0.6";
+        sha256 = "sha256-VWdUAU6SC7/dNDIOJmSGuIeffbwmcfeGhuSDmUE7Dig=";
       }
       {
         name = "bracket-select";
@@ -67,13 +73,17 @@
   
   #create RW vscode settings so all hotkeys work (wrap_lines and etc)
   home.activation = {
-    copy_unlink = lib.hm.dag.entryAfter ["onFilesChange"] (''
-      cp /home/delta/.config/Code/User/settings.json /home/delta/.config/Code/User/settings.json.rw
+    copy_unlink = lib.hm.dag.entryAfter ["onFilesChange"] ''
+      rm -f /home/delta/.config/Code/User/settings.json.rw
+      cp -f /home/delta/.config/Code/User/settings.json /home/delta/.config/Code/User/settings.json.rw
+      chmod +rw /home/delta/.config/Code/User/settings.json.rw
       # unlink /home/delta/.config/Code/User/settings.json
-    '');  
-    link_copy = lib.hm.dag.entryAfter ["setupLaunchAgents"] (''
+    '';  
+    link_copy = lib.hm.dag.entryAfter ["setupLaunchAgents"] ''
+      unlink /home/delta/.config/Code/User/settings.json
       ln -sf /home/delta/.config/Code/User/settings.json.rw /home/delta/.config/Code/User/settings.json
-    '');  
+      chmod +rw /home/delta/.config/Code/User/settings.json
+    '';  
   };
 
   programs.git = {
@@ -125,7 +135,7 @@
 
   programs.kitty = {
     enable = true;
-    shellIntegration.enableFishIntegration = false;
+    # shellIntegration.enableFishIntegration = false;
     settings = {
       background = "#171717";
       foreground = "#DCDCCC";

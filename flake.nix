@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs?rev=ebce8ace41c8ca0d1776de4c5be5c815fb2fb5f7";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs2105.url = "github:NixOS/nixpkgs/nixos-21.05";
@@ -15,14 +16,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, anyrun, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       stable = import inputs.nixpkgs-stable {

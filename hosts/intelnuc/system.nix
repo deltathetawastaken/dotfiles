@@ -36,7 +36,7 @@
     wget
     htop
     zenith
-    pkgs.xorg.xauth
+    xorg.xauth
     docker docker-compose traefik
     lazydocker
     android-tools

@@ -1,4 +1,4 @@
-{ inputs, home, config, lib, pkgs, specialArgs, ... }: 
+{ config, pkgs, ... }: 
 
 let 
   ephemeralbrowser = pkgs.writeScriptBin "ephemeralbrowser" ''

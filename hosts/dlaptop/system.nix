@@ -184,7 +184,7 @@
     age
     rage
     lua5_4
-    nodejs_21
+    nodePackages_latest.nodejs
 
     rocmPackages.rocm-smi #gpu support in btop
   ];

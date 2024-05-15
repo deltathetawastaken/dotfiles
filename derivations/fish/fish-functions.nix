@@ -1,4 +1,4 @@
-{ stdenv, lib, buildFishPlugin }:
+{ stdenv, buildFishPlugin }:
 
 buildFishPlugin rec {
   pname = "my-fish-functions";

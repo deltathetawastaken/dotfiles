@@ -30,7 +30,7 @@ in {
     spotdl
     # xfce.thunar
     (pkgs.xfce.thunar.override { thunarPlugins = [pkgs.xfce.thunar-archive-plugin]; })
-    rustdesk-flutter
+    #rustdesk-flutter
     autossh
     scrcpy
     nixfmt
@@ -96,10 +96,13 @@ in {
     element-desktop
     qrtool
     appimage-run
+    trayscale
+    (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ]);
 
   programs.firefox = {
     enable = true;
+    package = stable.firefox;
     policies = {
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
@@ -190,6 +193,7 @@ in {
   programs.virt-manager.enable = true;
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
+  programs.noisetorch.enable = true;
   programs.gamemode.enable = true;
   programs.thunar.enable = true;
   # programs.thunar.plugins = with pkgs.xfce; [
@@ -224,6 +228,8 @@ in {
       abbr -a --position anywhere CC --function copy_clipboard
 
       abbr -a --position command ttlfix TTLfix
+      abbr -a --position command syspend systemctl suspend
+      abbr -a --position command suspend systemctl suspend
     '';
   };
 

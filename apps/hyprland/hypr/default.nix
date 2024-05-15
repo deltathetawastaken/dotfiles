@@ -5,6 +5,8 @@
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  home-manager.backupFileExtension = "backup-hm";
+
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   users.users.delta.packages = with pkgs; [

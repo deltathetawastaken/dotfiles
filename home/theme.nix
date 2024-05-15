@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, unstable, ... }:
+{ pkgs, lib, stable, unstable, ... }:
 let
   gtk-theme = "adw-gtk3-dark";
   cursor-package = pkgs.bibata-cursors;
@@ -71,7 +71,8 @@ in {
 
     iconTheme = {
       name = "Papirus-Dark";
-      package = lib.mkForce unstable.papirus-icon-theme;
+      # name = "Papirus";
+      package = lib.mkForce stable.papirus-icon-theme;
     };
     # gtk3.extraCss = ''
     #   headerbar, .titlebar,
