@@ -227,7 +227,7 @@ in {
 
       abbr -a --position anywhere CC --function copy_clipboard
 
-      abbr -a --position command fya yazi
+      abbr -a --position command ya yazi
       abbr -a --position command ttlfix TTLfix
       abbr -a --position command syspend systemctl suspend
       abbr -a --position command suspend systemctl suspend
