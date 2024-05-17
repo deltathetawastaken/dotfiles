@@ -141,9 +141,13 @@ in {
         StateDirectory = "novpn";
         Type = "simple";
       };
-      
+
+      postStart = ''
+      gost -L=tcp://0.0.0.0:4780/192.168.150.2:4780 &>/dev/null &
+      '';
+
       preStart = "${stop_novpn}/bin/stop_novpn && ip netns add novpn";
-      path = with pkgs; [ gawk iproute2 iptables sysctl coreutils ];
+      path = with pkgs; [ gost gawk iproute2 iptables sysctl coreutils ];
     };
 
     warp-svc = {

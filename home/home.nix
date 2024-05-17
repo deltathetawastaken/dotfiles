@@ -255,6 +255,8 @@
       esc = [ "collapse_selection" "keep_primary_selection" ];
       };
     };
+
+    extraPackages = [ pkgs.marksman pkgs.nil pkgs.nodePackages.bash-language-server];
   };
 
   #programs.dircolors.enable = true;

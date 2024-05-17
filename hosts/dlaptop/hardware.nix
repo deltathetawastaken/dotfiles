@@ -40,11 +40,17 @@
     interval = "weekly";
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-    # randomizedDelaySec = "30m";
+  # nix.gc = {
+  #   automatic = true;
+  #   dates = "weekly";
+  #   options = "--delete-older-than 7d";
+  #   # randomizedDelaySec = "30m";
+  # };
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 4";
   };
 
   boot.loader.systemd-boot.enable = true;

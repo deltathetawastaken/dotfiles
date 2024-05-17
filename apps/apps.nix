@@ -90,7 +90,7 @@ in {
     overrides.diosevka
     # overrides.iosevka-comfy
     overrides.vesktop
-    overrides.input-font
+    # overrides.input-font
     # overrides.input-fonts
     stable.peazip
     element-desktop
@@ -235,9 +235,149 @@ in {
 
   programs.nixvim = {
     enable = true;
-    plugins.lightline.enable = true;
+    enableMan = false;
+    colorschemes.tokyonight = {
+      enable = true;
+      settings = {
+        transparent = true
+        ;
+      };
+    };
+    globals.mapleader = ",";
+    keymaps = [
+      {
+        key = ";";
+        action = ":";
+      }
+      {
+        key = "<leader>gg";
+        action = "<cmd>Man<CR>";
+        options = {
+          silent = true;
+          remap = false;
+        };
+      }
+    ];
+    plugins = {
+      lightline = {
+        enable = true;
+        active = {
+          left = [
+            [
+              "mode"
+              "paste"
+            ]
+            [
+              "readonly"
+              "filename"
+              "modified"
+            ]
+          ];
+        };
+      };
+      which-key.enable = true;
+      lsp = {
+        enable = true;
+        servers = {
+          bashls.enable = true;
+          nixd.enable = true;
+        };
+        keymaps.lspBuf = {
+          "gd" = "definition";
+          "gD" = "references";
+          "gt" = "type_definition";
+          "gi" = "implementation";
+          "K" = "hover";
+        };
+      };
+      none-ls = {
+        enable = true;
+        sources = {
+          diagnostics = {
+            statix.enable = true;
+          };
+          formatting = {
+            nixfmt.enable = true;
+            markdownlint.enable = true;
+            shellharden.enable = true;
+            shfmt.enable = true;
+          };
+        };
+      };
+      nvim-tree = {
+        enable = true;
+        openOnSetupFile = true;
+        autoReloadOnWrite = true;
+      };
+      lsp-lines = {
+        enable = true;
+        currentLine = true;
+      };
+      telescope = {
+        enable = true;
+        keymaps = {
+          "<leader>ff" = "find_files";
+          "<leader>fg" = "live_grep";
+          "<leader>fb" = "buffers";
+          "<leader>fh" = "help_tags";
+
+          "<C-p>" = {
+            action = "git_files";
+            options = {
+              desc = "Telescope Git Files";
+            };
+          };
+        };
+        extensions.fzf-native = { enable = true; };
+      };
+      toggleterm = {
+      enable = true;
+        settings = {
+          open_mapping = "[[<C-t>]]";
+
+        };
+      };
+      
+      treesitter = {
+        enable = true;
+        nixGrammars = true;
+        indent = true;
+      };
+      treesitter-context.enable = true;
+      rainbow-delimiters.enable = true;
+      
+      trouble.enable = true;
+      wilder = {
+        enable = true;
+        modes = [ ":" "/" "?" ];
+        renderer = "pumblend";
+      };
+      nvim-autopairs.enable = true;
+    };
 
     options= {
+      updatetime = 100; # Faster completion
+
+      number = true;
+      relativenumber = true;
+
+      autoindent = true;
+      # clipboard = "unnamedplus";
+      clipboard = "unnamed,unnamedplus";
+      expandtab = true;
+      shiftwidth = 2;
+      smartindent = true;
+      tabstop = 2;
+
+      ignorecase = true;
+      incsearch = true;
+      smartcase = true;
+      wildmode = "list:longest";
+
+      # swapfile = false;
+      undofile = true; # Build-in persistent undo
+
+      mouse = "a";
 
     };
 

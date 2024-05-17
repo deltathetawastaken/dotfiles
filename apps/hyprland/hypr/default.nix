@@ -46,5 +46,10 @@
       systemd.enable = true;
       extraConfig = builtins.readFile ./hyprland.conf;
     };
+    # home.activation = {
+    #   unlink_hyprland = lib.hm.dag.entryAfter ["onFilesChange"] ''
+    #     unlink /home/delta/.config/hypr/hyprland.conf
+    #   '';  
+    # };
   };
 }

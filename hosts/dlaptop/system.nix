@@ -156,6 +156,7 @@
   environment.systemPackages = with pkgs; [
     openvpn
     any-nix-shell
+    comma
     
     #work scripts
     openconnect
