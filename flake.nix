@@ -52,11 +52,7 @@
 
     in {
       
-      devShells."x86_64-linux".default = pkgs.mkShell {
-        name = "delta";
-        packages = with pkgs; [ gitleaks pre-commit ];
-        shellHook = "pre-commit install &> /dev/null && gitleaks detect -v";
-      };
+      devShells = { "x86_64-linux" = import ./shell.nix { inherit pkgs; }; };
 
       nixosConfigurations = {
         dlaptop = makeSystem "dlaptop" unstable [ ./hosts/dlaptop/system.nix ];
