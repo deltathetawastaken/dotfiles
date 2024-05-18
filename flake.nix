@@ -44,10 +44,10 @@
         extraSpecialArgs = specialArgs;
       };
 
-      makeSystem = name: pkgsVersion: systemModules: nixpkgs.lib.nixosSystem {
+      makeSystem = name: pkgsVersion: nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = specialArgs // { inherit pkgsVersion; };
-        modules = [ ./hosts/generic.nix ] ++ systemModules;
+        modules = [ ./hosts/generic.nix ./hosts/${name}/system.nix ];
       };
 
     in {
@@ -55,9 +55,9 @@
       devShells = { "x86_64-linux" = import ./shell.nix { inherit pkgs; }; };
 
       nixosConfigurations = {
-        dlaptop = makeSystem "dlaptop" unstable [ ./hosts/dlaptop/system.nix ];
-        intelnuc = makeSystem "intelnuc" stable [ ./hosts/intelnuc/system.nix ];
-        huanan = makeSystem "huanan" pkgs [ ./hosts/huanan/system.nix ];
+        dlaptop = makeSystem "dlaptop" unstable;
+        intelnuc = makeSystem "intelnuc" stable;
+        huanan = makeSystem "huanan" pkgs;
       };
     };
 }
