@@ -126,6 +126,7 @@ in {
       unpack = "aunpack";
       where = "which";
       c = "cd";
+      ",s" = ", -s";
     };
     promptInit = ''
       set TERM "xterm-256color"
