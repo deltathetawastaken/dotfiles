@@ -102,7 +102,7 @@ in {
 
   programs.firefox = {
     enable = true;
-    package = stable.firefox;
+    package = inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin;
     policies = {
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
