@@ -97,6 +97,7 @@ in {
     qrtool
     appimage-run
     trayscale
+    lf
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ]);
 
@@ -209,12 +210,11 @@ in {
       fen = "trans en:ru";
       icat = "kitten icat";
     };
-    shellInit = ''
+    interactiveShellInit = ''
       set -U __done_kitty_remote_control 1
       set -U __done_kitty_remote_control_password "kitty-notification-password-fish"
       set -U __done_notification_command "${pkgs.libnotify}/bin/notify-send --icon=kitty --app-name=kitty \$title \$argv[1]"
-    '';
-    interactiveShellInit = ''
+
       function last_file_in_downloads
         echo "\"$(find ~/Downloads -type f -printf "%C@:%p\n" -not -regex ".*Downloads/torrent_incomplete/.*" -not -regex ".*Downloads/torrent/.*" | sort -rn | head -n 1 | cut -d ':' -f2-)\""
       end
@@ -231,6 +231,56 @@ in {
       abbr -a --position command ttlfix TTLfix
       abbr -a --position command syspend systemctl suspend
       abbr -a --position command suspend systemctl suspend
+      abbr -- - 'cd -'
+      abbr cdd 'cd ~/Downloads'
+
+
+      function __pick_file
+        fd --type f | fzf
+      end
+      abbr -a !f --position command --function __pick_file
+
+      function __pick_dir
+        fd --type d | fzf
+      end
+      abbr -a !d --position command --function __pick_dir
+
+      function last_history_item; echo $history[1]; end
+      abbr -a !! --position anywhere --function last_history_item
+
+      function __pick_grep
+        set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case"
+        true | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+            --bind "start:reload:$RG_PREFIX {q}" \
+            --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+            --delimiter : \
+            --preview 'bat --color=always {1} --highlight-line {2}' \
+            --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+            | tr ':' '\n' | head -n1
+      end
+      abbr -a !g --position anywhere --function __pick_grep
+
+      function range_expansion
+          set -l value (string match --all --regex "\w*" $argv | string split ' ' --no-empty)
+          set -l word_before_value
+          set -l from_value
+          set -l to_value
+
+          math $value[1] &>/dev/null
+          if test $status -ne 0
+              # if first value is string
+              set word_before_value $value[1]
+              set from_value $value[2]
+              set to_value $value[3]
+          else
+              # if first value is integer
+              set from_value $value[1]
+              set to_value $value[2]
+          end
+
+          echo "$word_before_value(seq $from_value $to_value)"
+      end
+      abbr --add range_expand_abbr --position anywhere --regex "\w*\{\d+\.\.\d+\}" --function range_expansion
     '';
   };
 

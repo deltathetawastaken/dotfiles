@@ -35,7 +35,7 @@ let
   
  # IP of the proxies is 192.168.150.2
   
-  socksed = [
+  socksed = [ # gost port 4780 direct proxy
     { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";   } # port 4000
     { name = "socks-warp";  script = "wireproxy -c /etc/wireguard/warp0.conf";     } # port 3333
     { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";        } # port 3334
