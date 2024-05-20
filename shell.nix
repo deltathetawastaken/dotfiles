@@ -19,11 +19,11 @@
     shellHook = "pre-commit install &> /dev/null && gitleaks detect -v";
     nativeBuildInputs = builtins.attrValues {
       inherit (pkgs)
-        # nix
-        # git
-        # age
-        # ssh-to-age
-        # sops
+        nix
+        git
+        age
+        ssh-to-age
+        sops
         gitleaks pre-commit;
     };
   };

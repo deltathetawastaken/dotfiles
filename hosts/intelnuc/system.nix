@@ -1,10 +1,32 @@
-{ config, pkgs, inputs,... }:
+{ config, pkgs, inputs, self,... }:
 {
   imports = [
     ./hardware.nix
     ./nginx-work.nix
     inputs.secrets.nixosModules.intelnuc
   ];
+
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:deltathetawastaken/dotfiles";
+    dates = "hourly";
+  };
+  systemd.services.nixos-upgrade = { # 1 hour timeout, default is too low
+    serviceConfig.TimeoutSec= 3600;
+    serviceConfig.TimeoutStartUSec = 3600;
+    serviceConfig.TimeoutStopUSec = 3600;
+  };
+
+
+
+  # services.autoUpdate = {
+  #   enable = true;
+  #   configDir = "/home/delta/Documents/dotfiles";  # Directory where your NixOS configuration is cloned
+  #   branch = "main";  # Branch to pull updates from
+  #   frequency = "daily";  # Update frequency: daily, weekly, monthly, etc.
+  #   timeOfDay = "03:00";  # Time of day for the update in HH:MM format
+  # };
+
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
