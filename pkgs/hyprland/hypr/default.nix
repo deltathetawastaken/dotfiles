@@ -25,7 +25,8 @@
       $foreground = rgba(c3dde7ee)
 
       $color0 = rgba(1d192bee)
-      $color1 = rgba(465EA7ee)
+      $color1 = rgba(465EA7ee)  "https://github.com/zakk4223/hyprland-easymotion"
+
       $color2 = rgba(5A89B6ee)
       $color3 = rgba(6296CAee)
       $color4 = rgba(73B3D4ee)
@@ -45,6 +46,9 @@
       enable = true;
       systemd.enable = true;
       extraConfig = builtins.readFile ./hyprland.conf;
+      # plugins = [
+      #   "https://github.com/zakk4223/hyprland-easymotion"
+      # ];
     };
     # home.activation = {
     #   unlink_hyprland = lib.hm.dag.entryAfter ["onFilesChange"] ''

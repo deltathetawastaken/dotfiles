@@ -17,8 +17,7 @@
     serverName = "graf1.local";
     serverAliases = [ "${inputs.secrets.work.graf-url}" ];
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.graf-url};
       proxy_pass https://${inputs.secrets.work.graf-url};
     '';
     locations."/api/live/ws".extraConfig = ''
@@ -43,8 +42,7 @@
     '';
     serverName = "${inputs.secrets.work.keycloak}";
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.keycloak};
       proxy_pass https://${inputs.secrets.work.keycloak};
     '';
   };
@@ -63,8 +61,7 @@
     '';
     serverName = "kibana.local ${inputs.secrets.work.kibana}";
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.kibana};
       proxy_pass http://${inputs.secrets.work.kibana};
     '';
   };
@@ -83,8 +80,7 @@
     serverName = "zabbix.local";
     serverAliases = [ "${inputs.secrets.work.zabbix-url}" ];
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.zabbix-url};
       proxy_pass https://${inputs.secrets.work.zabbix};
     '';
   };
@@ -104,9 +100,14 @@
     serverName = "prox-1.local";
     serverAliases = [ "${inputs.secrets.work.prox-1.name}" ];
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.prox-1.ip};
       proxy_pass https://${inputs.secrets.work.prox-1.ip};
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_read_timeout 86400;
+      proxy_send_timeout 86400;
+      proxy_connect_timeout 86400;
     '';
   };
   services.nginx.virtualHosts."prox-2" = {
@@ -125,9 +126,14 @@
     serverName = "prox-2.local";
     serverAliases = [ "${inputs.secrets.work.prox-2.name}" ];
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.prox-2.ip};
       proxy_pass https://${inputs.secrets.work.prox-2.ip};
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_read_timeout 86400;
+      proxy_send_timeout 86400;
+      proxy_connect_timeout 86400;
     '';
   };
   services.nginx.virtualHosts."prox-3" = {
@@ -146,9 +152,14 @@
     serverName = "prox-3.local";
     serverAliases = [ "${inputs.secrets.work.prox-3.name}" ];
     locations."/".extraConfig = ''
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        Host ${inputs.secrets.work.prox-3.ip};
       proxy_pass https://${inputs.secrets.work.prox-3.ip};
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_read_timeout 86400;
+      proxy_send_timeout 86400;
+      proxy_connect_timeout 86400;
     '';
   };
 }

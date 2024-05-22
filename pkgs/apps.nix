@@ -17,6 +17,19 @@ in {
     inputs.nixvim.nixosModules.nixvim
   ];
 
+  #nixpkgs.overlays = [
+  #  (self: super: {
+  #    qt6 = super.qt6 // {
+  #      qtwayland = super.qt6.qtwayland.overrideAttrs (oldAttrs: {
+  #        patches = (oldAttrs.patches or []) ++ [
+  #          ./patches/0004-fix-gtk4-embedding.patch
+  #        ];
+  #      });
+  #    };
+  #  }
+  #  )
+  #];
+
   users.users.delta.packages = (with pkgs; [
     git
     #chromium
@@ -236,7 +249,13 @@ in {
 
 
       function __pick_file
-        fd --type f | fzf
+        fd --type f | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+            --bind "start:reload:$RG_PREFIX {q}" \
+            --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+            --delimiter : \
+            --preview 'bat --color=always {1} --highlight-line {2}' \
+            --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+            | tr ':' '\n' | head -n1
       end
       abbr -a !f --position command --function __pick_file
 

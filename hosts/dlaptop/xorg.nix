@@ -2,8 +2,8 @@
 
 {
   imports = [
-    "${self}/apps/gnome.nix"
-    "${self}/apps/hyprland"
+    "${self}/pkgs/gnome.nix"
+    "${self}/pkgs/hyprland"
   ];
 
   environment.sessionVariables = {

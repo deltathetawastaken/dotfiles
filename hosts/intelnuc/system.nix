@@ -7,7 +7,7 @@
   ];
 
   system.autoUpgrade = {
-    enable = true;
+    enable = false;
     flake = "github:deltathetawastaken/dotfiles";
     dates = "daily";
   };

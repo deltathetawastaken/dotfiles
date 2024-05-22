@@ -5,6 +5,7 @@
 
   imports = [ 
     ./theme.nix
+    ../pkgs/helix
   ];
 
   #services.blueman-applet.enable = true;
@@ -48,7 +49,7 @@
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       userSettings = {
-        "files.autoSave" = "onFocusChange";
+        # "files.autoSave" = "onFocusChange";
         "window.titleBarStyle" = "custom";
         # "workbench.colorTheme" = "Popping and Locking";
         "workbench.colorTheme" = "Tokyo Night";
@@ -77,10 +78,10 @@
       rm -f /home/delta/.config/Code/User/settings.json.rw
       cp -f /home/delta/.config/Code/User/settings.json /home/delta/.config/Code/User/settings.json.rw
       chmod +rw /home/delta/.config/Code/User/settings.json.rw
-      # unlink /home/delta/.config/Code/User/settings.json
+      [ ! -e /path/to/file ] || unlink /home/delta/.config/Code/User/settings.json
     '';  
     link_copy = lib.hm.dag.entryAfter ["setupLaunchAgents"] ''
-      unlink /home/delta/.config/Code/User/settings.json
+      [ ! -e /path/to/file ] ||  unlink /home/delta/.config/Code/User/settings.json
       ln -sf /home/delta/.config/Code/User/settings.json.rw /home/delta/.config/Code/User/settings.json
       chmod +rw /home/delta/.config/Code/User/settings.json
     '';  
@@ -217,51 +218,6 @@
       #}
     ];
   };
-
-  programs.helix = {
-    enable = true;
-
-    languages.language = [{
-      name = "nix";
-      auto-format = true;
-      formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-    }];
-    themes = {
-      fleet_dark_transparent = {
-        "inherits" = "fleet_dark";
-        "ui.background" = { };
-      };
-    };
-
-    settings = {
-        theme = "fleet_dark_transparent";
-
-        editor = {
-          line-number = "relative";
-          mouse = true;
-          lsp.display-messages = true;
-          cursor-shape = {
-            normal = "block";
-            insert = "bar";
-            select = "underline";
-          };
-          file-picker.hidden = false;
-        };
-
-      keys.normal = {
-      space.space = "file_picker";
-      space.w = ":w";
-      space.q = ":q";
-      esc = [ "collapse_selection" "keep_primary_selection" ];
-      C-f = [":new" ":insert-output lf -selection-path=/dev/stdout" "split_selection_on_newline" "goto_file" "goto_last_modification" "goto_last_modified_file" ":buffer-close!" ":redraw"];
-
-      };
-    };
-
-    extraPackages = [ pkgs.marksman pkgs.nil pkgs.nodePackages.bash-language-server];
-  };
-
-  #programs.dircolors.enable = true;
 
   home.file.".config/btop/btop.conf".text = ''
     #? Config file for btop v. 1.3.2

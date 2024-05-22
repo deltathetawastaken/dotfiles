@@ -3,8 +3,8 @@
 {
   imports = [ 
     ./hardware.nix
-    "${self}/apps/gnome.nix"
-    "${self}/apps/apps.nix"
+    "${self}/pkgs/gnome.nix"
+    "${self}/pkgs/apps.nix"
     inputs.home-manager.nixosModules.home-manager
   ];
 

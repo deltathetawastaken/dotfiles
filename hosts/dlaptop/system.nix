@@ -9,13 +9,15 @@
     ./hardware.nix
     ./services.nix
     ./xorg.nix
-    "${self}/apps/apps.nix"
-    "${self}/apps/socks.nix"
-    "${self}/apps/scripts.nix"
-    "${self}/apps/work.nix"
+    "${self}/pkgs/apps.nix"
+    "${self}/pkgs/socks.nix"
+    "${self}/pkgs/scripts.nix"
+    "${self}/pkgs/work.nix"
     inputs.secrets.nixosModules.dlaptop
     inputs.home-manager.nixosModules.home-manager homeSettings
   ];
+
+  services.blueman.enable = true;
 
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_GB.UTF-8";
