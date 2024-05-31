@@ -123,18 +123,32 @@ in {
       tre = "${pkgs.eza}/bin/exa --tree";
       itree = "${pkgs.eza}/bin/exa --icons --tree";
       search = "nix-search -d -m 5 -p";
-      unpack = "aunpack";
+      unpack = "aunpack"; unzip = "aunpack";
       where = "which";
       c = "cd";
       ",s" = ", -s";
     };
     promptInit = ''
-      set TERM "xterm-256color"
+      # set TERM "xterm-256color"
       set fish_greeting
       export STARSHIP_CONFIG=/etc/starship.toml
       ${pkgs.zoxide}/bin/zoxide init fish | source
       source (${pkgs.starship}/bin/starship init fish --print-full-init | psub)
       any-nix-shell fish --info-right | source
+    '';
+    interactiveShellInit = ''
+      bind \cq 'fg; commandline -f execute'
+
+      function edit_command_in_editor
+          set -l temp_file (mktemp)
+          commandline > $temp_file
+          $EDITOR $temp_file
+          commandline (cat $temp_file)
+          rm $temp_file
+      end #oops Alt+e does the same by default
+
+      # Bind the function to Ctrl+E
+      bind \cs 'edit_command_in_editor'
     '';
   };
 

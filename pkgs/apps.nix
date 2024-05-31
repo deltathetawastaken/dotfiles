@@ -31,6 +31,8 @@ in {
   #];
 
   users.users.delta.packages = (with pkgs; [
+    alejandra
+    pre-commit
     gitleaks
     git
     #chromium
@@ -301,6 +303,14 @@ in {
           echo "$word_before_value(seq $from_value $to_value)"
       end
       abbr --add range_expand_abbr --position anywhere --regex "\w*\{\d+\.\.\d+\}" --function range_expansion
+
+      function copy_command_to_clipboard
+          set -l current_command (commandline -b | string trim)
+          printf "%s" $current_command | wl-copy
+      end
+      
+      # Bind the function to Alt+R
+      bind \er copy_command_to_clipboard
     '';
   };
 

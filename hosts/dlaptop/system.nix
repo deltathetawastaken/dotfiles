@@ -174,7 +174,6 @@
     nufraw-thumbnailer
 
     android-tools
-    firefox
     tor-browser
     #inputs.anyrun.packages.${pkgs.system}.anyrun
     sops

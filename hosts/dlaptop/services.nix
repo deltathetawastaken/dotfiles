@@ -1,8 +1,8 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 {
-  users.users.delta.packages = [
-    (pkgs.writeScriptBin "warp-cli" "${pkgs.cloudflare-warp}/bin/warp-cli $@")
-  ];
+  # users.users.delta.packages = [
+  #   (pkgs.writeScriptBin "warp-cli" "${pkgs.cloudflare-warp}/bin/warp-cli $@")
+  # ];
 
   # systemd.services.cloudflare-warp = {
   #   enable = true;

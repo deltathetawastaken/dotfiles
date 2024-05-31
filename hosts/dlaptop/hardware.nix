@@ -69,7 +69,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.initrd.kernelModules = [ ];
-  boot.kernelPackages = unstable.linuxPackages_zen;
+  boot.kernelPackages = unstable.linuxPackages_xanmod_latest;
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call cpupower ];
 
   fileSystems."/" = {

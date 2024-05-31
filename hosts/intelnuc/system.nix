@@ -1,18 +1,14 @@
-{ config, pkgs, inputs, self,... }:
-{
-  imports = [
-    ./hardware.nix
-    ./nginx-work.nix
-    inputs.secrets.nixosModules.intelnuc
-  ];
+{ config, pkgs, inputs, self, ... }: {
+  imports =
+    [ ./hardware.nix ./nginx-work.nix inputs.secrets.nixosModules.intelnuc ];
 
   system.autoUpgrade = {
-    enable = false;
+    enable = true;
     flake = "github:deltathetawastaken/dotfiles";
     dates = "daily";
   };
   systemd.services.nixos-upgrade = { # 1 hour timeout, default is too low
-    serviceConfig.TimeoutSec= 3600;
+    serviceConfig.TimeoutSec = 3600;
     serviceConfig.TimeoutStartUSec = 3600;
     serviceConfig.TimeoutStopUSec = 3600;
   };
@@ -20,7 +16,7 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
-  boot.kernel.sysctl."net.core.rmem_max" = 2500000; #for quic
+  boot.kernel.sysctl."net.core.rmem_max" = 2500000; # for quic
 
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -28,7 +24,7 @@
   users.users.intelnuc = {
     isNormalUser = true;
     description = "intelnuc";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
   };
 
   users.users.root.openssh.authorizedKeys.keys = [
@@ -37,9 +33,7 @@
 
   programs.adb.enable = true;
 
-  services.udev.packages = [
-    pkgs.android-udev-rules
-  ];
+  services.udev.packages = [ pkgs.android-udev-rules ];
 
   environment.systemPackages = with pkgs; [
     git
@@ -48,7 +42,9 @@
     htop
     zenith
     xorg.xauth
-    docker docker-compose traefik
+    docker
+    docker-compose
+    traefik
     lazydocker
     android-tools
   ];
@@ -79,14 +75,10 @@
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = "15";
-      Type="simple";
+      Type = "simple";
     };
     script = "/home/delta/scripts/vpn-connect-WB";
-    path = with pkgs; [
-      expect
-      oath-toolkit
-      openconnect
-    ];
+    path = with pkgs; [ expect oath-toolkit openconnect ];
   };
 
   services.forgejo = {
@@ -100,9 +92,7 @@
         ROOT_URL = "https://${inputs.secrets.hosts.intelnuc.forgejo.domain}";
       };
     };
-    database = {
-      type = "sqlite3";
-    };
+    database = { type = "sqlite3"; };
   };
 
   services.cloudflared.enable = true;
