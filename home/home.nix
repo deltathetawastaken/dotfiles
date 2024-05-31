@@ -20,6 +20,7 @@
         b4dm4n.vscode-nixpkgs-fmt
         usernamehw.errorlens
         eamodio.gitlens
+        kamadorueda.alejandra
       ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "remote-ssh-edit";
@@ -63,27 +64,37 @@
         #"nix.serverPath" = "${pkgs.nil}/bin/nil";
         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
         "nix.serverSettings" = {
-          nil = {
-            formatting = {
-              command = [ "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt" ];
-            };
-          };
+          #nil = {
+          #  formatting = {
+          #    command = [ "${pkgs.alejandra}/bin/alejandra" ];
+          #  };
+          #};
+        };
+        "alejandra.program" = "${pkgs.alejandra}/bin/alejandra";
+        "[nix]" = {
+           "editor.defaultFormatter" = "kamadorueda.alejandra";
+           "editor.formatOnPaste" = false;
+           "editor.formatOnSave" = false;
+           "editor.formatOnType" = false;
         };
       };
     };
   
-  #create RW vscode settings so all hotkeys work (wrap_lines and etc)
   home.activation = {
-    copy_unlink = lib.hm.dag.entryAfter ["onFilesChange"] ''
+    copy_unlink = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+      [ ! -e /home/delta/.config/Code/User/settings.json ] || unlink /home/delta/.config/Code/User/settings.json
+    '';  #create RW vscode settings so all hotkeys work (wrap_lines and etc)
+    copy_unlink2 = lib.hm.dag.entryAfter ["onFilesChange"] ''
       rm -f /home/delta/.config/Code/User/settings.json.rw
       cp -f /home/delta/.config/Code/User/settings.json /home/delta/.config/Code/User/settings.json.rw
-      chmod +rw /home/delta/.config/Code/User/settings.json.rw
-      [ ! -e /path/to/file ] || unlink /home/delta/.config/Code/User/settings.json
-    '';  
-    link_copy = lib.hm.dag.entryAfter ["setupLaunchAgents"] ''
-      [ ! -e /path/to/file ] ||  unlink /home/delta/.config/Code/User/settings.json
       ln -sf /home/delta/.config/Code/User/settings.json.rw /home/delta/.config/Code/User/settings.json
-      chmod +rw /home/delta/.config/Code/User/settings.json
+      chmod +rw /home/delta/.config/Code/User/settings.json.rw
+    '';
+    hypr_copy_unlink = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+      [ ! -e /home/delta/.config/hypr/hyprland.conf ] || unlink /home/delta/.config/hypr/hyprland.conf
+    '';  #create RW hyprland config so i can change settings without rebuild (maybe move monitor defenitions to a separate file instead?)
+    hypr_link_copy = lib.hm.dag.entryAfter ["onFilesChange"] ''
+      ln -sf /home/delta/Documents/dotfiles/pkgs/hyprland/hypr/hyprland.conf /home/delta/.config/hypr/hyprland.conf
     '';  
   };
 
@@ -186,8 +197,9 @@
 
   programs.chromium = {
     enable = true;
-    package = pkgs.chromium;
-    #"ifconfig.co/json"
+    package = pkgs.brave.override {
+      vulkanSupport = true;
+    };
     commandLineArgs = [
       "--ignore-gpu-blocklist"
       "--disable-gpu-driver-bug-workarounds"
@@ -205,12 +217,8 @@
       pkgs.hunspellDictsChromium.en_US
     ];
     extensions = [
-      { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
+      # { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
       { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
-      {
-        id = "dcpihecpambacapedldabdbpakmachpb"; # bypasss paywalls
-        updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
-      }
       #{
       #  id = "aaaaaaaaaabbbbbbbbbbcccccccccc";
       #  crxPath = "/home/share/extension.crx";
