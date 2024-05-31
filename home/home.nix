@@ -77,6 +77,8 @@
            "editor.formatOnSave" = false;
            "editor.formatOnType" = false;
         };
+        "nixfmt.path" = "${pkgs.alejandra}/bin/alejandra"; #alejandra addon is broken so i just use nixfmt addon with alejandra lol
+        "nix.formatterPath" = "${pkgs.alejandra}/bin/alejandra";
       };
     };
   
