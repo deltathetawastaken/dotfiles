@@ -31,6 +31,7 @@ in {
   #];
 
   users.users.delta.packages = (with pkgs; [
+    gitleaks
     git
     #chromium
     wl-clipboard

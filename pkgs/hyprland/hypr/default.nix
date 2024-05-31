@@ -50,10 +50,5 @@
       #   "https://github.com/zakk4223/hyprland-easymotion"
       # ];
     };
-    # home.activation = {
-    #   unlink_hyprland = lib.hm.dag.entryAfter ["onFilesChange"] ''
-    #     unlink /home/delta/.config/hypr/hyprland.conf
-    #   '';  
-    # };
   };
 }

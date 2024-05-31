@@ -37,6 +37,7 @@
       space.q = ":q";
       esc = [ "collapse_selection" "keep_primary_selection" ];
       C-f = [":new" ":insert-output lf -selection-path=/dev/stdout" "split_selection_on_newline" "goto_file" "goto_last_modification" "goto_last_modified_file" ":buffer-close!" ":redraw"];
+      # C-d = [":new" ":insert-output /home/delta/scripts/temp/yazi-choser.sh -selection-path=/dev/stdout" "split_selection_on_newline" "goto_file" "goto_last_modification" "goto_last_modified_file" ":buffer-close!" ":redraw"];
 
       };
     };

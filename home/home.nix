@@ -6,6 +6,7 @@
   imports = [ 
     ./theme.nix
     ../pkgs/helix
+    ../pkgs/yazi
   ];
 
   #services.blueman-applet.enable = true;
@@ -13,7 +14,6 @@
   programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      
       extensions = with pkgs.vscode-extensions; [
         matklad.rust-analyzer
         jnoortheen.nix-ide
@@ -143,7 +143,7 @@
       background_opacity = "0.8";
       remember_window_size = "no";
       hide_window_decorations = "yes";
-      remote_control_password = "kitty-notification-password-fish ls";
+      remote_control_password = "kitty-notification-password-fish ls, kitty-password-scripts ls set-tab-* resize-* send-text";
       allow_remote_control = "password";
       font_family= "FiraCode";
       font_features = "FiraCode +ss01 +ss02 +ss06 +ss08 +cv14 +cv03 +tnum";

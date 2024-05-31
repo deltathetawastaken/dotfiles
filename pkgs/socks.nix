@@ -1,5 +1,6 @@
 { pkgs, lib, inputs, ... }:
 let
+  nixpkgs2305 = import inputs.nixpkgs2305 { system = "${pkgs.system}"; config = { allowUnfree = true; }; };
   socksBuilder = attrs:
     {
       inherit (attrs) name;
@@ -33,12 +34,10 @@ let
       };
     };
   
- # IP of the proxies is 192.168.150.2
-  
-  socksed = [ # gost port 4780 direct proxy
-    { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";   } # port 4000
-    { name = "socks-warp";  script = "wireproxy -c /etc/wireguard/warp0.conf";     } # port 3333
-    { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";        } # port 3334
+  socksed = [ # IP of the proxies is 192.168.150.2
+    { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";} # port 4000
+    { name = "socks-warp";  script = "wireproxy -c /etc/wireguard/cproxy.conf"; } # port 3333
+    { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";     } # port 3334
   ];
 
   delete_rules = pkgs.writeScriptBin "delete_rules" ''
@@ -167,17 +166,17 @@ in {
         StateDirectory = "cloudflare-warp";
         RuntimeDirectory = "cloudflare-warp";
         LogsDirectory = "cloudflare-warp";
-        ExecStart = "${pkgs.cloudflare-warp}/bin/warp-svc";
+        ExecStart = "${nixpkgs2305.cloudflare-warp}/bin/warp-svc";
       };
 
       postStart = ''
         while true; do
           set -e
-          status=$(${pkgs.cloudflare-warp}/bin/warp-cli status || true)
+          status=$(${nixpkgs2305.cloudflare-warp}/bin/warp-cli status || true)
           set +e
 
           if [[ "$status" != *"Unable to connect to CloudflareWARP daemon"* ]]; then
-            ${pkgs.cloudflare-warp}/bin/warp-cli set-custom-endpoint 162.159.193.1:2408
+            ${nixpkgs2305.cloudflare-warp}/bin/warp-cli set-custom-endpoint 162.159.193.1:2408
             exit 0
           fi
           sleep 1
@@ -188,18 +187,36 @@ in {
     tor.wantedBy = lib.mkForce [];
   };
 
-  users.users.delta.packages = [
-    (pkgs.writeScriptBin "nyx" ''sudo -u tor -g tor ${inputs.nixpkgs2105.legacyPackages."x86_64-linux".nyx}/bin/nyx $@'')
+  environment.systemPackages = [
+    (pkgs.writeScriptBin "warp-cli" "${nixpkgs2305.cloudflare-warp}/bin/warp-cli $@")
+    (pkgs.writeScriptBin "nyx" ''sudo -u tor -g tor ${inputs.nixpkgs2105.legacyPackages."${pkgs.system}".nyx}/bin/nyx $@'')
+    (pkgs.writeScriptBin "tor-warp" ''
+      if [[ "$1" == "start" ]]; then
+        echo "Starting..."
+        warp-cli set-mode proxy
+        warp-cli set-proxy-port 4000
+        sudo systemctl start tor
+      elif [[ "$1" == "stop" ]]; then
+        echo "Stopping..."
+        warp-cli set-mode warp
+        sudo systemctl stop tor
+      else
+        echo "Error: specify start or stop"
+      fi
+    '')
   ];
 
   services.tor = {
     enable = true;
     client = {
       enable = true;
-      socksListenAddress = 9063;
+      socksListenAddress = 9050;
     };
     settings = {
-      Socks5Proxy = "192.168.150.2:3333";
+      # UseBridges = true;
+      # ClientTransportPlugin = "snowflake exec ${pkgs.snowflake}/bin/client";
+      # Bridge = "snowflake 192.0.2.3:80 2B280B23E1107BB62ABFC40DDCC8824814F80A72 fingerprint=2B280B23E1107BB62ABFC40DDCC8824814F80A72 url=https://snowflake-broker.torproject.net.global.prod.fastly.net/ fronts=www.shazam.com,www.cosmopolitan.com,www.esquire.com ice=stun:stun.l.google.com:19302,stun:stun.antisip.com:3478,stun:stun.bluesip.net:3478,stun:stun.dus.net:3478,stun:stun.epygi.com:3478,stun:stun.sonetel.com:3478,stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.voys.nl:3478 utls-imitate=hellorandomizedalpn";
+      Socks5Proxy = "localhost:4000"; # requires setting warp-svc to proxy mode: warp-cli set-mode proxy && warp-cli set-proxy-port 4000
       ControlPort = 9051;
       CookieAuthentication = true;
     };
