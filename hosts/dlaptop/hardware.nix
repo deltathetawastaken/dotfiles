@@ -62,7 +62,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.initrd.kernelModules = [ ];
-  boot.kernelPackages = unstable.linuxPackages_xanmod_latest;
   boot.extraModulePackages = with config.boot.kernelPackages; [ usbip.out ];
   boot.kernelPackages =   
     with builtins; with lib; let
