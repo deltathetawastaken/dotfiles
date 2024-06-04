@@ -156,6 +156,8 @@
   };
 
   environment.systemPackages = with pkgs; [
+    multipath-tools #ZFS in LUKS mount
+
     openvpn
     any-nix-shell
     comma

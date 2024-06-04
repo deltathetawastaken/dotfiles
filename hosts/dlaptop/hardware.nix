@@ -40,13 +40,6 @@
     interval = "weekly";
   };
 
-  # nix.gc = {
-  #   automatic = true;
-  #   dates = "weekly";
-  #   options = "--delete-older-than 7d";
-  #   # randomizedDelaySec = "30m";
-  # };
-
   programs.nh = {
     enable = true;
     clean.enable = true;
@@ -65,22 +58,37 @@
   ];
 
   boot.kernelModules = [ "amd-pstate" "acpi_call" "amdgpu" "kvm-amd" "vfat" "nls_cp437" "nls_iso8859-1" ];
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" "vfat" "nls_cp437" "nls_iso8859-1" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "vfat" "nls_cp437" "nls_iso8859-1" ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.initrd.kernelModules = [ ];
   boot.kernelPackages = unstable.linuxPackages_xanmod_latest;
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call cpupower ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ usbip.out ];
+  boot.kernelPackages =   
+    with builtins; with lib; let
+      latestCompatibleVersion = config.boot.zfs.package.latestCompatibleLinuxPackages.kernel.version;
+      xanPackages = filterAttrs (name: packages: hasSuffix "_xanmod" name && (tryEval packages).success) pkgs.linuxKernel.packages;
+      compatiblePackages = filter (packages: compareVersions packages.kernel.version latestCompatibleVersion <= 0) (attrValues xanPackages);
+      orderedCompatiblePackages = sort (x: y: compareVersions x.kernel.version y.kernel.version > 0) compatiblePackages;
+    in head orderedCompatiblePackages;
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/6b2d5c46-92de-42d0-a272-16b7ef7f30af";
-    fsType = "ext4";
-  };
+  boot.plymouth.enable = false;
+
+  boot.supportedFilesystems = [ "zfs" ];
+
+  boot.initrd.extraUtilsCommands = ''
+    copy_bin_and_libs ${pkgs.multipath-tools}/bin/kpartx
+  '';
 
   boot.initrd.luks = {
     yubikeySupport = true;
-    devices."cryptroot" = {
+    devices."cryptroot0" = {
       device = "/dev/nvme0n1p2";
+      postOpenCommands = "
+        kpartx -u /dev/mapper/cryptroot0
+        kpartx -u /dev/mapper/cryptroot0p1
+        kpartx -u /dev/mapper/cryptroot0p2
+        ";
       yubikey = {
         slot = 2;
         gracePeriod = 7;
@@ -97,14 +105,29 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/6770-34DC";
+    device = "/dev/disk/by-uuid/4E0B-6C2F";
     fsType = "vfat";
   };
 
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 32 * 1024;
-  }];
+
+  fileSystems."/" =
+    { device = "zroot/ROOT/default";
+      fsType = "zfs";
+    };
+
+  fileSystems."/nix/store" =
+    { device = "zroot/nix/store";
+      fsType = "zfs";
+    };
+
+  fileSystems."/var/log" =
+    { device = "zroot/var/log";
+      fsType = "zfs";
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/a2ff20bd-56f3-4c83-b1b4-933ba0c82f36"; }
+    ];
   
   hardware.opengl = {
     enable = true;
@@ -118,6 +141,7 @@
   };
 
   networking.useDHCP = lib.mkDefault true;
+  networking.hostId = "11C0FFEE";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
