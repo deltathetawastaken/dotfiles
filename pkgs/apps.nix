@@ -41,6 +41,7 @@ in {
     #(callPackage ../derivations/nu_plugin_dns.nix { })
     (fishPlugins.callPackage ../derivations/fish/fish-functions.nix { })
     (callPackage ../derivations/opera-proxy.nix { })
+    (callPackage ../derivations/hyprdrop.nix { })
     xorg.xwininfo
     jq
     dropbox
