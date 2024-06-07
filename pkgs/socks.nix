@@ -1,15 +1,15 @@
 { pkgs, lib, inputs, ... }:
 let
   nixpkgs2305 = import inputs.nixpkgs2305 { system = "${pkgs.system}"; config = { allowUnfree = true; }; };
-  socksBuilder = attrs:
+  socksBuilder = { name, script, autostart ? true, socketConfig ? null }:
     {
-      inherit (attrs) name;
+      inherit name;
       value = {
         enable = true;
         after = [ "novpn.service" "network-online.target" ];
         wants = [ "novpn.service" "network-online.target" ];
         bindsTo = [ "novpn.service" ];
-        wantedBy = [ "multi-user.target" ];
+        wantedBy = if autostart then [ "multi-user.target" ] else [ ];
 
         serviceConfig = { 
           Restart = "on-failure"; 
@@ -20,7 +20,7 @@ let
           Group = "socks"; 
         };
 
-        script = attrs.script;
+        script = script;
         preStart = "while true; do ip addr show dev novpn1 | grep -q 'inet' && break; sleep 1; done";
 
         path = with pkgs; [ 
@@ -28,17 +28,61 @@ let
           shadowsocks-libev 
           shadowsocks-v2ray-plugin 
           sing-box 
-          wireproxy 
+          wireproxy
           gost
+          (callPackage ../derivations/opera-proxy.nix { })
           ];
       };
     };
   
   socksed = [ # IP of the proxies is 192.168.150.2
     { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";} # port 4000
-    { name = "socks-warp";  script = "wireproxy -c /etc/wireguard/cproxy.conf"; } # port 3333
+    { name = "socks-warp" ; script = "wireproxy -c /etc/wireguzard/cproxy.conf"; } # port 3333
     { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";     } # port 3334
+    { name = "opera-socks"; 
+    script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
+    autostart = false;
+    socketConfig = { port = "3335"; idleStopSec = "180s"; };
+    } # port 3335
   ];
+
+  socketsServiceGenerator = { name, port, idleStopSec }: {
+    inherit name;
+    value = {
+      description = "Socket activation for ${name}";
+      wantedBy = [ "sockets.target" ];
+
+      socketConfig = {
+        ListenStream = "${port}";
+        IdleStopSec = idleStopSec;
+      };
+    };
+  };
+
+  opera-singboxcfg = pkgs.writeText "opera-singboxcfg" ''
+  {
+    "log": {
+      "disabled": true,
+      "output": "stdout"
+    },
+    "inbounds": [
+      {
+        "type": "socks",
+        "listen": "192.168.150.2",
+        "listen_port": 3335,
+        "sniff": true,
+        "sniff_override_destination": true
+      }
+    ],
+    "outbounds": [
+      {
+        "type": "http",
+        "server": "192.168.150.2",
+        "server_port": 18088
+      }
+    ]
+  }
+  '';
 
   delete_rules = pkgs.writeScriptBin "delete_rules" ''
     #!${pkgs.bash}/bin/bash
@@ -117,6 +161,11 @@ let
     ip netns del novpn
     rm -rf /var/run/netns/novpn/
   '';
+
+  socketsBuilder = socketsServiceGenerator;
+  withSockets = lib.filter (s: lib.hasAttr "socketConfig" s) socksed;
+
+  enabledSocksed = lib.filter (s: !lib.hasAttr "autostart" s || s.autostart) socksed;
 in {
   users.users.socks = {
     group = "socks";
@@ -124,13 +173,20 @@ in {
   };
 
   users.groups.socks = {};
+
+  systemd.sockets = builtins.listToAttrs (map (s: socketsBuilder {
+    name = s.name;
+    port = s.socketConfig.port;
+    idleStopSec = s.socketConfig.idleStopSec;
+  }) withSockets);
+
   systemd.services = builtins.listToAttrs (map socksBuilder socksed) // { 
     novpn = {
       enable = true;
       description = "novpn namespace";
       after = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
-      wants = map (s: "${s.name}.service") socksed ++ [ "network-online.target"];
+      wants = map (s: "${s.name}.service") enabledSocksed ++ [ "network-online.target"];
 
       serviceConfig = {
         Restart = "on-failure";
