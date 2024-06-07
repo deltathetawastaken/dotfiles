@@ -30,19 +30,6 @@ in
   #   })
   # ];
 
-  nixpkgs.overlays = [
-    (self: super: {
-      qt6 = super.qt6 // {
-        qtwayland = super.qt6.qtwayland.overrideAttrs (oldAttrs: {
-          patches = (oldAttrs.patches or []) ++ [
-            ./patches/0004-fix-gtk4-embedding.patch
-          ];
-        });
-      };
-    }
-    )
-  ];
-  
   #system.activationScripts."gnome_setup_misc".text = ''
   #  rm -f /home/delta/.config/gtk-4.0/gtk.css
   #  rm -f /home/delta/.config/gtk-3.0/gtk.css
@@ -163,15 +150,11 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
-    gnomeExtensions.appindicator
     gnomeExtensions.activate-window-by-title
-    stable.gnomeExtensions.unite
     gnomeExtensions.tailscale-qs
     gnomeExtensions.gsconnect
     gnomeExtensions.clipboard-indicator
-    gnomeExtensions.pip-on-top
     gnomeExtensions.cloudflare-warp-toggle
-    gnomeExtensions.tiling-assistant
     gnomeExtensions.overview-background
     gnome.gnome-tweaks
     mojave-gtk-theme

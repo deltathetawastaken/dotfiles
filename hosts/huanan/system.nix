@@ -1,11 +1,12 @@
-{ lib, pkgs, inputs, self, ... }:
+{ lib, pkgs, inputs, self, homeSettings, ... }:
 
 {
   imports = [ 
     ./hardware.nix
     "${self}/pkgs/gnome.nix"
     "${self}/pkgs/apps.nix"
-    inputs.home-manager.nixosModules.home-manager
+    "${self}/pkgs/work.nix"
+    inputs.home-manager.nixosModules.home-manager homeSettings
   ];
 
   time.timeZone = "Europe/Moscow";
@@ -13,11 +14,11 @@
 
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" ];
+    videoDrivers = [ "noveau" ];
     displayManager = {
       gdm = {
         enable = true;
-        wayland = false;
+        wayland = true;
       };
     };
     desktopManager.gnome.enable = true;
