@@ -1,0 +1,189 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 20,
+    "modules-left": [
+        "custom/power_btn",
+         "custom/launch_apps",
+        "idle_inhibitor",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+     	//"custom/updates",
+        "cpu",
+        "pulseaudio",
+        "custom/bluetoothcharge",
+        "pulseaudio#microphone",
+        "backlight",
+        "tray",
+        //"temperature",
+        "custom/power_profile",
+        "battery",
+        "hyprland/language"
+        //"custom/myutils",
+        //"custom/weather"
+        //"custom/light_dark"
+    ],
+    
+    "include": [
+       "~/.config/waybar/mesu.jsonc"
+       // "~/.config/utils/waybar/conf/asus-rog.jsonc",
+        // "~/.config/utils/waybar/conf/utils-util.jsonc"
+    ],
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰛐",
+            "deactivated": "󰛑"
+        },
+        "timeout": 180,
+        "tooltip": true
+    },
+
+     "custom/launch_apps": {
+        "format": "󱗼 ",
+        "on-click": "sh -c '(nwg-drawer -term foot)'",
+        "tooltip": false
+    },
+
+    "hyprland/language": {
+        "interval": 30,
+        "format": "<span font-family=\"Twemoji\">{}</span>",
+        "format-en": "🇬🇧",
+        "format-ru": "🇷🇺",
+        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next",
+        "signal": 8
+    },
+
+    "hyprland/window": {
+        "max-length": 200,
+        "separate-outputs": true
+    },
+
+    "custom/power_btn": {
+        "format": "",
+        "on-click": "sh -c '(wlogout --protocol layer-shell)'",
+        "tooltip": false
+    },
+
+    "custom/lock_screen": {
+        "format": "",
+        "on-click": "sh -c '(swaylock)'",
+        "tooltip": false
+    },
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+    	"on-scroll-down": "hyprctl dispatch workspace e-1",
+        "on-click": "activate"
+    },
+
+    "cpu": {
+            "states": {
+            "high": 80,
+            "med": 40,
+            "low": 15
+        },
+        "interval": 10,
+        "format": " {usage}%",
+        "max-length": 10,
+        "format-alt-click": "click-right",
+        "format-alt": " ",
+        "on-click": "footclient --fullscreen --title=btop -o colors.alpha=0.3 sh -c 'btop'"
+    },
+
+    "battery": {
+        "states": {
+            "good": 80,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt-click": "click-right",
+        "format-alt": "{icon}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "",
+        "on-click": "~/.config/utils/waybar/scripts/volume --toggle",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "~/.config/utils/waybar/scripts/volume --inc",
+        "on-scroll-down": "~/.config/utils/waybar/scripts/volume --dec",
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "<span color='#757de8'></span>",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "format-alt-click": "click-middle",
+        "format-alt": "{icon} {volume}%",
+        "tooltip": true,
+        "tooltip-format": "{volume}%"
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "on-click": "~/.config/utils/waybar/scripts/volume --toggle-mic",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "~/.config/utils/waybar/scripts/volume --mic-inc",
+        "on-scroll-down": "~/.config/utils/waybar/scripts/volume --mic-dec",
+        "scroll-step": 5,
+        "format-alt-click": "click-middle",
+        "format-alt": " {volume}%",
+        "tooltip": true,
+        "tooltip-format": "  {volume}%"
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon}",
+        "format-alt-click": "click-right",
+        "format-alt": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "~/.config/utils/waybar/scripts/brightness --inc",
+        "on-scroll-down": "~/.config/utils/waybar/scripts/brightness --dec"
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
+    },
+
+    "custom/updates": {
+        "format": "{}",
+        "exec": "~/.config/utils/waybar/scripts/update-sys",
+        "on-click": "~/.config/utils/waybar/scripts/update-sys update",
+        "interval": 3600,
+        "tooltip": true
+    },
+    
+    "custom/bluetoothcharge": {
+        "format": "{}",
+        "tooltip-format": "{}",
+        "exec": "~/.config/utils/waybar/scripts/bluetoothcharge",
+        "on-click": "~/.config/utils/waybar/scripts/bluetoothcharge",
+        "interval": 60,
+        "tooltip": true
+    }
+}

@@ -129,7 +129,7 @@ in {
       ",s" = ", -s";
     };
     promptInit = ''
-      # set TERM "xterm-256color"
+      set TERM "xterm-256color"
       set fish_greeting
       export STARSHIP_CONFIG=/etc/starship.toml
       ${pkgs.zoxide}/bin/zoxide init fish | source

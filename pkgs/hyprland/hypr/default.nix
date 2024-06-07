@@ -10,7 +10,7 @@
   programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   users.users.delta.packages = with pkgs; [
     swww
-    stable.waybar
+    waybar
     stable.swaynotificationcenter
     cliphist
     fzf
