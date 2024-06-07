@@ -40,9 +40,9 @@ let
     { name = "socks-warp" ; script = "wireproxy -c /etc/wireguzard/cproxy.conf"; } # port 3333
     { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";     } # port 3334
     { name = "opera-socks"; 
-    script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
-    autostart = false;
-    socketConfig = { port = "3335"; idleStopSec = "180s"; };
+      script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
+      autostart = false;
+      socketConfig = { port = "3335"; idleStopSec = "180s"; };
     } # port 3335
   ];
 
