@@ -7,6 +7,7 @@
     ./theme.nix
     ../pkgs/helix
     ../pkgs/yazi
+    ../pkgs/waybar
   ];
 
   #services.blueman-applet.enable = true;
@@ -15,7 +16,6 @@
       enable = true;
       package = pkgs.vscode;
       extensions = with pkgs.vscode-extensions; [
-        matklad.rust-analyzer
         jnoortheen.nix-ide
         b4dm4n.vscode-nixpkgs-fmt
         usernamehw.errorlens

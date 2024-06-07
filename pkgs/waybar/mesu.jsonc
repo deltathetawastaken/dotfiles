@@ -1,0 +1,38 @@
+{
+    "clock": {
+    "format": "{:%H:%M}",
+    "format-alt": "{:%a %d %R}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+                "mode"          : "month",
+                "mode-mon-col"  : 3,
+                "weeks-pos"     : "right",
+                "on-scroll"     : 1,
+                "on-click-right": "mode",
+                "format": {
+                    "months":     "<span color='#66cc99'><b>{}</b></span>",
+                    "days":       "<span color='#cccccc'><b>{}</b></span>",
+                    "weeks":      "<span color='#666666'><b>{}</b></span>",
+                    "weekdays":   "<span color='#99ffcc'><b>{}</b></span>",
+                    "today":      "<span color='#ff99cc'><b>{}</b></span>"
+                          }
+                },
+    "actions":  {
+                "on-click-right": "mode",
+                "on-click-forward": "tz_up",
+                "on-click-backward": "tz_down",
+                "on-scroll-up": "shift_up",
+                "on-scroll-down": "shift_down"
+                }
+},
+
+"temperature": {
+    "thermal-zone": 1,
+    "format": "",
+    "format-alt-click": "click-right",
+    "format-alt": " {temperatureC}°C",
+    "critical-threshold": 70,
+    "format-critical": " {temperatureC}°C",
+    "on-click": "kitty --start-as=fullscreen --title btop sh -c 'btop'"
+}
+}

@@ -21,10 +21,16 @@
 
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.extraLocaleSettings = {
+    LANGUAGE = "en_GB.UTF-8";
+    LC_ALL = "en_GB.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
+  };
 
   networking = {
     hostName = "dlaptop";
-    nameservers = [ "100.92.15.128" "fd7a:115c:a1e0::b21c:f80" ];
+    nameservers = [ "1.1.1.1" ];
+    #nameservers = [ "100.92.15.128" "fd7a:115c:a1e0::b21c:f80" ];
     networkmanager.dns = "none"; 
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
@@ -156,6 +162,8 @@
   };
 
   environment.systemPackages = with pkgs; [
+    multipath-tools #ZFS in LUKS mount
+
     openvpn
     any-nix-shell
     comma

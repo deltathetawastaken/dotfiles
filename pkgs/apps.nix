@@ -40,6 +40,8 @@ in {
     wl-clipboard-x11
     #(callPackage ../derivations/nu_plugin_dns.nix { })
     (fishPlugins.callPackage ../derivations/fish/fish-functions.nix { })
+    (callPackage ../derivations/opera-proxy.nix { })
+    (callPackage ../derivations/hyprdrop/hyprdrop.nix { })
     xorg.xwininfo
     jq
     dropbox
@@ -74,11 +76,11 @@ in {
     lexend # font from google (non-mono)
     ibm-plex
     fira-code
-    # iosevka-comfy.comfy
+    iosevka-comfy.comfy
     # iosevka-comfy.comfy-duo
-    # iosevka-comfy.comfy-wide
-    # iosevka-comfy.comfy-wide-duo
-    iosevka-comfy.comfy-motion-duo
+    iosevka-comfy.comfy-wide
+    iosevka-comfy.comfy-wide-duo
+    # iosevka-comfy.comfy-motion-duo
     jamesdsp easyeffects
     nmap
     wget
@@ -94,7 +96,8 @@ in {
     #  '';
     #})
     shwewo.audiorelay
-    shwewo.tdesktop
+    # shwewo.tdesktop
+    # _64gram 
     (pkgs.writeScriptBin "tlp" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp $@'')
     prismlauncher
     stable.teleport_12 #work
@@ -104,6 +107,7 @@ in {
     atool #unarchive
     open-interpreter
     overrides.diosevka
+    # iosevka-bin
     # overrides.iosevka-comfy
     overrides.vesktop
     # overrides.input-font
