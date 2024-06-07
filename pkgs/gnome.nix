@@ -53,9 +53,9 @@ in
   programs.dconf.profiles.user.databases = [
     { 
       settings = {
-        #"org/gnome/mutter" = {
-        #  experimental-features = [ "scale-monitor-framebuffer" ];
-        #};
+        "org/gnome/mutter" = {
+          experimental-features = [ "scale-monitor-framebuffer" ];
+        };
         "org/gnome/settings-daemon/plugins/media-keys" = {
           custom-keybindings = [
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
