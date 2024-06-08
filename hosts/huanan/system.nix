@@ -3,9 +3,13 @@
 {
   imports = [ 
     ./hardware.nix
-    "${self}/pkgs/gnome.nix"
+    ./services.nix
+    ../dlaptop/xorg.nix
     "${self}/pkgs/apps.nix"
+    "${self}/pkgs/socks.nix"
+    "${self}/pkgs/scripts.nix"
     "${self}/pkgs/work.nix"
+    inputs.secrets.nixosModules.dlaptop
     inputs.home-manager.nixosModules.home-manager homeSettings
   ];
 
@@ -27,17 +31,34 @@
     excludePackages = [ pkgs.xterm ];
   };
 
+  networking = {
+    hostName = "huanan";
+    nameservers = [ "192.168.3.53" ];
+    networkmanager.dns = "none"; 
+    networkmanager.enable = true;
+    useDHCP = lib.mkDefault true;
+    iproute2.enable = true;
+    firewall = {
+      enable = false;
+    };
+  };
+
+  security = {
+    sudo.wheelNeedsPassword = false;
+    pam.loginLimits = [{ #needed for swaylock
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }];
+    pam.services.swaylock = { };
+  };
+
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     open = false;
     nvidiaSettings = true;
-  };
-
-  networking = {
-    hostName = "huanan";
-    networkmanager.enable = true;
-    firewall.enable = false;
   };
 
   sound.enable = true;
@@ -49,6 +70,53 @@
     pulse.enable = true;
   };
 
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
+    spiceUSBRedirection.enable = true;
+    libvirtd.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    multipath-tools #ZFS in LUKS mount
+
+    openvpn
+    any-nix-shell
+    comma
+    
+    #work scripts
+    openconnect
+    oath-toolkit
+    expect
+
+    # Thunar stuff
+    ffmpegthumbnailer
+    webp-pixbuf-loader
+    freetype
+    poppler
+    f3d
+    nufraw-thumbnailer
+
+    android-tools
+    tor-browser
+    #inputs.anyrun.packages.${pkgs.system}.anyrun
+    sops
+    yubikey-manager-qt
+    yubico-piv-tool
+    yubioath-flutter
+    yubikey-personalization
+    yubikey-personalization-gui
+    age-plugin-yubikey
+    age
+    rage
+    lua5_4
+    nodePackages_latest.nodejs
+
+    rocmPackages.rocm-smi #gpu support in btop
+  ];
+
   services.openssh.enable = true;
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "23.11";
 }
