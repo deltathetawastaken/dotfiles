@@ -67,7 +67,7 @@ in {
     wlogout
     nom
     localsend
-    trayscale
+    ktailctl
     fishPlugins.done
     monero-gui
     translate-shell
@@ -116,7 +116,6 @@ in {
     element-desktop
     qrtool
     appimage-run
-    trayscale
     lf
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ]);
