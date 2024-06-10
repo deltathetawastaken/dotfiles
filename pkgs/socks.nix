@@ -18,6 +18,8 @@ let
           NetworkNamespacePath = "/run/netns/novpn"; 
           User = "socks"; 
           Group = "socks"; 
+          StandardInput= if socketConfig != null then [ "socket" ] else [ ];
+          StandardOutput=if socketConfig != null then [ "socket" ] else [ ];
         };
 
         script = script;
@@ -42,7 +44,6 @@ let
     { name = "opera-socks"; 
       script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
       autostart = false;
-      socketConfig = { port = "3335"; idleStopSec = "180s"; };
     } # port 3335
   ];
 
@@ -51,10 +52,16 @@ let
     value = {
       description = "Socket activation for ${name}";
       wantedBy = [ "sockets.target" ];
+      bindsTo = [ "novpn.service" ];
+      after = [ "novpn.service" "network-online.target" ];
+
 
       socketConfig = {
         ListenStream = "${port}";
         IdleStopSec = idleStopSec;
+        NetworkNamespacePath = "/run/netns/novpn"; 
+        User = "socks"; 
+        Group = "socks"; 
       };
     };
   };
@@ -70,8 +77,6 @@ let
         "type": "socks",
         "listen": "192.168.150.2",
         "listen_port": 3335,
-        "sniff": true,
-        "sniff_override_destination": true
       }
     ],
     "outbounds": [
