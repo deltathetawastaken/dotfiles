@@ -1,6 +1,7 @@
 { pkgs, lib, inputs, ... }:
 let
   nixpkgs2305 = import inputs.nixpkgs2305 { system = "${pkgs.system}"; config = { allowUnfree = true; }; };
+  
   socksBuilder = { name, script, autostart ? true, socketConfig ? null }:
     {
       inherit name;

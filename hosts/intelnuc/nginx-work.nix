@@ -4,8 +4,8 @@
   services.nginx.virtualHosts."grafana" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;
@@ -31,8 +31,8 @@
   services.nginx.virtualHosts."keycloak" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;
@@ -50,8 +50,8 @@
   services.nginx.virtualHosts."kibana" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;
@@ -68,8 +68,8 @@
   services.nginx.virtualHosts."zabbix" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;
@@ -87,8 +87,8 @@
   services.nginx.virtualHosts."prox-1" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;
@@ -113,8 +113,8 @@
   services.nginx.virtualHosts."prox-2" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;
@@ -139,8 +139,8 @@
   services.nginx.virtualHosts."prox-3" = {
     forceSSL = false;
     listen = [
-      {port = 80; addr = "0.0.0.0"; ssl = false;} # Listen on port 80 for HTTP
-      {port = 443; addr = "0.0.0.0"; ssl = true;} # Listen on port 443 for HTTPS
+      {port = 80; addr = "100.92.15.128"; ssl = false;} # Listen on port 80 for HTTP
+      {port = 443; addr = "100.92.15.128"; ssl = true;} # Listen on port 443 for HTTPS
     ];
     extraConfig = ''
       ssl_certificate /run/secrets/cert;

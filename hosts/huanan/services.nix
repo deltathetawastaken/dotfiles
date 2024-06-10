@@ -8,9 +8,16 @@
   services.flatpak.enable = true;
   services.printing.enable = true;
   services.pcscd.enable = true;
+
   services.udev.packages = [ 
     pkgs.gnome.gnome-settings-daemon
     pkgs.android-udev-rules
     pkgs.yubikey-personalization
   ];
+
+  users.groups.cloudflared = { };
+  users.users.cloudflared = {
+    group = "cloudflared";
+    isSystemUser = true;
+  };
 }

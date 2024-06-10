@@ -31,6 +31,7 @@
     excludePackages = [ pkgs.xterm ];
   };
 
+  systemd.services.NetworkManager-wait-online.enable = false; #just makes boot time longer
   networking = {
     hostName = "huanan";
     nameservers = [ "192.168.3.53" ];
