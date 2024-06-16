@@ -5,9 +5,11 @@
 
   imports = [ 
     ./theme.nix
+    ../pkgs/cfgs
     ../pkgs/helix
     ../pkgs/yazi
     ../pkgs/waybar
+    ../pkgs/hyprland/hyprshade
   ];
 
   #services.blueman-applet.enable = true;

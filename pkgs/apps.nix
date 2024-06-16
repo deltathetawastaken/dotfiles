@@ -211,7 +211,15 @@ in {
 
   programs.xfconf.enable = true;
   programs.virt-manager.enable = true;
-  programs.steam.enable = true;
+  programs.steam = {
+      enable = true;
+      package = pkgs.steam.override (old: {
+        extraBwrapArgs = [
+          "--setenv SSL_CERT_FILE /etc/ssl/certs/ca-certificates.crt"
+          "--setenv SSL_CERT_DIR ${pkgs.cacert.unbundled}/etc/ssl/certs"
+        ];
+      });
+    };
   programs.steam.gamescopeSession.enable = true;
   programs.noisetorch.enable = true;
   programs.gamemode.enable = true;

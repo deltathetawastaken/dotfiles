@@ -96,7 +96,7 @@
             "low": 15
         },
         "interval": 10,
-        "format": " {usage}%",
+        "format": "  {usage}%",
         "max-length": 10,
         "format-alt-click": "click-right",
         "format-alt": " ",

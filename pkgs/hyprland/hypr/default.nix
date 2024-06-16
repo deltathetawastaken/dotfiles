@@ -25,6 +25,9 @@
     python3
     grimblast
     networkmanagerapplet
+    hyprshade # hyprshade toggle blue-light-filter
+    gammastep # gammastep -O 4500K
+    hyprlock
   ];
   # environment.systemPackages = [
   #  inputs.hyprland-contrib.packages.${pkgs.system}.grimblast.override { license = licenses.gpl3; }
@@ -64,5 +67,6 @@
       #   "https://github.com/zakk4223/hyprland-easymotion"
       # ];
     };
+    home.file.".config/hypr/env_var.conf".text = builtins.readFile ./env_var.conf;
   };
 }

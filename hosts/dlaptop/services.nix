@@ -42,6 +42,8 @@
     };
   };
 
+  services.openssh.enable = true;
+  systemd.services.sshd.wantedBy = lib.mkForce [];
   services.tailscale.enable = true;
   services.syncthing.enable = true;
   #services.blueman.enable = true;
