@@ -34,6 +34,8 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:

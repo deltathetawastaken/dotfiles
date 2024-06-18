@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: 
+{ config, pkgs, stable, ... }: 
 
 let 
   ephemeralbrowser = pkgs.writeScriptBin "ephemeralbrowser" ''
@@ -35,7 +35,7 @@ let
       browser_path="${pkgs.google-chrome}/bin/google-chrome-stable https://ifconfig.me"
       profile="google-chrome"
     elif [[ $browser == "ungoogled_chromium" ]]; then
-      browser_path="${pkgs.ungoogled-chromium}/bin/chromium --user-data-dir=/tmp/ephemeralbrowser/.config/chromium https://ifconfig.me"
+      browser_path="${stable.ungoogled-chromium}/bin/chromium --user-data-dir=/tmp/ephemeralbrowser/.config/chromium https://ifconfig.me"
       profile="chromium"
     elif [[ $browser == "firefox" ]]; then
       browser_path="${pkgs.firefox}/bin/firefox -no-remote https://ifconfig.me"

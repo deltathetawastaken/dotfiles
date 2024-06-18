@@ -25,6 +25,7 @@ in {
       colloid-icon-theme
       adw-gtk3
       nerdfonts
+      tokyonight-gtk-theme
     ];
   sessionVariables.XCURSOR_THEME = cursor-theme;
   pointerCursor = {

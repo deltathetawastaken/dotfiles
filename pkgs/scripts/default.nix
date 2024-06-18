@@ -8,6 +8,11 @@ let
     "fzfclipboard"
     "fzfmenuft"
     "swaylock"
+    "hyprshade"
+    "bluetoothcharge"
+    "brightness"
+    "volume"
+    "powermenu"
   ];
 
   # Generate the script binaries

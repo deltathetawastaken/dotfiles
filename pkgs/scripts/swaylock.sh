@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 sh -c "swaylock -C /home/delta/.config/swaylock/config --indicator-x-position $(shuf -i 100-1750 -n 1) --indicator-y-position $(shuf -i 50-1000 -n 1)" & hyprctl switchxkblayout at-translated-set-2-keyboard 0
 

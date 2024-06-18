@@ -49,7 +49,7 @@ in {
   users.users.delta = {
     isNormalUser = true;
     description = "delta";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "adbusers" "video"];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGL2UD0frl9F2OPBiPlSQqxDsuACbAVgwH24F0KT14L"
     ];

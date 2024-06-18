@@ -8,7 +8,7 @@
     "height": 20,
     "modules-left": [
         "custom/power_btn",
-         "custom/launch_apps",
+        //  "custom/launch_apps",
         "idle_inhibitor",
         "hyprland/workspaces",
         "hyprland/window"
@@ -70,14 +70,14 @@
     },
 
     "custom/power_btn": {
-        "format": "",
-        "on-click": "sh -c '(wlogout --protocol layer-shell)'",
+        "format": "  ",
+        "on-click": "sh -c '(powermenu)'",
         "tooltip": false
     },
 
     "custom/lock_screen": {
         "format": "",
-        "on-click": "sh -c '(swaylock)'",
+        "on-click": "sh -c '(hyprlock)'",
         "tooltip": false
     },
 
@@ -120,10 +120,10 @@
     "pulseaudio": {
         "format": "{icon}",
         "format-muted": "",
-        "on-click": "~/.config/utils/waybar/scripts/volume --toggle",
+        "on-click": "volume --toggle",
         "on-click-right": "pavucontrol",
-        "on-scroll-up": "~/.config/utils/waybar/scripts/volume --inc",
-        "on-scroll-down": "~/.config/utils/waybar/scripts/volume --dec",
+        "on-scroll-up": "volume --inc",
+        "on-scroll-down": "volume --dec",
         "scroll-step": 5,
         "format-icons": {
             "headphone": "",
@@ -144,10 +144,10 @@
         "format": "{format_source}",
         "format-source": "",
         "format-source-muted": "",
-        "on-click": "~/.config/utils/waybar/scripts/volume --toggle-mic",
+        "on-click": "volume --toggle-mic",
         "on-click-right": "pavucontrol",
-        "on-scroll-up": "~/.config/utils/waybar/scripts/volume --mic-inc",
-        "on-scroll-down": "~/.config/utils/waybar/scripts/volume --mic-dec",
+        "on-scroll-up": "volume --mic-inc",
+        "on-scroll-down": "volume --mic-dec",
         "scroll-step": 5,
         "format-alt-click": "click-middle",
         "format-alt": " {volume}%",
@@ -161,8 +161,8 @@
         "format-alt-click": "click-right",
         "format-alt": "{icon} {percent}%",
         "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "on-scroll-up": "~/.config/utils/waybar/scripts/brightness --inc",
-        "on-scroll-down": "~/.config/utils/waybar/scripts/brightness --dec"
+        "on-scroll-up": "brightness --inc",
+        "on-scroll-down": "brightness --dec"
     },
 
     "tray": {
@@ -181,8 +181,8 @@
     "custom/bluetoothcharge": {
         "format": "{}",
         "tooltip-format": "{}",
-        "exec": "~/.config/utils/waybar/scripts/bluetoothcharge",
-        "on-click": "~/.config/utils/waybar/scripts/bluetoothcharge",
+        "exec": "bluetoothcharge",
+        "on-click": "bluetoothcharge",
         "interval": 60,
         "tooltip": true
     }

@@ -9,12 +9,16 @@
     ./hardware.nix
     ./services.nix
     ./xorg.nix
+    
     "${self}/pkgs/apps.nix"
     "${self}/pkgs/socks.nix"
     "${self}/pkgs/scripts.nix"
     "${self}/pkgs/work.nix"
+    "${self}/pkgs/dns.nix"
+
     inputs.secrets.nixosModules.dlaptop
     inputs.home-manager.nixosModules.home-manager homeSettings
+    inputs.chaotic.nixosModules.default
   ];
 
   services.blueman.enable = true;
@@ -27,11 +31,17 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
+  documentation.man.enable = false;
+  documentation.nixos.enable = false;
+
+  # networking.timeServers = "";
+  # services.ntp.servers = "";
+
   networking = {
     hostName = "dlaptop";
-    nameservers = [ "1.1.1.1" ];
-    #nameservers = [ "100.92.15.128" "fd7a:115c:a1e0::b21c:f80" ];
-    networkmanager.dns = "none"; 
+    # nameservers = [ "1.1.1.1" ];
+    nameservers = [ "127.0.0.1" ];
+    networkmanager.dns = lib.mkForce "none"; 
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
     interfaces.wlp1s0.proxyARP = true;

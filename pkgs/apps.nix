@@ -42,6 +42,7 @@ in {
     (fishPlugins.callPackage ../derivations/fish/fish-functions.nix { })
     (callPackage ../derivations/opera-proxy.nix { })
     (callPackage ../derivations/hyprdrop/hyprdrop.nix { })
+    (callPackage ../derivations/wluma/wluma.nix { })
     xorg.xwininfo
     jq
     dropbox
@@ -68,6 +69,7 @@ in {
     nom
     localsend
     ktailctl
+    trayscale
     fishPlugins.done
     monero-gui
     translate-shell
@@ -87,6 +89,7 @@ in {
     shwewo.ephemeralbrowser
     shwewo.ruchrome
     shwewo.spotify
+    telegram-desktop
     #(pkgs.symlinkJoin {
     #  name = "ExprSelect";
     #  paths = [ shwewo.spotify ];
@@ -117,6 +120,7 @@ in {
     qrtool
     appimage-run
     lf
+    hydra-check
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ]);
 
@@ -258,6 +262,9 @@ in {
       abbr -a --position command ttlfix TTLfix
       abbr -a --position command syspend systemctl suspend
       abbr -a --position command suspend systemctl suspend
+      abbr -a --position command hibernate systemctl hibernate
+      abbr -a --position command hybernate systemctl hibernate
+
       abbr -- - 'cd -'
       abbr cdd 'cd ~/Downloads'
 
@@ -375,7 +382,7 @@ in {
       lsp = {
         enable = true;
         servers = {
-          bashls.enable = true;
+          # bashls.enable = true;
           nixd.enable = true;
         };
         keymaps.lspBuf = {

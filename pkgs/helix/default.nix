@@ -42,7 +42,7 @@
       };
     };
 
-    extraPackages = [ pkgs.marksman pkgs.nil pkgs.nodePackages.bash-language-server];
+    extraPackages = [ pkgs.marksman pkgs.nil ];
   };
 
   #programs.dircolors.enable = true;

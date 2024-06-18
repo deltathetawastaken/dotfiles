@@ -16,6 +16,7 @@
     EDITOR = "hx";
     BROWSER = "firefox";
     TERMINAL = "foot";
+    WLR_DRM_NO_MODIFIERS = 1; # fixes graphical glitches on amd laptop
   };
 
   environment.variables = lib.mkForce {

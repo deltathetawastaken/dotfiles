@@ -88,24 +88,45 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
     "amd_pstate.shared_mem=1"
     "zfs.zfs_arc_max=19327352832"
     "resume=UUID=a2ff20bd-56f3-4c83-b1b4-933ba0c82f36"
+
+    # # Disable all mitigations
+    # "mitigations=off"
+    # "nopti"
+    # "tsx=on"
+
+    # https://www.phoronix.com/news/Linux-Splitlock-Hurts-Gaming
+    "split_lock_detect=off"
   ];
+
+  boot.zfs.allowHibernation = true;
+  boot.zfs.forceImportRoot = false;
+  boot.resumeDevice = "/dev/mapper/cryptroot0p2";
 
   boot.kernelModules = [ "amd-pstate" "acpi_call" "amdgpu" "kvm-amd" "vfat" "nls_cp437" "nls_iso8859-1" ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "vfat" "nls_cp437" "nls_iso8859-1" ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.initrd.kernelModules = [ ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ usbip.out ];
-  boot.kernelPackages =   
-    with builtins; with lib; let
-      latestCompatibleVersion = config.boot.zfs.package.latestCompatibleLinuxPackages.kernel.version;
-      xanPackages = filterAttrs (name: packages: hasSuffix "_xanmod" name && (tryEval packages).success) pkgs.linuxKernel.packages;
-      compatiblePackages = filter (packages: compareVersions packages.kernel.version latestCompatibleVersion <= 0) (attrValues xanPackages);
-      orderedCompatiblePackages = sort (x: y: compareVersions x.kernel.version y.kernel.version > 0) compatiblePackages;
-      selectedKernelPackage = head orderedCompatiblePackages;
-    in selectedKernelPackage // {
-      extraPackages = with selectedKernelPackage; [ acpi_call ];
-    };
+  # boot.extraModulePackages = with config.boot.kernelPackages; [ usbip.out acpi_call zfs];
+  # boot.kernelPackages =   
+  #   with builtins; with lib; let
+  #     latestCompatibleVersion = config.boot.zfs.package.latestCompatibleLinuxPackages.kernel.version;
+  #     xanPackages = filterAttrs (name: packages: hasSuffix "_xanmod" name && (tryEval packages).success) pkgs.linuxKernel.packages;
+  #     compatiblePackages = filter (packages: compareVersions packages.kernel.version latestCompatibleVersion <= 0) (attrValues xanPackages);
+  #     orderedCompatiblePackages = sort (x: y: compareVersions x.kernel.version y.kernel.version > 0) compatiblePackages;
+  #     selectedKernelPackage = head orderedCompatiblePackages;
+  #   in selectedKernelPackage // {
+  #     extraPackages = with selectedKernelPackage; [ acpi_call ];
+  #   };
+
+  boot.kernelPackages = lib.mkOverride 99 pkgs.linuxPackages_cachyos;
+  boot.zfs.package = lib.mkOverride 99 pkgs.zfs_cachyos;
+  chaotic.scx.scheduler = "scx_rusty";
+  boot.extraModulePackages = with config.boot.kernelPackages; [ usbip acpi_call ];
+  
+
+
+
 
   boot.plymouth.enable = false;
 
@@ -116,7 +137,7 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
   '';
 
   boot.initrd.luks = {
-    yubikeySupport = false;
+    yubikeySupport = true;
     devices."cryptroot0" = {
       device = "/dev/nvme0n1p2";
       postOpenCommands = "

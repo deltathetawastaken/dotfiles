@@ -11,7 +11,7 @@
   users.users.delta.packages = with pkgs; [
     swww
     waybar
-    stable.swaynotificationcenter
+    swaynotificationcenter
     cliphist
     fzf
     hyprshot
@@ -28,6 +28,9 @@
     hyprshade # hyprshade toggle blue-light-filter
     gammastep # gammastep -O 4500K
     hyprlock
+    # wluma
+
+
   ];
   # environment.systemPackages = [
   #  inputs.hyprland-contrib.packages.${pkgs.system}.grimblast.override { license = licenses.gpl3; }
@@ -68,5 +71,7 @@
       # ];
     };
     home.file.".config/hypr/env_var.conf".text = builtins.readFile ./env_var.conf;
+    home.file.".config/hypr/media-binds.conf".text = builtins.readFile ./media-binds.conf;
+
   };
 }
