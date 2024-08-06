@@ -83,6 +83,8 @@
     };
     home.file.".config/hypr/env_var.conf".text = builtins.readFile ./env_var.conf;
     home.file.".config/hypr/media-binds.conf".text = builtins.readFile ./media-binds.conf;
+    home.file.".config/hypr/hypridle.conf".text = builtins.readFile ./hypridle.conf;
+
 
   };
 }

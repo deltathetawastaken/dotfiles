@@ -13,14 +13,14 @@
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
     XCURSOR_SIZE = "";
-    EDITOR = "hx";
+    EDITOR = "nvim";
     BROWSER = "firefox";
     TERMINAL = "foot";
     WLR_DRM_NO_MODIFIERS = 1; # fixes graphical glitches on amd laptop
   };
 
   environment.variables = lib.mkForce {
-    EDITOR = "hx";
+    EDITOR = "nvim";
     BROWSER = "firefox";
     TERMINAL = "foot";
   };

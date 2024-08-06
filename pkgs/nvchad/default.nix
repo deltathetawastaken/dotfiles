@@ -14,6 +14,7 @@
         python-lsp-server
         flake8
       ]))
+      code-minimap
     ];
     extraConfig = ./extraConfig/mycfg;
     hm-activation = true;

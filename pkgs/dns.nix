@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, inputs, ... }:
 {
   networking.nameservers = lib.mkForce [ "127.0.0.1" ];
 
@@ -6,7 +6,7 @@
     enable = true;
     settings = {
       server = {
-        interface = [ "127.0.0.1" ];
+        interface = [ "127.0.0.1" "::1" ];
         do-ip6 = false;
         cache-max-ttl = 86400;
         cache-min-ttl = 1024;
@@ -37,16 +37,28 @@
 
       };
 
-      forward-zone = [
-        {
-          name = ".";
-          forward-addr = [
-            "100.92.15.128"
-            "192.168.150.2@53"
-          ];
-          forward-first = true;
-        }
-      ];
+          forward-zone = [
+      {
+        name = "local.";
+        forward-addr = [ "100.92.15.128" ];
+      }
+      {
+        name = "${inputs.secrets.work.bank-domain}.";
+        forward-addr = [ "100.92.15.128" ];
+      }
+      {
+        name = "${inputs.secrets.work.short-domain}.";
+        forward-addr = [ "100.92.15.128" ];
+      }
+      {
+        name = ".";
+        forward-addr = [
+          "100.92.15.128"
+          "192.168.150.2@53"
+        ];
+        forward-first = true;
+      }
+    ];
 
       remote-control = {
         control-enable = true;

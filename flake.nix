@@ -39,7 +39,7 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nur.url = "github:nix-community/NUR";
 
-    ags.url = "github:Aylur/ags";
+    # ags.url = "github:Aylur/ags";
 
     nvchad4nix = {
       url = "github:MOIS3Y/nvchad4nix";

@@ -129,7 +129,30 @@ in {
     go
     youtube-tui
     yt-dlp
+    firefox
+    # (lutris.override {
+    #    extraPkgs = pkgs: [
+    #     wineWowPackages.waylandFull
+    #     wine64Packages.waylandFull
+    #     wine64Packages.unstableFull
+    #     wine64
+    #     wine
+    #     wine-wayland
+    #     winetricks
+    #     wineWowPackages.staging
+    #     pixman
+    #     libjpeg
+    #     gnome.zenity
+    #    ];
+    #    extraLibraries = pkgs: [ jansson ];
+    # })
+    protonup-qt
+    # bottles
+    # flatpak
+    winetricks
+    ffmpeg_7
   ]);
+  # services.flatpak.enable = true;
 
   programs.firefox = {
     enable = true;
@@ -341,6 +364,12 @@ in {
 
   programs.yazi = {
     enable = true;
+  };
+
+  programs.fish.shellAliases = {
+      vim = "nvim";
+      vi = "nvim";
+      v = "nvim";
   };
 
   # programs.nixvim = {

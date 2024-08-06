@@ -1,10 +1,15 @@
-{ pkgs, lib, stable, unstable, ... }:
-let
+{
+  pkgs,
+  lib,
+  stable,
+  unstable,
+  ...
+}: let
   gtk-theme = "adw-gtk3-dark";
   cursor-package = pkgs.bibata-cursors;
   cursor-theme = "Bibata-Modern-Classic";
 
-  nerdfonts = (pkgs.nerdfonts.override {
+  nerdfonts = pkgs.nerdfonts.override {
     fonts = [
       #"Ubuntu"
       #"UbuntuMono"
@@ -16,7 +21,7 @@ let
       "IBMPlexMono"
       "NerdFontsSymbolsOnly"
     ];
-  });
+  };
 in {
   home = {
     packages = with pkgs; [
@@ -28,14 +33,14 @@ in {
       layan-gtk-theme
       gruvbox-gtk-theme
     ];
-  sessionVariables.XCURSOR_THEME = cursor-theme;
-  pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    package = cursor-package;
-    name = cursor-theme;
-    # size = 16;
-  };
+    sessionVariables.XCURSOR_THEME = cursor-theme;
+    pointerCursor = {
+      gtk.enable = true;
+      x11.enable = true;
+      package = cursor-package;
+      name = cursor-theme;
+      # size = 16;
+    };
     file = {
       ".local/share/fonts" = {
         recursive = true;

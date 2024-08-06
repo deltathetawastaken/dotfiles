@@ -109,8 +109,6 @@ in {
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
   ];
 
-  
-
   programs.command-not-found.enable = false;
   programs.fish = {
     enable = true;
@@ -127,10 +125,10 @@ in {
       where = "which";
       c = "cd";
       ",s" = ", -s";
-      nvim = "nvchad";
-      vim = "nvchad";
-      vi = "nvchad";
-      v = "nvchad";
+      # nvim = "nvchad";
+      # vim = "nvim";
+      # vi = "nvim";
+      # v = "nvim";
     };
     promptInit = ''
       set TERM "xterm-256color"

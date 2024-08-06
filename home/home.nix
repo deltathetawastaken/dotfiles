@@ -15,6 +15,7 @@
     ../pkgs/hyprland/hyprshade
     ../pkgs/nvchad
     # ../pkgs/ags
+    ../pkgs/aria2
   ];
 
   #services.blueman-applet.enable = true;

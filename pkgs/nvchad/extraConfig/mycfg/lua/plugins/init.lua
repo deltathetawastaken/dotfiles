@@ -94,4 +94,12 @@ return {
       vim.cmd ("let g:minimap_auto_start_win_enter = 1")
     end,
   },
+  {
+		"lambdalisue/suda.vim",
+		lazy = false,
+	},
+  {
+    'jghauser/mkdir.nvim',
+		lazy = false,
+	},
 }

@@ -187,7 +187,6 @@
       KernelExperimental = true;
     };
   };
-  # hardware.enableAllFirmware = true;
 
 
   sound.enable = true;

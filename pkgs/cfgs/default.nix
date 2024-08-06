@@ -8,7 +8,7 @@ font=FiraCode Nerd Font Mono Light:size=7
 #box-drawings-uses-font-glyphs=true
 dpi-aware=true
 resize-delay-ms=10
-csd.preferred = none
+# csd.preferred = none
 
 [tweak]
 max-shm-pool-size-mb=2048
