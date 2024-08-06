@@ -1,93 +1,101 @@
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  ...
+}: {
   home.username = "delta";
   home.stateVersion = "23.11";
 
-  imports = [ 
+  imports = [
     ./theme.nix
     ../pkgs/cfgs
     ../pkgs/helix
     ../pkgs/yazi
     ../pkgs/waybar
     ../pkgs/hyprland/hyprshade
+    ../pkgs/nvchad
+    # ../pkgs/ags
   ];
 
   #services.blueman-applet.enable = true;
   #services.network-manager-applet.enable = true;
   programs.vscode = {
-      enable = true;
-      package = pkgs.vscode;
-      extensions = with pkgs.vscode-extensions; [
+    enable = true;
+    package = pkgs.vscode;
+    extensions = with pkgs.vscode-extensions;
+      [
         jnoortheen.nix-ide
         b4dm4n.vscode-nixpkgs-fmt
         usernamehw.errorlens
         eamodio.gitlens
         kamadorueda.alejandra
-      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        name = "remote-ssh-edit";
-        publisher = "ms-vscode-remote";
-        version = "0.47.2";
-        sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
-      }
-      #{
-      #  name = "popping-and-locking-vscode";
-      #  publisher = "hedinne";
-      #  version = "2.0.11";
-      #  sha256 = "7ZH9l4jySPo1jMZnylTPK6o+XZnxUtrpYIiY9xVPuRw=";
-      #}
-      {
-        name = "tokyo-night";
-        publisher = "enkia";
-        version = "1.0.6";
-        sha256 = "sha256-VWdUAU6SC7/dNDIOJmSGuIeffbwmcfeGhuSDmUE7Dig=";
-      }
-      {
-        name = "bracket-select";
-        publisher = "chunsen";
-        version = "2.0.2";
-        sha256 = "sha256-2+42NJWAI0cz+RvmihO2v8J/ndAHvV3YqMExvnl46m4=";
-      }
-    ];
-      enableExtensionUpdateCheck = false;
-      enableUpdateCheck = false;
-      userSettings = {
-        # "files.autoSave" = "onFocusChange";
-        "window.titleBarStyle" = "custom";
-        # "workbench.colorTheme" = "Popping and Locking";
-        "workbench.colorTheme" = "Tokyo Night";
-        "terminal.external.linuxExec" = "kitty";
-        "editor.guides.bracketPairs" = "active";
-        "editor.bracketPairColorization.independentColorPoolPerBracketType" = true;
-        "editor.fontFamily" = "'FiraCode Nerd Font'";
-        "editor.fontLigatures" = "'ss01', 'ss02', 'ss06', 'ss08',  'cv14', 'cv04' , 'tnum'";
-        "editor.fontWeight" = "450";
-        "nix.enableLanguageServer"= true;
-        #"nix.serverPath" = "${pkgs.nil}/bin/nil";
-        "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
-        "nix.serverSettings" = {
-          #nil = {
-          #  formatting = {
-          #    command = [ "${pkgs.alejandra}/bin/alejandra" ];
-          #  };
-          #};
-        };
-        "alejandra.program" = "${pkgs.alejandra}/bin/alejandra";
-        "[nix]" = {
-           "editor.defaultFormatter" = "kamadorueda.alejandra";
-           "editor.formatOnPaste" = false;
-           "editor.formatOnSave" = false;
-           "editor.formatOnType" = false;
-        };
-        "nixfmt.path" = "${pkgs.alejandra}/bin/alejandra"; #alejandra addon is broken so i just use nixfmt addon with alejandra lol
-        "nix.formatterPath" = "${pkgs.alejandra}/bin/alejandra";
+      ]
+      ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "remote-ssh-edit";
+          publisher = "ms-vscode-remote";
+          version = "0.47.2";
+          sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
+        }
+        #{
+        #  name = "popping-and-locking-vscode";
+        #  publisher = "hedinne";
+        #  version = "2.0.11";
+        #  sha256 = "7ZH9l4jySPo1jMZnylTPK6o+XZnxUtrpYIiY9xVPuRw=";
+        #}
+        {
+          name = "tokyo-night";
+          publisher = "enkia";
+          version = "1.0.6";
+          sha256 = "sha256-VWdUAU6SC7/dNDIOJmSGuIeffbwmcfeGhuSDmUE7Dig=";
+        }
+        {
+          name = "bracket-select";
+          publisher = "chunsen";
+          version = "2.0.2";
+          sha256 = "sha256-2+42NJWAI0cz+RvmihO2v8J/ndAHvV3YqMExvnl46m4=";
+        }
+      ];
+    enableExtensionUpdateCheck = false;
+    enableUpdateCheck = false;
+    userSettings = {
+      # "files.autoSave" = "onFocusChange";
+      "window.titleBarStyle" = "custom";
+      # "workbench.colorTheme" = "Popping and Locking";
+      "workbench.colorTheme" = "Tokyo Night";
+      "terminal.external.linuxExec" = "kitty";
+      "editor.guides.bracketPairs" = "active";
+      "editor.bracketPairColorization.independentColorPoolPerBracketType" =
+        true;
+      "editor.fontFamily" = "'FiraCode Nerd Font'";
+      "editor.fontLigatures" = "'ss01', 'ss02', 'ss06', 'ss08',  'cv14', 'cv04' , 'tnum'";
+      "editor.fontWeight" = "450";
+      "nix.enableLanguageServer" = true;
+      #"nix.serverPath" = "${pkgs.nil}/bin/nil";
+      "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
+      "nix.serverSettings" = {
+        #nil = {
+        #  formatting = {
+        #    command = [ "${pkgs.alejandra}/bin/alejandra" ];
+        #  };
+        #};
       };
+      "alejandra.program" = "${pkgs.alejandra}/bin/alejandra";
+      "[nix]" = {
+        "editor.defaultFormatter" = "kamadorueda.alejandra";
+        "editor.formatOnPaste" = false;
+        "editor.formatOnSave" = false;
+        "editor.formatOnType" = false;
+      };
+      "nixfmt.path" = "${pkgs.alejandra}/bin/alejandra"; # alejandra addon is broken so i just use nixfmt addon with alejandra lol
+      "nix.formatterPath" = "${pkgs.alejandra}/bin/alejandra";
     };
-  
+  };
+
   home.activation = {
     copy_unlink = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
       [ ! -e /home/delta/.config/Code/User/settings.json ] || unlink /home/delta/.config/Code/User/settings.json
-    '';  #create RW vscode settings so all hotkeys work (wrap_lines and etc)
+    ''; # create RW vscode settings so all hotkeys work (wrap_lines and etc)
     copy_unlink2 = lib.hm.dag.entryAfter ["onFilesChange"] ''
       rm -f /home/delta/.config/Code/User/settings.json.rw
       cp -f /home/delta/.config/Code/User/settings.json /home/delta/.config/Code/User/settings.json.rw
@@ -96,15 +104,15 @@
     '';
     hypr_copy_unlink = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
       [ ! -e /home/delta/.config/hypr/hyprland.conf ] || unlink /home/delta/.config/hypr/hyprland.conf
-    '';  #create RW hyprland config so i can change settings without rebuild (maybe move monitor defenitions to a separate file instead?)
+    ''; # create RW hyprland config so i can change settings without rebuild (maybe move monitor defenitions to a separate file instead?)
     hypr_link_copy = lib.hm.dag.entryAfter ["onFilesChange"] ''
       ln -sf /home/delta/Documents/dotfiles/pkgs/hyprland/hypr/hyprland.conf /home/delta/.config/hypr/hyprland.conf
-    '';  
+    '';
   };
 
   programs.git = {
     enable = true;
-    userName  = "delta";
+    userName = "delta";
     userEmail = "delta@example.com";
   };
 
@@ -118,10 +126,9 @@
   #  };
   #};
 
-
   programs.obs-studio = {
     enable = true;
-    plugins = with pkgs.obs-studio-plugins; [ obs-pipewire-audio-capture ];
+    plugins = with pkgs.obs-studio-plugins; [obs-pipewire-audio-capture];
   };
 
   programs.mpv = {
@@ -133,8 +140,13 @@
       subs-fallback = "default";
       subs-with-matching-audio = "yes";
       save-position-on-quit = "yes";
+      osc = "no";
+      osd-bar = "no";
+      border = "no";
     };
-    scripts = with pkgs; [ mpvScripts.autoload mpvScripts.cutter ];
+    scripts = with pkgs.mpvScripts; [autoload cutter quality-menu sponsorblock youtube-upnext thumbnail reload mpv-cheatsheet memo autoload 
+    # uosc thumbfast
+    ];
     scriptOpts = {
       autoload = {
         disabled = "no";
@@ -160,10 +172,10 @@
       hide_window_decorations = "yes";
       remote_control_password = "kitty-notification-password-fish ls, kitty-password-scripts ls set-tab-* resize-* send-text";
       allow_remote_control = "password";
-      font_family= "FiraCode";
+      font_family = "FiraCode";
       font_features = "FiraCode +ss01 +ss02 +ss06 +ss08 +cv14 +cv03 +tnum";
 
-      repaint_delay = 8; #comment out if flickers
+      repaint_delay = 8; # comment out if flickers
       input_delay = 0;
       sync_to_monitor = "no";
 
@@ -190,20 +202,14 @@
   programs.ssh = {
     enable = true;
     matchBlocks = {
-      "intelnuc" = {
-        hostname = "192.168.3.53";
-      };
-      "huanan" = {
-        hostname = "192.168.3.106";
-      };
+      "intelnuc" = {hostname = "100.92.15.128";};
+      "huanan" = {hostname = "100.125.41.31";};
     };
   };
 
   programs.chromium = {
     enable = true;
-    package = pkgs.brave.override {
-      vulkanSupport = true;
-    };
+    package = pkgs.brave.override {vulkanSupport = true;};
     commandLineArgs = [
       "--ignore-gpu-blocklist"
       "--disable-gpu-driver-bug-workarounds"
@@ -217,12 +223,12 @@
       "--enable-features=Vulkan"
       "--enable-features=TouchpadOverscrollHistoryNavigation"
     ];
-    dictionaries = [
-      pkgs.hunspellDictsChromium.en_US
-    ];
+    dictionaries = [pkgs.hunspellDictsChromium.en_US];
     extensions = [
       # { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
-      { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
+      {
+        id = "dbepggeogbaibhgnhhndojpepiihcmeb";
+      } # vimium
       #{
       #  id = "aaaaaaaaaabbbbbbbbbbcccccccccc";
       #  crxPath = "/home/share/extension.crx";
@@ -230,6 +236,33 @@
       #}
     ];
   };
+  home.file.".config/mpv/input.conf".text = ''
+    # increase subtitle font size
+    ALT+k add sub-scale +0.1
+
+    # decrease subtitle font size
+    ALT+j add sub-scale -0.1
+
+    z add sub-delay -0.1                   # shift subtitles 100 ms earlier
+    Z add sub-delay +0.1                   # delay subtitles by 100 ms
+    x add sub-delay +0.1                   # delay subtitles by 100 ms
+    Ctrl+Shift+LEFT sub-step -1            # change subtitle timing such that the previous subtitle is displayed
+    Ctrl+Shift+RIGHT sub-step 1            # change subtitle timing such that the next subtitle is displayed
+
+
+
+    # Speed up by 0.25x increments
+    CTRL+Alt+1 add speed 0.25
+    CTRL+Alt+2 add speed 0.5
+    CTRL+Alt+3 add speed 0.75
+    CTRL+Alt+4 add speed 1.0
+
+    # Slow down by 0.25x increments
+    CTRL+Shift+1 add speed -0.25
+    CTRL+Shift+2 add speed -0.5
+    CTRL+Shift+3 add speed -0.75
+    CTRL+Shift+4 add speed -1.0
+  '';
 
   home.file.".config/btop/btop.conf".text = ''
     #? Config file for btop v. 1.3.2
@@ -481,5 +514,4 @@
     #* Custom gpu5 model name, empty string to disable.
     custom_gpu_name5 = ""
   '';
-
 }

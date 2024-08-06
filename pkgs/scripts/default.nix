@@ -7,11 +7,11 @@ let
   scriptNames = [
     "fzfclipboard"
     "fzfmenuft"
-    "swaylock"
+    "swaylocksh"
     "hyprshade"
     "bluetoothcharge"
     "brightness"
-    "volume"
+    "volume" #TODO: remove absolute path from scripts using nix
     "powermenu"
   ];
 

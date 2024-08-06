@@ -1,6 +1,9 @@
 { pkgs, lib, inputs, ... }:
 {
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = "--accept-dns=false";
+  };
   services.syncthing.enable = true;
   services.blueman.enable = true;
   services.tumbler.enable = true;

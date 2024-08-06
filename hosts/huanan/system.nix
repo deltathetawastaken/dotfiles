@@ -115,7 +115,7 @@
     lua5_4
     nodePackages_latest.nodejs
 
-    rocmPackages.rocm-smi #gpu support in btop
+    # rocmPackages.rocm-smi #gpu support in btop
   ];
 
   services.openssh.enable = true;

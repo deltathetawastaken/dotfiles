@@ -13,9 +13,9 @@ let
     inherit inputs pkgs lib self stable unstable; 
   };
 in {
-  imports = [
-    inputs.nixvim.nixosModules.nixvim
-  ];
+  # imports = [
+  #   inputs.nixvim.nixosModules.nixvim
+  # ];
 
   #nixpkgs.overlays = [
   #  (self: super: {
@@ -42,7 +42,7 @@ in {
     (fishPlugins.callPackage ../derivations/fish/fish-functions.nix { })
     (callPackage ../derivations/opera-proxy.nix { })
     (callPackage ../derivations/hyprdrop/hyprdrop.nix { })
-    (callPackage ../derivations/wluma/wluma.nix { })
+    # (callPackage ../derivations/wluma/wluma.nix { })
     xorg.xwininfo
     jq
     dropbox
@@ -71,7 +71,7 @@ in {
     ktailctl
     trayscale
     fishPlugins.done
-    monero-gui
+    stable.monero-gui
     translate-shell
     # tridactyl-native #firefox tridactyl addon
     ripgrep gh
@@ -102,26 +102,33 @@ in {
     # shwewo.tdesktop
     # _64gram 
     (pkgs.writeScriptBin "tlp" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp $@'')
+    (pkgs.writeScriptBin "tlps" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp start'')
+    (pkgs.writeScriptBin "tlpa" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp ac'')
+    (pkgs.writeScriptBin "tlpb" ''/run/wrappers/bin/sudo ${pkgs.tlp}/bin/tlp bat'')
     prismlauncher
     stable.teleport_12 #work
     tlrc #tldr
     boxbuddy
     stable.distrobox
     atool #unarchive
-    open-interpreter
+    # open-interpreter
     overrides.diosevka
     # iosevka-bin
     # overrides.iosevka-comfy
     overrides.vesktop
     # overrides.input-font
-    # overrides.input-fonts
     stable.peazip
     element-desktop
     qrtool
     appimage-run
     lf
     hydra-check
+    # cloudflared
+    filegive #filegive -P 8888 -D "" -N -p $FILENAME or filegive -P 8888 -D "" -N -p -R to recieve
     (pkgs.writeScriptBin "reboot" ''read -p "Do you REALLY want to reboot? (y/N) " answer; [[ $answer == [Yy]* ]] && ${pkgs.systemd}/bin/reboot'')
+    go
+    youtube-tui
+    yt-dlp
   ]);
 
   programs.firefox = {
@@ -336,155 +343,202 @@ in {
     enable = true;
   };
 
-  programs.nixvim = {
-    enable = true;
-    enableMan = false;
-    colorschemes.tokyonight = {
-      enable = true;
-      settings = {
-        transparent = true
-        ;
-      };
-    };
-    globals.mapleader = ",";
-    keymaps = [
-      {
-        key = ";";
-        action = ":";
-      }
-      {
-        key = "<leader>gg";
-        action = "<cmd>Man<CR>";
-        options = {
-          silent = true;
-          remap = false;
-        };
-      }
-    ];
-    plugins = {
-      lightline = {
-        enable = true;
-        active = {
-          left = [
-            [
-              "mode"
-              "paste"
-            ]
-            [
-              "readonly"
-              "filename"
-              "modified"
-            ]
-          ];
-        };
-      };
-      which-key.enable = true;
-      lsp = {
-        enable = true;
-        servers = {
-          # bashls.enable = true;
-          nixd.enable = true;
-        };
-        keymaps.lspBuf = {
-          "gd" = "definition";
-          "gD" = "references";
-          "gt" = "type_definition";
-          "gi" = "implementation";
-          "K" = "hover";
-        };
-      };
-      none-ls = {
-        enable = true;
-        sources = {
-          diagnostics = {
-            statix.enable = true;
-          };
-          formatting = {
-            nixfmt.enable = true;
-            markdownlint.enable = true;
-            shellharden.enable = true;
-            shfmt.enable = true;
-          };
-        };
-      };
-      nvim-tree = {
-        enable = true;
-        openOnSetupFile = true;
-        autoReloadOnWrite = true;
-      };
-      lsp-lines = {
-        enable = true;
-        currentLine = true;
-      };
-      telescope = {
-        enable = true;
-        keymaps = {
-          "<leader>ff" = "find_files";
-          "<leader>fg" = "live_grep";
-          "<leader>fb" = "buffers";
-          "<leader>fh" = "help_tags";
+  # programs.nixvim = {
+  #   enable = true;
+  #   enableMan = false;
+  #   colorschemes.tokyonight = {
+  #     enable = true;
+  #     settings = {
+  #       transparent = true
+  #       ;
+  #     };
+  #   };
+  #   globals.mapleader = ",";
+  #   keymaps = [
+  #     {
+  #       key = ";";
+  #       action = ":";
+  #     }
+  #     {
+  #       key = "<leader>gg";
+  #       action = "<cmd>Man<CR>";
+  #       options = {
+  #         silent = true;
+  #         remap = false;
+  #       };
+  #     }
+  #     {
+  #       key = "f";
+  #         action.__raw = ''
+  #           function()
+  #             require'hop'.hint_char1({
+  #               direction = require'hop.hint'.HintDirection.AFTER_CURSOR,
+  #               current_line_only = false
+  #             })
+  #           end
+  #         '';
+  #     }
+  #     {
+  #       key = "F";
+  #         action.__raw = ''
+  #           function()
+  #             require'hop'.hint_char1({
+  #               direction = require'hop.hint'.HintDirection.BEFORE_CURSOR,
+  #               current_line_only = false
+  #             })
+  #           end
+  #         '';
+  #       options.remap = true;
+  #     }
+  #     {
+  #       key = "t";
+  #         action.__raw = ''
+  #           function()
+  #             require'hop'.hint_char1({
+  #               direction = require'hop.hint'.HintDirection.AFTER_CURSOR,
+  #               current_line_only = true
+  #             })
+  #           end
+  #         '';
+  #     }
+  #     {
+  #       key = "T";
+  #         action.__raw = ''
+  #           function()
+  #             require'hop'.hint_char1({
+  #               direction = require'hop.hint'.HintDirection.BEFORE_CURSOR,
+  #               current_line_only = true
+  #             })
+  #           end
+  #         '';
+  #       options.remap = true;
+  #     }
+  #   ];
+  #   plugins = {
+  #     lightline = {
+  #       enable = true;
+  #       active = {
+  #         left = [
+  #           [
+  #             "mode"
+  #             "paste"
+  #           ]
+  #           [
+  #             "readonly"
+  #             "filename"
+  #             "modified"
+  #           ]
+  #         ];
+  #       };
+  #     };
+  #     which-key.enable = true;
+  #     lsp = {
+  #       enable = true;
+  #       servers = {
+  #         # bashls.enable = true;
+  #         nixd.enable = true;
+  #       };
+  #       keymaps.lspBuf = {
+  #         "gd" = "definition";
+  #         "gD" = "references";
+  #         "gt" = "type_definition";
+  #         "gi" = "implementation";
+  #         "K" = "hover";
+  #       };
+  #     };
+  #     none-ls = {
+  #       enable = true;
+  #       sources = {
+  #         diagnostics = {
+  #           statix.enable = true;
+  #         };
+  #         formatting = {
+  #           nixfmt.enable = true;
+  #           markdownlint.enable = true;
+  #           shellharden.enable = true;
+  #           shfmt.enable = true;
+  #         };
+  #       };
+  #     };
+  #     nvim-tree = {
+  #       enable = true;
+  #       openOnSetupFile = true;
+  #       autoReloadOnWrite = true;
+  #     };
+  #     lsp-lines = {
+  #       enable = true;
+  #       currentLine = true;
+  #     };
+  #     telescope = {
+  #       enable = true;
+  #       keymaps = {
+  #         "<leader>ff" = "find_files";
+  #         "<leader>fg" = "live_grep";
+  #         "<leader>fb" = "buffers";
+  #         "<leader>fh" = "help_tags";
 
-          "<C-p>" = {
-            action = "git_files";
-            options = {
-              desc = "Telescope Git Files";
-            };
-          };
-        };
-        extensions.fzf-native = { enable = true; };
-      };
-      toggleterm = {
-      enable = true;
-        settings = {
-          open_mapping = "[[<C-t>]]";
+  #         "<C-p>" = {
+  #           action = "git_files";
+  #           options = {
+  #             desc = "Telescope Git Files";
+  #           };
+  #         };
+  #       };
+  #       extensions.fzf-native = { enable = true; };
+  #     };
+  #     toggleterm = {
+  #     enable = true;
+  #       settings = {
+  #         open_mapping = "[[<C-t>]]";
 
-        };
-      };
+  #       };
+  #     };
       
-      treesitter = {
-        enable = true;
-        nixGrammars = true;
-        indent = true;
-      };
-      treesitter-context.enable = true;
-      rainbow-delimiters.enable = true;
+  #     treesitter = {
+  #       enable = true;
+  #       nixGrammars = true;
+  #       indent = true;
+  #     };
+  #     treesitter-context.enable = true;
+  #     rainbow-delimiters.enable = true;
       
-      trouble.enable = true;
-      wilder = {
-        enable = true;
-        modes = [ ":" "/" "?" ];
-        renderer = "pumblend";
-      };
-      nvim-autopairs.enable = true;
-    };
+  #     trouble.enable = true;
+  #     wilder = {
+  #       enable = true;
+  #       modes = [ ":" "/" "?" ];
+  #       renderer = "pumblend";
+  #     };
+  #     nvim-autopairs.enable = true;
+  #     hop.enable = true;
+  #   };
 
-    options= {
-      updatetime = 100; # Faster completion
+  #   options= {
+  #     updatetime = 100; # Faster completion
 
-      number = true;
-      relativenumber = true;
+  #     number = true;
+  #     relativenumber = true;
 
-      autoindent = true;
-      # clipboard = "unnamedplus";
-      clipboard = "unnamed,unnamedplus";
-      expandtab = true;
-      shiftwidth = 2;
-      smartindent = true;
-      tabstop = 2;
+  #     autoindent = true;
+  #     # clipboard = "unnamedplus";
+  #     clipboard = "unnamed,unnamedplus";
+  #     expandtab = true;
+  #     shiftwidth = 2;
+  #     smartindent = true;
+  #     tabstop = 2;
 
-      ignorecase = true;
-      incsearch = true;
-      smartcase = true;
-      wildmode = "list:longest";
+  #     ignorecase = true;
+  #     incsearch = true;
+  #     smartcase = true;
+  #     wildmode = "list:longest";
 
-      # swapfile = false;
-      undofile = true; # Build-in persistent undo
+  #     # swapfile = false;
+  #     undofile = true; # Build-in persistent undo
 
-      mouse = "a";
+  #     mouse = "a";
 
-    };
+  #   };
 
-  };
+  # };
 
   
 }

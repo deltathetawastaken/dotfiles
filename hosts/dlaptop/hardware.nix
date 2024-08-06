@@ -52,7 +52,7 @@
 \  /                     /
  \/_____________________/
 EOF
-echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
+echo kernel: $(uname -a | tr -s ' ' ' ' | cut -d' ' -f3,8-12)
     '';
   };
   # boot.initrd = {
@@ -86,7 +86,8 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
     "initcall_blacklist=acpi_cpufreq_init"
     "nowatchdog"
     "amd_pstate.shared_mem=1"
-    "zfs.zfs_arc_max=19327352832"
+    "zfs_arc_min=8589934592"
+    "zfs.zfs_arc_max=25769803776"
     "resume=UUID=a2ff20bd-56f3-4c83-b1b4-933ba0c82f36"
 
     # # Disable all mitigations
@@ -96,17 +97,27 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
 
     # https://www.phoronix.com/news/Linux-Splitlock-Hurts-Gaming
     "split_lock_detect=off"
+    "acpi_sleep=nonvs"
   ];
 
   boot.zfs.allowHibernation = true;
   boot.zfs.forceImportRoot = false;
   boot.resumeDevice = "/dev/mapper/cryptroot0p2";
 
-  boot.kernelModules = [ "amd-pstate" "acpi_call" "amdgpu" "kvm-amd" "vfat" "nls_cp437" "nls_iso8859-1" ];
+  boot.kernelModules = [ "amd-pstate" "acpi_call" "amdgpu" "kvm-amd" "vfat" "nls_cp437" "nls_iso8859-1" "tcp_bbr" ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "vfat" "nls_cp437" "nls_iso8859-1" ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.initrd.kernelModules = [ ];
+
+  boot.kernel.sysctl."net.ipv4.tcp_congestion_control" = "bbr";
+  boot.kernel.sysctl."net.core.default_qdisc" = "fq"; # see https://news.ycombinator.com/item?id=14814530
+  boot.kernel.sysctl."net.core.wmem_max" = 1073741824; # 1 GiB
+  boot.kernel.sysctl."net.core.rmem_max" = 1073741824; # 1 GiB
+  boot.kernel.sysctl."net.ipv4.tcp_rmem" = "4096 87380 1073741824"; # 1 GiB max
+  boot.kernel.sysctl."net.ipv4.tcp_wmem" = "4096 87380 1073741824"; # 1 GiB max
+  boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = 1;
+  boot.kernel.sysctl."net.ipv4.tcp_fastopen" = 3;
   # boot.extraModulePackages = with config.boot.kernelPackages; [ usbip.out acpi_call zfs];
   # boot.kernelPackages =   
   #   with builtins; with lib; let
@@ -121,7 +132,8 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
 
   boot.kernelPackages = lib.mkOverride 99 pkgs.linuxPackages_cachyos;
   boot.zfs.package = lib.mkOverride 99 pkgs.zfs_cachyos;
-  chaotic.scx.scheduler = "scx_rusty";
+  chaotic.scx = { enable = true; scheduler = "scx_rusty"; };
+  environment.systemPackages =  [ pkgs.scx ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ usbip acpi_call ];
   
 
@@ -147,7 +159,7 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
         ";
       yubikey = {
         slot = 2;
-        gracePeriod = 7;
+        gracePeriod = 3;
         keyLength = 64;
         saltLength = 16;
         twoFactor = false;
@@ -183,8 +195,6 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
   
   hardware.opengl = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
     extraPackages = [ pkgs.amdvlk ];
     extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
 
@@ -192,17 +202,33 @@ echo kernel: $(uname -r | tr '[:upper:]' '[:lower:]')
     # package32 = inputs.hyprland.inputs.nixpkgs.legacyPackages."x86_64-linux".pkgsi686Linux.mesa.drivers;
   };
 
+  chaotic.mesa-git.enable = true;
+  # chaotic.mesa-git.extraPackages = [ pkgs.amdvlk ];
+  # chaotic.mesa-git.extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
+
   networking.useDHCP = lib.mkDefault true;
   networking.hostId = "11C0FFEE";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  #services.logind = {
-  #  lidSwitch = "suspend";
-  #  lidSwitchDocked = "ignore";
-  #  lidSwitchExternalPower = "ignore";
-  #  powerKey = "ignore";
-  #  powerKeyLongPress = "reboot";
-  #};
+  services.logind = {
+   lidSwitch = "suspend-then-hibernate";
+   lidSwitchDocked = "ignore";
+   lidSwitchExternalPower = "ignore";
+   powerKey = "ignore";
+   powerKeyLongPress = "hibernate";
+   extraConfig = ''
+    IdleAction=suspend-then-hibernate
+   '';
+  };
+
+  systemd.services.disable-usb-wakeup = {
+    wantedBy = [ "multi-user.target" ];
+    script = ''
+      for usb in /sys/bus/usb/devices/*/power/wakeup; do
+        echo 'disabled' > $usb
+      done
+    '';
+  };
   
 }

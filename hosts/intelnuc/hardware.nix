@@ -14,8 +14,6 @@
   boot.extraModulePackages = [ ];
 
   hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
-  hardware.opengl.driSupport32Bit = true;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/3aa4a379-e341-4100-8f79-516b386b74c5";

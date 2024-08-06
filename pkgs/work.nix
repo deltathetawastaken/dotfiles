@@ -220,18 +220,18 @@ let
 
     ping() {
       local connected=true;
-      while true; do
-        if ip netns exec $NETNS_NAME ping -c 1 -W 1 $NETNS_NAMESERVER_1 &> /dev/null; then
-          if [ "$connected" = false ]; then
-            echo "Connection restored"
-          fi
-          connected=true
-        else
-          connected=false
-          echo "No ping from $NETNS_NAMESERVER_1, are we connected to the internet?"
-        fi
-        sleep 15
-      done
+      # while true; do
+      #   if ip netns exec $NETNS_NAME ping -c 1 -W 1 $NETNS_NAMESERVER_1 &> /dev/null; then
+      #     if [ "$connected" = false ]; then
+      #       echo "Connection restored"
+      #     fi
+      #     connected=true
+      #   else
+      #     connected=false
+      #     echo "No ping from $NETNS_NAMESERVER_1, are we connected to the internet?"
+      #   fi
+      #   sleep 15
+      # done
     }
 
     ########################################################################################################################

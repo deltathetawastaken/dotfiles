@@ -40,7 +40,7 @@ let
   
   socksed = [ # IP of the proxies is 192.168.150.2
     { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";} # port 4000
-    { name = "socks-warp" ; script = "wireproxy -c /etc/wireguzard/cproxy.conf"; } # port 3333
+    { name = "socks-warp" ; script = "wireproxy -c /run/secrets/wproxy"; } # port 3333
     { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";     } # port 3334
     { name = "opera-socks"; 
       script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
@@ -127,8 +127,8 @@ let
     }
 
     mkdir -p /etc/netns/novpn/
-    echo "nameserver 1.1.1.1" > /etc/netns/novpn/resolv.conf
-    echo "nameserver 1.1.0.1" >> /etc/netns/novpn/resolv.conf
+    echo "nameserver 127.0.0.1" > /etc/netns/novpn/resolv.conf
+    echo "nameserver 192.168.150.2" >> /etc/netns/novpn/resolv.conf
     sysctl -wq net.ipv4.ip_forward=1
 
     ip link add novpn0 type veth peer name novpn1

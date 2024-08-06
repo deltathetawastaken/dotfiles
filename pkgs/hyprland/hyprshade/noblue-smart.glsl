@@ -1,4 +1,4 @@
-precision mediump float;
+precision highp float;
 varying vec2 v_texcoord;
 uniform sampler2D tex;
 uniform bool makeWarmer; // Uniform to control whether to apply warm effect

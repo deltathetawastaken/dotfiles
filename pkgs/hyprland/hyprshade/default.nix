@@ -6,5 +6,6 @@
   home.file.".config/hypr/shaders/noblue-light.glsl".text = builtins.readFile ./noblue-light.glsl;
   home.file.".config/hypr/shaders/noblue-smart.glsl".text = builtins.readFile ./noblue-smart.glsl;
   home.file.".config/hypr/shaders/noblue.glsl".text = builtins.readFile ./noblue.glsl;
+  home.file.".config/hypr/shaders/blue-light-filter.glsl".text = builtins.readFile ./blue-light-filter.glsl;
 
 }

@@ -1,4 +1,15 @@
 { config, lib, pkgs, inputs, stable, ... }:
+# let
+#   hyprshade = pkgs.hyprshade.overrideAttrs (oldAttrs: rec {
+#     version = "4.0.0";
+#     src = pkgs.fetchFromGitHub {
+#       owner = "loqusion";
+#       repo = "hyprshade";
+#       rev = "refs/tags/${version}";
+#       hash = "";
+#     };
+#   });
+# in
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -22,7 +33,7 @@
     libnotify
     brightnessctl
     pamixer
-    python3
+    # python3
     grimblast
     networkmanagerapplet
     hyprshade # hyprshade toggle blue-light-filter

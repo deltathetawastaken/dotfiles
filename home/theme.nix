@@ -25,7 +25,8 @@ in {
       colloid-icon-theme
       adw-gtk3
       nerdfonts
-      tokyonight-gtk-theme
+      layan-gtk-theme
+      gruvbox-gtk-theme
     ];
   sessionVariables.XCURSOR_THEME = cursor-theme;
   pointerCursor = {
@@ -57,17 +58,27 @@ in {
       package = cursor-package;
     };
 
+    # theme = {
+    #   name = "Catppuccin-Mocha-Compact-Lavender-Dark";
+    #   package = unstable.catppuccin-gtk.override {
+    #     accents = [
+    #       "lavender"
+    #     ]; # You can specify multiple accents here to output multiple themes
+    #     size = "compact";
+    #     tweaks =
+    #       [ "rimless" "black" ]; # You can also specify multiple tweaks here
+    #     variant = "mocha";
+    #   };
+    # };
+
+    # theme = {
+    #   name = "Tokyonight-Dark-BL";
+    #   package = unstable.tokyonight-gtk-theme;
+    # };
+
     theme = {
-      name = "Catppuccin-Mocha-Compact-Lavender-Dark";
-      package = unstable.catppuccin-gtk.override {
-        accents = [
-          "lavender"
-        ]; # You can specify multiple accents here to output multiple themes
-        size = "compact";
-        tweaks =
-          [ "rimless" "black" ]; # You can also specify multiple tweaks here
-        variant = "mocha";
-      };
+      name = "Gruvbox-Dark";
+      package = unstable.gruvbox-gtk-theme;
     };
 
     iconTheme = {

@@ -127,6 +127,10 @@ in {
       where = "which";
       c = "cd";
       ",s" = ", -s";
+      nvim = "nvchad";
+      vim = "nvchad";
+      vi = "nvchad";
+      v = "nvchad";
     };
     promptInit = ''
       set TERM "xterm-256color"

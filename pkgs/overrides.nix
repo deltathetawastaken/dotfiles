@@ -93,7 +93,7 @@ in {
   vesktop = (pkgs.symlinkJoin {
       name = "vesktop";
       paths = [ (unstable.vesktop.override { 
-        electron = unstable.electron; 
+        # electron = unstable.electron; 
         withSystemVencord = false; 
       }) ];
       buildInputs = [ pkgs.makeWrapper ];

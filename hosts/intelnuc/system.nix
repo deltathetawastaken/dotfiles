@@ -58,7 +58,10 @@
   systemd.services.NetworkManager-wait-online.enable = false;
 
   services.openssh.enable = true;
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = "--accept-dns=false";
+  };
   services.adguardhome.enable = true;
 
   virtualisation = {
