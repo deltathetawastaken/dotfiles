@@ -19,4 +19,4 @@ vim.api.nvim_set_keymap('n', 'T', ':HopLineStartMW<CR>', {noremap = true, silent
 vim.api.nvim_create_user_command('W', 'SudaWrite', {})
 vim.api.nvim_create_user_command('R', 'SudaRead', {})
 
-vim.api.nvim_create_user_command('wc', 'WhichKey', {})
+vim.api.nvim_create_user_command('K', 'WhichKey', {})

@@ -204,7 +204,7 @@
   systemd.services.waydroid-container.wantedBy = lib.mkForce [];
 
   environment.systemPackages = with pkgs; [
-    # config.nur.repos.ataraxiasjel.waydroid-script
+    config.nur.repos.ataraxiasjel.waydroid-script
     multipath-tools #ZFS in LUKS mount
 
     openvpn

@@ -9,7 +9,8 @@ function edit-remote
     set initial_checksum (md5sum $local_file | awk '{print $1}')
 
     # Open the file in Helix
-    hx $local_file
+    # hx $local_file
+    eval "$EDITOR $local_file" 
 
     # Calculate the checksum of the file after editing
     set final_checksum (md5sum $local_file | awk '{print $1}')

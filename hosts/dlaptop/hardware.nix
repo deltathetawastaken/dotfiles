@@ -97,6 +97,7 @@
     "amd_pstate.shared_mem=1"
     "zfs_arc_min=8589934592"
     "zfs.zfs_arc_max=25769803776"
+    "nohibernate"
 
     # # Disable all mitigations
     # "mitigations=off"
@@ -106,9 +107,10 @@
     # https://www.phoronix.com/news/Linux-Splitlock-Hurts-Gaming
     "split_lock_detect=off"
     "acpi_sleep=nonvs"
+    
   ];
 
-  boot.zfs.allowHibernation = true;
+  boot.zfs.allowHibernation = false;
   boot.zfs.forceImportRoot = false;
 
   boot.kernelModules = ["amd-pstate" "acpi_call" "amdgpu" "kvm-amd" "vfat" "nls_cp437" "nls_iso8859-1" "tcp_bbr"];

@@ -44,8 +44,8 @@ let
     { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";     } # port 3334
     { name = "opera-socks"; 
       # script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
-      script = "gost -L=socks5://192.168.150.2:3335 -F=http://192.168.150.2:18088 opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
-      # script = "opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
+      # script = "gost -L=socks5://192.168.150.2:3335 -F=http://192.168.150.2:18088 opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
+      script = "opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
       autostart = false;
     } # port 3335
   ];

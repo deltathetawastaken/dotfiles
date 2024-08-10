@@ -88,7 +88,7 @@ label.time {
 }
 
 label.date {
-    font-family: "Iosevka Diosevka";
+    font-family: "Iosevka Comfy Wide Duo";
     color: @lightgray;
     font-size: 10px;
 }

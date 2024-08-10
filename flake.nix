@@ -86,6 +86,7 @@
         dlaptop = makeSystem "dlaptop" unstable;
         intelnuc = makeSystem "intelnuc" stable;
         huanan = makeSystem "huanan" pkgs;
+        prtapc = makeSystem "prtapc" pkgs;
       };
     };
 }
