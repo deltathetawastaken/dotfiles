@@ -46,7 +46,7 @@
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGL2UD0frl9F2OPBiPlSQqxDsuACbAVgwH24F0KT14L delta@dlaptop"
   ];
-  users.users.root.hashedPassword = "$6$2XM/w7WzUFYW8nO3$M8mX63YzQSuFGh/WHBrPqL91RC91n0ZFNobSHX1qcEe1GWPsFPcVxrJ9hjyz8M8F1uXKb6d1PS0kv8M1P9Rxo1";
+  users.users.root.hashedPassword = ""; # nopass on first boot
   users.users.delta = {
     uid = 1000;
     isNormalUser = true;
