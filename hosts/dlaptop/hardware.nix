@@ -8,6 +8,7 @@
   lib,
   pkgs,
   modulesPath,
+  inputs,
   ...
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
@@ -268,7 +269,7 @@
     # package32 = inputs.hyprland.inputs.nixpkgs.legacyPackages."x86_64-linux".pkgsi686Linux.mesa.drivers;
   };
 
-  chaotic.mesa-git.enable = true;
+  # chaotic.mesa-git.enable = true;
   # chaotic.mesa-git.extraPackages = [ pkgs.amdvlk ];
   # chaotic.mesa-git.extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
 

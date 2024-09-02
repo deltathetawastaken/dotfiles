@@ -31,7 +31,6 @@ in {
       adw-gtk3
       nerdfonts
       layan-gtk-theme
-      gruvbox-gtk-theme
     ];
     sessionVariables.XCURSOR_THEME = cursor-theme;
     pointerCursor = {
@@ -81,9 +80,14 @@ in {
     #   package = unstable.tokyonight-gtk-theme;
     # };
 
+    # theme = {
+    #   name = "Gruvbox-Dark";
+    #   package = unstable.gruvbox-gtk-theme;
+    # };
+
     theme = {
-      name = "Gruvbox-Dark";
-      package = unstable.gruvbox-gtk-theme;
+      name = "Dracula";
+      package = pkgs.dracula-theme;
     };
 
     iconTheme = {
@@ -91,6 +95,11 @@ in {
       # name = "Papirus";
       package = lib.mkForce stable.papirus-icon-theme;
     };
+
+    # iconTheme = {
+    #   name = "Dracula";
+    #   package = lib.mkForce pkgs.dracula-icon-theme;
+    # };
     # gtk3.extraCss = ''
     #   headerbar, .titlebar,
     #   .csd:not(.popup):not(tooltip):not(messagedialog) decoration{

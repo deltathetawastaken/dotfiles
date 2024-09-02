@@ -22,6 +22,7 @@
     inputs.chaotic.nixosModules.default
   ];
 
+
   services.blueman.enable = true;
 
   time.timeZone = "Europe/Moscow";
@@ -196,6 +197,28 @@
     podman = {
       enable = true;
       dockerCompat = true;
+    };
+     oci-containers.containers = {
+      cloudflare-warp = {
+        # image = "caomingjun/warp --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv4.conf.all.src_valid_mark=1 --cap-add NET_ADMIN,mknod --device /dev/net/tun --security-opt=\"label=disable\" --network ns:/var/run/netns/novpn";
+        image = "caomingjun/warp --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv4.conf.all.src_valid_mark=1 --cap-add NET_ADMIN,mknod --security-opt=\"label=disable\" --network ns:/var/run/netns/novpn";
+        ports = [
+          "1080:1080"
+          "1081:1081"
+        ];
+        environment = {
+          # GOST_ARGS =  " -L=socks5://:1081 -F=socks5://0.0.0.0:1082 & warp-cli mode proxy & warp-cli proxy port 1082";
+          GOST_ARGS =  " -L=socks5://:1080";
+          BETA_FIX_HOST_CONNECTIVITY="1";
+        };
+        volumes = [
+          "warp:/var/lib/cloudflare-warp"
+        ];
+        environment = {
+          WARP_SLEEP = "2";
+        };
+        extraOptions = [ "--privileged" ];
+      }; # do sudo rm /dev/net/tun; sudo modprobe tun before running contaner if it doesnt work
     };
     spiceUSBRedirection.enable = true;
     libvirtd.enable = true;

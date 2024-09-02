@@ -62,7 +62,7 @@
   ];
   services.udev.extraRules = ''
       # Suspend the system when battery level drops to 6% or lower
-      SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-6]", RUN+="${pkgs.systemd}/bin/systemctl hibernate"
+      # SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-6]", RUN+="${pkgs.systemd}/bin/systemctl hibernate"
 
       # # lock when yubi removed
       # ACTION=="remove",\

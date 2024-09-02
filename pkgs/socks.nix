@@ -39,9 +39,9 @@ let
     };
   
   socksed = [ # IP of the proxies is 192.168.150.2
-    { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";} # port 4000
-    { name = "socks-warp" ; script = "wireproxy -c /run/secrets/wproxy"; } # port 3333
-    { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";     } # port 3334
+    { name = "singbox-aus"; script = "sing-box run -c /run/secrets/singbox-aus";            } # port 4000
+    { name = "socks-warp" ; script = "wireproxy -c /run/secrets/wproxy"; autostart = false; } # port 3333
+    { name = "socks-novpn"; script = "gost -L socks5://192.168.150.2:3334";                 } # port 3334
     { name = "opera-socks"; 
       # script = "sing-box run -c ${opera-singboxcfg} & opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
       # script = "gost -L=socks5://192.168.150.2:3335 -F=http://192.168.150.2:18088 opera-proxy -bootstrap-dns https://1.1.1.1/dns-query -bind-address 192.168.150.2:18088"; 
@@ -280,7 +280,8 @@ in {
       # UseBridges = true;
       # ClientTransportPlugin = "snowflake exec ${pkgs.snowflake}/bin/client";
       # Bridge = "snowflake 192.0.2.3:80 2B280B23E1107BB62ABFC40DDCC8824814F80A72 fingerprint=2B280B23E1107BB62ABFC40DDCC8824814F80A72 url=https://snowflake-broker.torproject.net.global.prod.fastly.net/ fronts=www.shazam.com,www.cosmopolitan.com,www.esquire.com ice=stun:stun.l.google.com:19302,stun:stun.antisip.com:3478,stun:stun.bluesip.net:3478,stun:stun.dus.net:3478,stun:stun.epygi.com:3478,stun:stun.sonetel.com:3478,stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.voys.nl:3478 utls-imitate=hellorandomizedalpn";
-      Socks5Proxy = "localhost:4000"; # requires setting warp-svc to proxy mode: warp-cli set-mode proxy && warp-cli set-proxy-port 4000
+      # Socks5Proxy = "localhost:4000"; # requires setting warp-svc to proxy mode: warp-cli set-mode proxy && warp-cli set-proxy-port 4000
+      # Socks5Proxy = "127.0.0.1:1080"; # requires setting warp-svc to proxy mode: warp-cli set-mode proxy && warp-cli set-proxy-port 4000
       ControlPort = 9051;
       CookieAuthentication = true;
     };

@@ -144,9 +144,13 @@
       osc = "no";
       osd-bar = "no";
       border = "no";
+      demuxer-max-bytes = "8000000KiB";
+      cache = "yes";
+      cache-secs = "7200";
     };
-    scripts = with pkgs.mpvScripts; [autoload cutter quality-menu sponsorblock youtube-upnext thumbnail reload mpv-cheatsheet memo autoload 
-    # uosc thumbfast
+    scripts = with pkgs.mpvScripts; [autoload cutter quality-menu sponsorblock youtube-upnext reload mpv-cheatsheet memo autoload 
+    uosc thumbfast
+    # thumbnail
     ];
     scriptOpts = {
       autoload = {

@@ -153,6 +153,8 @@ in {
     ffmpeg_7
     stable.qutebrowser
     tailwindcss
+    fluffychat
+    nheko
   ]);
   # services.flatpak.enable = true;
 
@@ -264,6 +266,8 @@ in {
   #   thunar-archive-plugin
   #   thunar-volman
   # ];
+
+  programs.mosh.enable = true;
   
   programs.fish = {
     enable = true;

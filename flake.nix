@@ -45,6 +45,8 @@
       url = "github:MOIS3Y/nvchad4nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    conduwuit.url = "github:girlbossceo/conduwuit";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nur, ... }:
@@ -86,7 +88,7 @@
         dlaptop = makeSystem "dlaptop" unstable;
         intelnuc = makeSystem "intelnuc" stable;
         huanan = makeSystem "huanan" pkgs;
-        prtapc = makeSystem "prtapc" pkgs;
+        prtapc = makeSystem "prtapc" stable;
       };
     };
 }
